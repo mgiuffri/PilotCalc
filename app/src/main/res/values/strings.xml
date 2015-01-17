@@ -10,13 +10,17 @@
     <string name="close_drawer">Close Navigation Drawer</string>
 
     <string-array name="nav_drawer_items">
-        <item >Unit Conversions</item>
+        <item>Calculator</item>
+        <item>Unit Conversions</item>
     </string-array>
 
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
     <array name="nav_drawer_icons">
+        <item>@drawable/ic_calculator</item>
         <item>@drawable/ic_conversions</item>
     </array>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

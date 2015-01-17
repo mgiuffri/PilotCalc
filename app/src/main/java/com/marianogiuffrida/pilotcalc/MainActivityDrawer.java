@@ -60,6 +60,7 @@ public class MainActivityDrawer extends ActionBarActivity {
 
         // adding nav drawer items to array
         navDrawerItems.add(new NavigationDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
+        navDrawerItems.add(new NavigationDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
 
         // Recycle the typed array
         navMenuIcons.recycle();
@@ -166,6 +167,9 @@ public class MainActivityDrawer extends ActionBarActivity {
         Fragment fragment = null;
         switch (position) {
             case 0:
+                fragment = new CalculatorFragment();
+                break;
+            case 1:
                 fragment = new ConversionsFragment();
                 break;
             default:

@@ -1,9 +1,20 @@
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowActionBar">true</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="NumberButton" parent="android:Widget.Holo.Button.Borderless">
+        <item name="android:textColor">#fffdfdfe</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:background">#ff555555</item>
+    </style>
+
+    <style name="CalculatorButton" parent="android:Widget.Holo.Button.Borderless">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">#fffdfdfe</item>
+        <item name="android:background">#ffbababa</item>
     </style>
 
 </resources>
