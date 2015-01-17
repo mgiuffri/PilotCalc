@@ -68,29 +68,30 @@ public class MainActivityDrawer extends ActionBarActivity {
         navDrawerAdapter = new NavigationDrawerListAdapter(getApplicationContext(), navDrawerItems);
         mDrawerList.setAdapter(navDrawerAdapter);
 
-        // enabling action bar app icon and behaving it as toggle button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        if(mDrawerLayout!= null) {
+            // enabling action bar app icon and behaving it as toggle button
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
 
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.string.open_drawer,
-                R.string.close_drawer
-        ){
-            public void onDrawerClosed(View view) {
-                getSupportActionBar().setTitle(mTitle);
-                // calling onPrepareOptionsMenu() to show action bar icons
-                invalidateOptionsMenu();
-            }
+            mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                    R.string.open_drawer,
+                    R.string.close_drawer
+            ) {
+                public void onDrawerClosed(View view) {
+                    getSupportActionBar().setTitle(mTitle);
+                    // calling onPrepareOptionsMenu() to show action bar icons
+                    invalidateOptionsMenu();
+                }
 
-            public void onDrawerOpened(View drawerView) {
-                getSupportActionBar().setTitle(mDrawerTitle);
-                // calling onPrepareOptionsMenu() to hide action bar icons
-                invalidateOptionsMenu();
-            }
-        };
+                public void onDrawerOpened(View drawerView) {
+                    getSupportActionBar().setTitle(mDrawerTitle);
+                    // calling onPrepareOptionsMenu() to hide action bar icons
+                    invalidateOptionsMenu();
+                }
+            };
 
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-
+            mDrawerLayout.setDrawerListener(mDrawerToggle);
+        }
         if (savedInstanceState == null) {
             // on first time display view for first nav item
             //displayView(0);
@@ -126,9 +127,11 @@ public class MainActivityDrawer extends ActionBarActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // if nav drawer is opened, hide the action items
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
+        if(mDrawerLayout!= null) {
+            boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+            menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+        }
+            return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -140,7 +143,8 @@ public class MainActivityDrawer extends ActionBarActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
+        if(mDrawerLayout!= null)
+            mDrawerToggle.syncState();
     }
 
     @Override
@@ -177,7 +181,9 @@ public class MainActivityDrawer extends ActionBarActivity {
             mDrawerList.setItemChecked(position, true);
             mDrawerList.setSelection(position);
             setTitle(navMenuTitles[position]);
+            if(mDrawerLayout != null){
             mDrawerLayout.closeDrawer(mDrawerList);
+            }
         } else {
             // error in creating fragment
             Log.e("MainActivity", "Error in creating fragment");
