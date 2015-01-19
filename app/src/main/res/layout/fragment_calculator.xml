@@ -19,7 +19,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:gravity="right"
-            android:text="ccccc"
+            android:text=""
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
@@ -27,7 +27,7 @@
             android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:gravity="right"
-            android:text="results"
+            android:text=""
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TableLayout

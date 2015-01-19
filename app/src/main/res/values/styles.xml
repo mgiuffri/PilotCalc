@@ -5,10 +5,10 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="NumberButton" parent="android:Widget.Holo.Button.Borderless">
+    <style name="NumberButton" parent="@android:style/Widget.Holo.Button.Borderless.Small">
         <item name="android:textColor">#fffdfdfe</item>
         <item name="android:textSize">30sp</item>
-        <item name="android:background">#ff555555</item>
+        <item name="android:background">@drawable/button_custom</item>
     </style>
 
     <style name="CalculatorButton" parent="android:Widget.Holo.Button.Borderless">
