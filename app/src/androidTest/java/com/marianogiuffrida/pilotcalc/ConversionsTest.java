@@ -4,8 +4,8 @@ import android.app.Application;
 import android.test.ApplicationTestCase;
 
 import com.marianogiuffrida.pilotcalc.database.UnitConversionDatabase;
-import com.marianogiuffrida.pilotcalc.database.UnitConversionDescriptor;
-import com.marianogiuffrida.pilotcalc.database.UnitConversionHelper;
+import com.marianogiuffrida.pilotcalc.model.UnitConversionDescriptor;
+import com.marianogiuffrida.pilotcalc.model.UnitConversionHelper;
 
 import java.util.List;
 

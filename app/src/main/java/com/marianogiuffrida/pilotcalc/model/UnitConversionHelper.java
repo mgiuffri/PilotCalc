@@ -1,4 +1,4 @@
-package com.marianogiuffrida.pilotcalc.database;
+package com.marianogiuffrida.pilotcalc.model;
 
 public class UnitConversionHelper {
     public static double convertValue(double value, UnitConversionDescriptor conversionDescriptor){

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
+import com.marianogiuffrida.pilotcalc.model.UnitConversionDescriptor;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.LinkedList;

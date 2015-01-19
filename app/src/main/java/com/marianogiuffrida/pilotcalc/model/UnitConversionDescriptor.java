@@ -1,4 +1,4 @@
-package com.marianogiuffrida.pilotcalc.database;
+package com.marianogiuffrida.pilotcalc.model;
 
 /**
  * Created by Mariano on 11/01/2015.
