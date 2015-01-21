@@ -9,4 +9,5 @@
     <color name="counter_text_color">#c5c4c4</color>
     <color name="calculator_numbers_background">#ff3c3f41</color>
     <color name="calculator_numbers_background2">#ff41250b</color>
+    <color name="calcError">#ffc91e38</color>
 </resources>

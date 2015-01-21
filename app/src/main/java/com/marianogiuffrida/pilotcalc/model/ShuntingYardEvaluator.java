@@ -12,6 +12,10 @@ import java.util.Stack;
  */
 public class ShuntingYardEvaluator {
 
+    private enum TokenType{
+        Number, Operator
+    }
+
     private enum Operator {
         ADD(1), SUBTRACT(2), MULTIPLY(3), DIVIDE(4);
         final int precedence;
@@ -33,13 +37,16 @@ public class ShuntingYardEvaluator {
         StreamTokenizer tokenizer = new StreamTokenizer(new StringReader(z));
         tokenizer.resetSyntax();
         tokenizer.parseNumbers();
-        tokenizer.ordinaryChar('-');
         Stack<Double> numberStack = new Stack<>();
         Stack<Operator> operators = new Stack<>();
+        TokenType lastToken = null;
         while (tokenizer.nextToken() != StreamTokenizer.TT_EOF) {
             switch (tokenizer.ttype) {
                 case StreamTokenizer.TT_NUMBER:
                     numberStack.push(tokenizer.nval);
+                    if(lastToken == TokenType.Number && tokenizer.nval < 0.0)
+                        operators.push(Operator.ADD);
+                    lastToken = TokenType.Number;
                     break;
                 default:
                     char opChar = (char) tokenizer.ttype;
@@ -51,6 +58,7 @@ public class ShuntingYardEvaluator {
                         numberStack.push(calculate(op1, op2, oper));
                     }
                     operators.push(op);
+                    lastToken = TokenType.Operator;
                     break;
             }
         }

@@ -3,6 +3,7 @@ package com.marianogiuffrida.pilotcalc;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.marianogiuffrida.pilotcalc.model.ShuntingYardEvaluator;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 
 
 public class CalculatorFragment extends Fragment {
@@ -25,6 +27,7 @@ public class CalculatorFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_calculator, container, false);
         inputText = (TextView) rootView.findViewById(R.id.CalculatorInputDisplay);
+        inputText.setMovementMethod(ScrollingMovementMethod.getInstance());
         resultText = (TextView) rootView.findViewById(R.id.CalculatorResultDisplay);
         setupUiListeners();
 
@@ -112,19 +115,27 @@ public class CalculatorFragment extends Fragment {
             }
         });
 
+        Button commaButton = (Button) rootView.findViewById(R.id.commaButton);
+        commaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleNumberClick((Button) v);
+            }
+        });
+
         Button clearButton = (Button) rootView.findViewById(R.id.clearButton);
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleClearClick((Button) v);
+                handleBackButton((Button) v);
             }
         });
 
-        Button backButton = (Button) rootView.findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener() {
+        clearButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
-                handleBackButton((Button) v);
+            public boolean onLongClick(View v) {
+                handleClearClick((Button) v);
+                return true;
             }
         });
 
@@ -164,24 +175,35 @@ public class CalculatorFragment extends Fragment {
         equButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    resultText.setText(calc().toString());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                handleEqualButton();
             }
         });
     }
 
-    private Double calc() throws IOException {
+    private void handleEqualButton() {
+        try {
+            if (inputText.getText().toString().matches("-?(\\d+)([+-÷*]-?\\d+)*")) {
+                NumberFormat format = NumberFormat.getInstance();
+                format.setMaximumFractionDigits(2);
+                resultText.setText(format.format(Calculate()));
+            } else {
+                resultText.setText("Error");
+                resultText.setTextColor(getResources().getColor(R.color.calcError));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Double Calculate() throws IOException {
         return ShuntingYardEvaluator.Evaluate(inputText.getText().toString());
     }
 
     private enum ButtonType {
-        number, ops
+        NUMBER, ADD, SUB, MULTI, DIV
     }
 
-    private ButtonType lastPressed;
+    private ButtonType lastPressed = ButtonType.NUMBER;
 
     private void handleBackButton(Button v) {
         CharSequence input = inputText.getText();
@@ -190,8 +212,9 @@ public class CalculatorFragment extends Fragment {
     }
 
     private void handleNumberClick(Button button) {
-        lastPressed = ButtonType.number;
+        lastPressed = ButtonType.NUMBER;
         inputText.setText(TextUtils.concat(inputText.getText(), button.getText()));
+        handleEqualButton();
     }
 
     private void handleClearClick(Button button) {
@@ -200,18 +223,53 @@ public class CalculatorFragment extends Fragment {
     }
 
     private void handleOperationClick(Button button) {
-        switch (lastPressed) {
-            case number:
-                inputText.setText(TextUtils.concat(inputText.getText(), button.getText()));
-                break;
-            case ops:
-                inputText.setText(
-                        TextUtils.concat(
-                                TextUtils.substring(inputText.getText(), 0, inputText.getText().length() - 1),
-                                button.getText()));
-                break;
+        String buttonText = button.getText().toString();
+        if (buttonText.equals("-")) {
+            switch (lastPressed) {
+                case NUMBER:
+                case MULTI:
+                case DIV:
+                    inputText.setText(TextUtils.concat(inputText.getText(), buttonText));
+                    break;
+                default:
+                    inputText.setText(
+                            TextUtils.concat(
+                                    TextUtils.substring(inputText.getText(), 0, buttonText.length() - 1),
+                                    button.getText()));
+                    break;
+            }
+
+        } else {
+            switch (lastPressed) {
+                case NUMBER:
+                    inputText.setText(TextUtils.concat(inputText.getText(), buttonText));
+                    break;
+                default:
+                    inputText.setText(
+                            TextUtils.concat(
+                                    TextUtils.substring(inputText.getText(), 0, buttonText.length() - 1),
+                                    button.getText()));
+                    break;
+            }
         }
-        lastPressed = ButtonType.ops;
+        setLastPressed(buttonText);
+        ;
+    }
+
+    private void setLastPressed(String buttonText) {
+        switch (buttonText) {
+            case "+":
+                lastPressed = ButtonType.ADD;
+                break;
+            case "-":
+                lastPressed = ButtonType.SUB;
+                break;
+            case "*":
+                lastPressed = ButtonType.MULTI;
+                break;
+            default:
+                lastPressed = ButtonType.DIV;
+        }
     }
 
 
