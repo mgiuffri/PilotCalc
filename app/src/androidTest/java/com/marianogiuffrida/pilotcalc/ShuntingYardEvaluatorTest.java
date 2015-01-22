@@ -45,6 +45,7 @@ public class ShuntingYardEvaluatorTest extends ApplicationTestCase<Application> 
         add("10÷-2÷-1");
         add("10-2+1");
         add("10+2-1");
+        add("7÷7-1");
     }};
 
     private ArrayList<Double> ExpectedResults = new ArrayList<Double>() {{
@@ -60,6 +61,7 @@ public class ShuntingYardEvaluatorTest extends ApplicationTestCase<Application> 
         add(5.0);
         add(9.0);
         add(11.0);
+        add(0.0);
     }};
 
     public void testShouldReturnFalseWhenExpressionIsNotWellFormed() throws Exception {
