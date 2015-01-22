@@ -22,6 +22,8 @@ public class CalculatorFragment extends Fragment {
     private TextView inputText;
     private TextView resultText;
 
+    private int consequetiveOperatorCount;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -213,6 +215,7 @@ public class CalculatorFragment extends Fragment {
 
     private void handleNumberClick(Button button) {
         lastPressed = ButtonType.NUMBER;
+        consequetiveOperatorCount =0;
         inputText.setText(TextUtils.concat(inputText.getText(), button.getText()));
         handleEqualButton();
     }
@@ -220,40 +223,42 @@ public class CalculatorFragment extends Fragment {
     private void handleClearClick(Button button) {
         inputText.setText("");
         resultText.setText("");
+        consequetiveOperatorCount=0;
     }
 
     private void handleOperationClick(Button button) {
+        if (consequetiveOperatorCount==2) return;
         String buttonText = button.getText().toString();
         if (buttonText.equals("-")) {
             switch (lastPressed) {
                 case NUMBER:
                 case MULTI:
                 case DIV:
-                    inputText.setText(TextUtils.concat(inputText.getText(), buttonText));
+                    inputText.append(buttonText);
                     break;
                 default:
-                    inputText.setText(
-                            TextUtils.concat(
-                                    TextUtils.substring(inputText.getText(), 0, buttonText.length() - 1),
-                                    button.getText()));
+                    substituteLastCharacter(inputText, buttonText);
                     break;
             }
-
         } else {
             switch (lastPressed) {
                 case NUMBER:
-                    inputText.setText(TextUtils.concat(inputText.getText(), buttonText));
+                    inputText.append(buttonText);
                     break;
                 default:
-                    inputText.setText(
-                            TextUtils.concat(
-                                    TextUtils.substring(inputText.getText(), 0, buttonText.length() - 1),
-                                    button.getText()));
+                    substituteLastCharacter(inputText, buttonText);
                     break;
             }
         }
         setLastPressed(buttonText);
-        ;
+        consequetiveOperatorCount++;
+    }
+
+    private void substituteLastCharacter(TextView tv, String s) {
+        tv.setText(
+                TextUtils.concat(
+                        TextUtils.substring(tv.getText(), 0, tv.length() - 1),
+                        s));
     }
 
     private void setLastPressed(String buttonText) {
