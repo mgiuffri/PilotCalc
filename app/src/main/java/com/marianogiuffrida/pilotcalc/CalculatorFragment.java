@@ -229,8 +229,12 @@ public class CalculatorFragment extends Fragment {
 
     private void handleBackButton(Button v) {
         CharSequence input = inputText.getText();
-        if (input.length() > 0)
+        if (input.length() > 0){
             inputText.setText(TextUtils.substring(input, 0, input.length() - 1));
+            if(lastPressed!=ButtonType.NUMBER) /*OPERATION*/{
+                consequetiveOperatorCount--;
+            }
+        }
     }
 
     private void handleNumberClick(Button button) {
@@ -257,7 +261,7 @@ public class CalculatorFragment extends Fragment {
                     inputText.append(buttonText);
                     break;
                 default:
-                    substituteLastCharacter(inputText, buttonText);
+                    substituteOperation(inputText, buttonText);
                     break;
             }
         } else {
@@ -266,7 +270,7 @@ public class CalculatorFragment extends Fragment {
                     inputText.append(buttonText);
                     break;
                 default:
-                    substituteLastCharacter(inputText, buttonText);
+                    substituteOperation(inputText, buttonText);
                     break;
             }
         }
@@ -274,11 +278,12 @@ public class CalculatorFragment extends Fragment {
         consequetiveOperatorCount++;
     }
 
-    private void substituteLastCharacter(TextView tv, String s) {
+    private void substituteOperation(TextView tv, String s) {
         tv.setText(
                 TextUtils.concat(
                         TextUtils.substring(tv.getText(), 0, tv.length() - 1),
                         s));
+        consequetiveOperatorCount--;
     }
 
     private void setLastPressed(String buttonText) {
