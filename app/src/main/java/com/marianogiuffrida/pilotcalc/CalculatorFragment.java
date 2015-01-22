@@ -18,10 +18,20 @@ import java.text.NumberFormat;
 
 public class CalculatorFragment extends Fragment {
 
+    public static final String INPUT_TEXT = "inputText";
+    public static final String RESULT_TEXT = "resultText";
+    public static final String CONSECUTIVE_OPS = "consecutiveOps";
+    public static final String LAST_PRESSED = "lastPressed";
+
+    private enum ButtonType {
+        NUMBER, ADD, SUB, MULTI, DIV
+    }
+
     private View rootView;
     private TextView inputText;
     private TextView resultText;
 
+    private ButtonType lastPressed = ButtonType.NUMBER;
     private int consequetiveOperatorCount;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,7 +43,23 @@ public class CalculatorFragment extends Fragment {
         resultText = (TextView) rootView.findViewById(R.id.CalculatorResultDisplay);
         setupUiListeners();
 
+        if (savedInstanceState != null) {
+            inputText.setText(savedInstanceState.getCharSequence(INPUT_TEXT));
+            resultText.setText(savedInstanceState.getCharSequence(RESULT_TEXT));
+            lastPressed = (ButtonType) savedInstanceState.getSerializable(LAST_PRESSED);
+            consequetiveOperatorCount = savedInstanceState.getInt(CONSECUTIVE_OPS);
+        }
+
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putCharSequence(INPUT_TEXT, inputText.getText());
+        savedInstanceState.putCharSequence(RESULT_TEXT, resultText.getText());
+        savedInstanceState.putInt(CONSECUTIVE_OPS, consequetiveOperatorCount);
+        savedInstanceState.putSerializable(LAST_PRESSED, lastPressed);
     }
 
     private void setupUiListeners() {
@@ -184,7 +210,7 @@ public class CalculatorFragment extends Fragment {
 
     private void handleEqualButton() {
         try {
-            if (inputText.getText().toString().matches("-?(\\d+)([+-÷*]-?\\d+)*")) {
+            if (ShuntingYardEvaluator.IsWellFormedExpression(inputText.getText().toString())) {
                 NumberFormat format = NumberFormat.getInstance();
                 format.setMaximumFractionDigits(2);
                 resultText.setText(format.format(Calculate()));
@@ -200,12 +226,6 @@ public class CalculatorFragment extends Fragment {
     private Double Calculate() throws IOException {
         return ShuntingYardEvaluator.Evaluate(inputText.getText().toString());
     }
-
-    private enum ButtonType {
-        NUMBER, ADD, SUB, MULTI, DIV
-    }
-
-    private ButtonType lastPressed = ButtonType.NUMBER;
 
     private void handleBackButton(Button v) {
         CharSequence input = inputText.getText();

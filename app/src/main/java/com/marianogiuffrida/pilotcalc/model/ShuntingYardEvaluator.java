@@ -12,6 +12,8 @@ import java.util.Stack;
  */
 public class ShuntingYardEvaluator {
 
+    public static final String WELL_FORMED_EXPRESSION_REGEX = "-?(\\d+)([+-÷*]-?\\d+)*";
+
     private enum TokenType{
         Number, Operator
     }
@@ -32,6 +34,10 @@ public class ShuntingYardEvaluator {
         put('d', Operator.DIVIDE);
     }};
 
+    public static boolean IsWellFormedExpression(String s){
+       return s.matches(WELL_FORMED_EXPRESSION_REGEX);
+    }
+
     public static Double Evaluate(String input) throws IOException {
         String z = input.replaceAll("÷", "d");
         StreamTokenizer tokenizer = new StreamTokenizer(new StringReader(z));
@@ -43,21 +49,15 @@ public class ShuntingYardEvaluator {
         while (tokenizer.nextToken() != StreamTokenizer.TT_EOF) {
             switch (tokenizer.ttype) {
                 case StreamTokenizer.TT_NUMBER:
+                    if(lastToken == TokenType.Number && tokenizer.nval < 0.0) {
+                        handleOperator(numberStack,operators, Operator.ADD);
+                    }
                     numberStack.push(tokenizer.nval);
-                    if(lastToken == TokenType.Number && tokenizer.nval < 0.0)
-                        operators.push(Operator.ADD);
                     lastToken = TokenType.Number;
                     break;
                 default:
-                    char opChar = (char) tokenizer.ttype;
-                    Operator op = ops.get(opChar);
-                    if (!operators.empty() && op.precedence < operators.peek().precedence) {
-                        Double op2 = numberStack.pop();
-                        Double op1 = numberStack.pop();
-                        Operator oper = operators.pop();
-                        numberStack.push(calculate(op1, op2, oper));
-                    }
-                    operators.push(op);
+                    Operator op = ops.get((char) tokenizer.ttype);
+                    handleOperator(numberStack, operators, op);
                     lastToken = TokenType.Operator;
                     break;
             }
@@ -69,6 +69,16 @@ public class ShuntingYardEvaluator {
             numberStack.push(calculate(op1, op2, op));
         }
         return numberStack.pop();
+    }
+
+    private static void handleOperator(Stack<Double> numberStack, Stack<Operator> operators, Operator op) {
+        if (!operators.empty() && op.precedence < operators.peek().precedence) {
+            Double op2 = numberStack.pop();
+            Double op1 = numberStack.pop();
+            Operator oper = operators.pop();
+            numberStack.push(calculate(op1, op2, oper));
+        }
+        operators.push(op);
     }
 
     private static Double calculate(Double op1, Double op2, Operator op) {
