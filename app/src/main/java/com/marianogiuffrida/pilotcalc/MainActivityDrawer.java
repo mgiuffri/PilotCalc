@@ -167,10 +167,10 @@ public class MainActivityDrawer extends ActionBarActivity {
         Fragment fragment = null;
         switch (position) {
             case 0:
-                fragment = new CalculatorFragment();
+                fragment = new ConversionsFragment();
                 break;
             case 1:
-                fragment = new ConversionsFragment();
+                fragment = new CalculatorFragment();
                 break;
             default:
                 break;
