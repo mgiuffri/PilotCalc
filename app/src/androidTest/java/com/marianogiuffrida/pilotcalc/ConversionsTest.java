@@ -43,7 +43,7 @@ public class ConversionsTest extends ApplicationTestCase<Application> {
 
     public void testDB() {
         UnitConversionDatabase myDb = new UnitConversionDatabase(this.getContext());
-        List<String> from = myDb.getFromUnits();
+        List<String> from = myDb.getAllFromUnits();
         assert (from.size() > 0);
     }
 

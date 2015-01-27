@@ -22,11 +22,21 @@ public class UnitConversionDatabase extends SQLiteAssetHelper {
     }
 
     public interface UnitConversionColumns {
+        String ConversionType = "CONVERSION_TYPE";
         String FromUnit = "FROM_UNIT";
         String ToUnit = "TO_UNIT";
         String ConversionFactor = "FACTOR";
         String Offset = "OFFSET";
         String ValueOffset = "VALUE_OFFSET";
+    }
+
+    public interface ConversionTypes{
+        String Weight = "WEIGHT";
+        String Length = "LENGTH";
+        String Speed = "SPEED";
+        String Volume = "VOLUME";
+        String Pressure = "PRESSURE";
+        String Temperature = "TEMPERATURE";
     }
 
     public UnitConversionDatabase(Context context) {
@@ -71,7 +81,7 @@ public class UnitConversionDatabase extends SQLiteAssetHelper {
              return conversions;
     }
 
-    public List<String> getFromUnits() {
+    public List<String> getAllFromUnits() {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(TABLES.Conversions);
@@ -82,6 +92,24 @@ public class UnitConversionDatabase extends SQLiteAssetHelper {
         do{
             fromUnits.add(c.getString(0));
         }while (c.moveToNext());
+        return fromUnits;
+    }
+
+    public List<String> getFromUnitsByType(String conversionType) {
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        qb.setTables(TABLES.Conversions);
+        qb.setDistinct(true);
+        Cursor c = qb.query(db,
+                new String[]{UnitConversionColumns.FromUnit},
+                String.format(UnitConversionColumns.ConversionType + " = ?"),
+                new String[]{conversionType}, null, null, null);
+        c.moveToFirst();
+        List<String> fromUnits = new LinkedList<>();
+        do {
+            fromUnits.add(c.getString(0));
+        } while (c.moveToNext());
+
         return fromUnits;
     }
 
