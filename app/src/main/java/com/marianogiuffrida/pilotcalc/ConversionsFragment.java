@@ -14,21 +14,26 @@ import android.widget.TextView;
 
 import com.marianogiuffrida.customview.RadioButtonsTable;
 import com.marianogiuffrida.pilotcalc.database.UnitConversionDatabase;
+import com.marianogiuffrida.pilotcalc.model.UnitConversionDescriptor;
+import com.marianogiuffrida.pilotcalc.model.UnitConversionHelper;
 
 /**
  * Created by Mariano on 12/01/2015.
  */
-public class ConversionsFragment extends Fragment {
+public class ConversionsFragment extends Fragment implements CalculatorFragment.OnResultListener {
 
     public static final String ACTIVE_CONVERSION_TYPE = "conversionsType";
-    private static final String FROM_UNIT_POSIITION_ID = "fromUnitPosiitionId" ;
-    private static final String TO_UNIT_POSIITION_ID = "toUnitPosiitionId" ;
+    private static final String FROM_UNIT_POSIITION_ID = "fromUnitPosiitionId";
+    private static final String TO_UNIT_POSIITION_ID = "toUnitPosiitionId";
 
     private Spinner fromUnit;
     private UnitConversionDatabase db;
     private RadioButtonsTable radioConversionsType;
     private final int defaultConversionType = R.id.radio_weight;
     private Spinner toUnit;
+    private TextView input, output;
+
+    private String selectedSourceUnit, selectedDestinationUnit;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,6 +42,8 @@ public class ConversionsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.conversions_fragment, container, false);
         fromUnit = (Spinner) rootView.findViewById(R.id.conversions_from_spinner);
         toUnit = (Spinner) rootView.findViewById(R.id.conversions_to_spinner);
+        input = (TextView) rootView.findViewById(R.id.conversion_Input);
+        output = (TextView) rootView.findViewById(R.id.conversion_output);
         db = new UnitConversionDatabase(getActivity().getApplicationContext());
 
         Fragment calculatorFragment = new CalculatorFragment();
@@ -51,19 +58,20 @@ public class ConversionsFragment extends Fragment {
             }
         });
 
-        if(savedInstanceState!=null){
+        if (savedInstanceState != null) {
             int activeConversionType = savedInstanceState.getInt(ACTIVE_CONVERSION_TYPE);
             initializeViewBasedOnConversionType(rootView, activeConversionType);
             fromUnit.setSelection(savedInstanceState.getInt(FROM_UNIT_POSIITION_ID));
             toUnit.setSelection(savedInstanceState.getInt(TO_UNIT_POSIITION_ID));
-        }else{
+        } else {
             initializeViewBasedOnConversionType(rootView, defaultConversionType);
         }
 
         fromUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                setToUnitsSpinnerByFromUnits((String) parent.getItemAtPosition(position));
+                selectedSourceUnit = (String) parent.getItemAtPosition(position);
+                setToUnitsSpinnerByFromUnits(selectedSourceUnit);
             }
 
             @Override
@@ -75,7 +83,7 @@ public class ConversionsFragment extends Fragment {
         toUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                selectedDestinationUnit = (String) parent.getItemAtPosition(position);
             }
 
             @Override
@@ -133,5 +141,13 @@ public class ConversionsFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, db.getDestinationUnits(fromUnit));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         toUnit.setAdapter(adapter);
+    }
+
+    @Override
+    public void onPushResult(String result) {
+        input.setText(result);
+        UnitConversionDescriptor d = db.getUnitConversionDescriptor(selectedSourceUnit, selectedDestinationUnit);
+        String convertedValue = Double.toString(UnitConversionHelper.convertValue(Double.parseDouble(result), d));
+        output.setText(convertedValue);
     }
 }
