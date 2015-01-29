@@ -49,7 +49,7 @@ public class UnitConversionDatabase extends SQLiteAssetHelper {
 
     public UnitConversionDescriptor getUnitConversionDescriptor(String sourceUnit, String destinationUnit){
         List<UnitConversionDescriptor> resultList =  getUnitConversionDescriptors( String.format(
-                        UnitConversionColumns.FromUnit + " = ?" +
+                        UnitConversionColumns.FromUnit + " = ? " +
                                 "and " + UnitConversionColumns.ToUnit + " = ?"),
                 new String[]{sourceUnit, destinationUnit});
         if(resultList != null && resultList.size() > 0)
@@ -68,11 +68,11 @@ public class UnitConversionDatabase extends SQLiteAssetHelper {
             conversions = new LinkedList<>();
             do{
                 UnitConversionDescriptor uc = new UnitConversionDescriptor();
-                uc.setSourceUnit(c.getString(0));
-                uc.setDestionationUnit(c.getString(1));
-                uc.setConversionFactor(Double.parseDouble(c.getString(2)));
-                uc.setOffset(Double.parseDouble(c.getString(3)));
-                uc.setValueOffset(Double.parseDouble(c.getString(4)));
+                uc.setSourceUnit(c.getString(1));
+                uc.setDestionationUnit(c.getString(2));
+                uc.setConversionFactor(Double.parseDouble(c.getString(3)));
+                uc.setOffset(Double.parseDouble(c.getString(4)));
+                uc.setValueOffset(Double.parseDouble(c.getString(5)));
                 conversions.add(uc);
             }while (c.moveToNext());
         }else{
