@@ -1,5 +1,7 @@
 package com.marianogiuffrida.pilotcalc;
 
+import android.app.Activity;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.text.TextUtils;
@@ -7,9 +9,11 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.marianogiuffrida.helpers.FragmentUtils;
 import com.marianogiuffrida.pilotcalc.model.ShuntingYardEvaluator;
 
 import java.io.IOException;
@@ -22,6 +26,11 @@ public class CalculatorFragment extends Fragment {
     public static final String RESULT_TEXT = "resultText";
     public static final String CONSECUTIVE_OPS = "consecutiveOps";
     public static final String LAST_PRESSED = "lastPressed";
+    private OnResultListener callBack;
+
+    public interface OnResultListener{
+        public void onPushResult(String result);
+    }
 
     private enum ButtonType {
         NUMBER, ADD, SUB, MULTI, DIV
@@ -33,7 +42,7 @@ public class CalculatorFragment extends Fragment {
 
     private ButtonType lastPressed = ButtonType.NUMBER;
     private int consequetiveOperatorCount;
-
+    private ColorStateList defaultFontColor;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -41,6 +50,8 @@ public class CalculatorFragment extends Fragment {
         inputText = (TextView) rootView.findViewById(R.id.CalculatorInputDisplay);
         inputText.setMovementMethod(ScrollingMovementMethod.getInstance());
         resultText = (TextView) rootView.findViewById(R.id.CalculatorResultDisplay);
+        defaultFontColor =  inputText.getTextColors();
+
         setupUiListeners();
 
         if (savedInstanceState != null) {
@@ -49,6 +60,8 @@ public class CalculatorFragment extends Fragment {
             lastPressed = (ButtonType) savedInstanceState.getSerializable(LAST_PRESSED);
             consequetiveOperatorCount = savedInstanceState.getInt(CONSECUTIVE_OPS);
         }
+
+        callBack = FragmentUtils.getParent(this, OnResultListener.class);
 
         return rootView;
     }
@@ -151,22 +164,6 @@ public class CalculatorFragment extends Fragment {
             }
         });
 
-        Button clearButton = (Button) rootView.findViewById(R.id.clearButton);
-        clearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleBackButton((Button) v);
-            }
-        });
-
-        clearButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                handleClearClick((Button) v);
-                return true;
-            }
-        });
-
         Button addButton = (Button) rootView.findViewById(R.id.addButton);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,6 +196,22 @@ public class CalculatorFragment extends Fragment {
             }
         });
 
+        Button clearButton = (Button) rootView.findViewById(R.id.clearButton);
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteLastInputCharacter();
+            }
+        });
+
+        clearButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                clearAll();
+                return true;
+            }
+        });
+
         Button equButton = (Button) rootView.findViewById(R.id.equalButton);
         equButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,56 +222,78 @@ public class CalculatorFragment extends Fragment {
     }
 
     private void handleEqualButton() {
-        try {
-            if (ShuntingYardEvaluator.IsWellFormedExpression(inputText.getText().toString())) {
-                NumberFormat format = NumberFormat.getInstance();
-                format.setMaximumFractionDigits(2);
-                resultText.setText(format.format(Calculate()));
-            } else {
-                resultText.setText("Error");
-                resultText.setTextColor(getResources().getColor(R.color.calcError));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(updateResult()){
+            String result = resultText.getText().toString().replace(",", "");
+            inputText.setText(result);
+            resultText.setText("");
+            inputText.startAnimation(AnimationUtils.loadAnimation(rootView.getContext(), R.anim.calculator_input_text_translatein));
+            if (callBack != null) callBack.onPushResult(result);
         }
     }
 
-    private Double Calculate() throws IOException {
-        return ShuntingYardEvaluator.Evaluate(inputText.getText().toString());
+    private boolean updateResult(){
+        resultText.setTextColor(defaultFontColor);
+        String resultString = "";
+        Boolean success = true;
+        try {
+            NumberFormat format = NumberFormat.getInstance();
+            format.setMaximumFractionDigits(2);
+            resultString = format.format(Calculate());
+        } catch (IllegalArgumentException e){
+            resultString = "Error";
+            resultText.setTextColor(getResources().getColor(R.color.calcError));
+            success = false;
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            success = false;
+        }
+        resultText.setText(resultString);
+        return success;
     }
 
-    private void handleBackButton(Button v) {
+    private Double Calculate() throws IOException, IllegalArgumentException {
+        if (ShuntingYardEvaluator.IsWellFormedExpression(inputText.getText().toString())){
+            return ShuntingYardEvaluator.Evaluate(inputText.getText().toString());
+        }
+        throw new IllegalArgumentException("Expression is not well formed");
+    }
+
+    private void deleteLastInputCharacter() {
         CharSequence input = inputText.getText();
-        if (input.length() > 0){
+        if (input.length() > 0) {
             inputText.setText(TextUtils.substring(input, 0, input.length() - 1));
-            if(lastPressed!=ButtonType.NUMBER) /*OPERATION*/{
+            if (lastPressed != ButtonType.NUMBER) /*IS AN OPERATION*/ {
                 consequetiveOperatorCount--;
             }
+            updateResult();
         }
     }
 
     private void handleNumberClick(Button button) {
         lastPressed = ButtonType.NUMBER;
-        consequetiveOperatorCount =0;
+        consequetiveOperatorCount = 0;
         inputText.setText(TextUtils.concat(inputText.getText(), button.getText()));
-        handleEqualButton();
+        updateResult();
     }
 
-    private void handleClearClick(Button button) {
-        inputText.setText("");
+    private void clearAll() {
         resultText.setText("");
-        consequetiveOperatorCount=0;
+        inputText.setText("");
+        resultText.startAnimation(AnimationUtils.loadAnimation(rootView.getContext(), R.anim.abc_fade_out));
+        inputText.startAnimation(AnimationUtils.loadAnimation(rootView.getContext(), R.anim.abc_fade_out));
+        consequetiveOperatorCount = 0;
     }
 
     private void handleOperationClick(Button button) {
-        if (consequetiveOperatorCount==2) return;
+        if (consequetiveOperatorCount == 2) return;
         String buttonText = button.getText().toString();
         if (buttonText.equals("-")) {
             switch (lastPressed) {
                 case NUMBER:
                 case MULTI:
                 case DIV:
-                    inputText.append(buttonText);
+                    appendToInputText(buttonText);
                     break;
                 default:
                     substituteOperation(inputText, buttonText);
@@ -267,7 +302,7 @@ public class CalculatorFragment extends Fragment {
         } else {
             switch (lastPressed) {
                 case NUMBER:
-                    inputText.append(buttonText);
+                    appendToInputText(buttonText);
                     break;
                 default:
                     substituteOperation(inputText, buttonText);
@@ -276,6 +311,10 @@ public class CalculatorFragment extends Fragment {
         }
         setLastPressed(buttonText);
         consequetiveOperatorCount++;
+    }
+
+    private void appendToInputText(String buttonText) {
+        inputText.setText(inputText.getText() + buttonText);
     }
 
     private void substituteOperation(TextView tv, String s) {
