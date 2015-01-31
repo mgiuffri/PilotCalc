@@ -1,6 +1,5 @@
 package com.marianogiuffrida.pilotcalc;
 
-import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -26,11 +25,7 @@ public class CalculatorFragment extends Fragment {
     public static final String RESULT_TEXT = "resultText";
     public static final String CONSECUTIVE_OPS = "consecutiveOps";
     public static final String LAST_PRESSED = "lastPressed";
-    private OnResultListener callBack;
-
-    public interface OnResultListener{
-        public void onPushResult(String result);
-    }
+    private IProvideResult callBack;
 
     private enum ButtonType {
         NUMBER, ADD, SUB, MULTI, DIV
@@ -61,7 +56,7 @@ public class CalculatorFragment extends Fragment {
             consequetiveOperatorCount = savedInstanceState.getInt(CONSECUTIVE_OPS);
         }
 
-        callBack = FragmentUtils.getParent(this, OnResultListener.class);
+        callBack = FragmentUtils.getParent(this, IProvideResult.class);
 
         return rootView;
     }
@@ -227,7 +222,7 @@ public class CalculatorFragment extends Fragment {
             inputText.setText(result);
             resultText.setText("");
             inputText.startAnimation(AnimationUtils.loadAnimation(rootView.getContext(), R.anim.calculator_input_text_translatein));
-            if (callBack != null) callBack.onPushResult(result);
+            if (callBack != null) callBack.onNewResult(result);
         }
     }
 

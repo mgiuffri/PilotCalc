@@ -9,15 +9,12 @@ import com.marianogiuffrida.pilotcalc.model.UnitConversionDescriptor;
 import com.marianogiuffrida.pilotcalc.model.UnitConversionHelper;
 
 import junit.framework.Test;
+import junit.framework.TestCase;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShuntingYardEvaluatorTest extends ApplicationTestCase<Application> {
-
-    public ShuntingYardEvaluatorTest() {
-        super(Application.class);
-    }
+public class ShuntingYardEvaluatorTest extends TestCase {
 
     private ArrayList<String> BadFormedExpressions = new ArrayList<String>() {{
         add("ddee");

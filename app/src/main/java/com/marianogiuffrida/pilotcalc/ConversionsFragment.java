@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.marianogiuffrida.customview.RadioButtonsTable;
+import com.marianogiuffrida.pilotcalc.model.ConversionTypes;
 import com.marianogiuffrida.pilotcalc.database.UnitConversionDatabase;
 import com.marianogiuffrida.pilotcalc.model.UnitConversionDescriptor;
 import com.marianogiuffrida.pilotcalc.model.UnitConversionHelper;
@@ -20,7 +21,7 @@ import com.marianogiuffrida.pilotcalc.model.UnitConversionHelper;
 /**
  * Created by Mariano on 12/01/2015.
  */
-public class ConversionsFragment extends Fragment implements CalculatorFragment.OnResultListener {
+public class ConversionsFragment extends Fragment implements IProvideResult {
 
     public static final String ACTIVE_CONVERSION_TYPE = "conversionsType";
     private static final String FROM_UNIT_POSIITION_ID = "fromUnitPosiitionId";
@@ -111,42 +112,42 @@ public class ConversionsFragment extends Fragment implements CalculatorFragment.
     private void resolveConversionType(int checkedId) {
         switch (checkedId) {
             case R.id.radio_weight:
-                setFromUnitsSpinnerByType(UnitConversionDatabase.ConversionTypes.Weight);
+                setFromUnitsSpinnerByType(ConversionTypes.Weight);
                 break;
             case R.id.radio_length:
-                setFromUnitsSpinnerByType(UnitConversionDatabase.ConversionTypes.Length);
+                setFromUnitsSpinnerByType(ConversionTypes.Length);
                 break;
             case R.id.radio_temp:
-                setFromUnitsSpinnerByType(UnitConversionDatabase.ConversionTypes.Temperature);
+                setFromUnitsSpinnerByType(ConversionTypes.Temperature);
                 break;
             case R.id.radio_pressure:
-                setFromUnitsSpinnerByType(UnitConversionDatabase.ConversionTypes.Pressure);
+                setFromUnitsSpinnerByType(ConversionTypes.Pressure);
                 break;
             case R.id.radio_volume:
-                setFromUnitsSpinnerByType(UnitConversionDatabase.ConversionTypes.Volume);
+                setFromUnitsSpinnerByType(ConversionTypes.Volume);
                 break;
             case R.id.radio_speed:
-                setFromUnitsSpinnerByType(UnitConversionDatabase.ConversionTypes.Speed);
+                setFromUnitsSpinnerByType(ConversionTypes.Speed);
                 break;
         }
     }
 
     private void setFromUnitsSpinnerByType(String conversionType) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, db.getFromUnitsByType(conversionType));
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, db.getSupportedUnitsByConversionType(conversionType));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fromUnit.setAdapter(adapter);
     }
 
     private void setToUnitsSpinnerByFromUnits(String fromUnit) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, db.getDestinationUnits(fromUnit));
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, db.getDestinationUnitsBySourceUnit(fromUnit));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         toUnit.setAdapter(adapter);
     }
 
     @Override
-    public void onPushResult(String result) {
+    public void onNewResult(String result) {
         input.setText(result);
-        UnitConversionDescriptor d = db.getUnitConversionDescriptor(selectedSourceUnit, selectedDestinationUnit);
+        UnitConversionDescriptor d = db.getUnitConversionDescriptorBySourceDestination(selectedSourceUnit, selectedDestinationUnit);
         String convertedValue = Double.toString(UnitConversionHelper.convertValue(Double.parseDouble(result), d));
         output.setText(convertedValue);
     }

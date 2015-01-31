@@ -26,13 +26,13 @@ public class ConversionsTest extends ApplicationTestCase<Application> {
 
     public void testqueryAllUnitConversion() {
         UnitConversionDatabase myDb = new UnitConversionDatabase(this.getContext());
-        List<UnitConversionDescriptor> all = myDb.getAllUnitConversionDescriptors();
+        List<UnitConversionDescriptor> all = myDb.getSupportedUnitConversions();
         assertEquals(all.size(), 126.0, 0.0);
     }
 
     public void testConversionBothSenses() {
         UnitConversionDatabase myDb = new UnitConversionDatabase(this.getContext());
-        List<UnitConversionDescriptor> all = myDb.getAllUnitConversionDescriptors();
+        List<UnitConversionDescriptor> all = myDb.getSupportedUnitConversions();
         double[] values = new double[]{10.0, 0, 1.2, -23.1};
 
         for (UnitConversionDescriptor d : all){
@@ -43,13 +43,13 @@ public class ConversionsTest extends ApplicationTestCase<Application> {
 
     public void testDB() {
         UnitConversionDatabase myDb = new UnitConversionDatabase(this.getContext());
-        List<String> from = myDb.getAllFromUnits();
+        List<String> from = myDb.getSupportedUnits();
         assert (from.size() > 0);
     }
 
     private void doubleConvert(UnitConversionDatabase myDb, double initialValue, UnitConversionDescriptor d) {
         double convertedValue = UnitConversionHelper.convertValue(initialValue, d);
-        UnitConversionDescriptor reverseDesc = myDb.getUnitConversionDescriptor(d.getDestionationUnit(), d.getSourceUnit());
+        UnitConversionDescriptor reverseDesc = myDb.getUnitConversionDescriptorBySourceDestination(d.getDestionationUnit(), d.getSourceUnit());
         assertNotNull(String.format("%s -> %s", d.getDestionationUnit(), d.getSourceUnit()),
                 reverseDesc);
         assertEquals(
