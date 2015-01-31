@@ -19,6 +19,8 @@ public class UnitConversionDatabase extends SQLiteAssetHelper implements IUnitCo
     private static final String DATABASE_NAME = "UnitConversions.db";
     private static final int DATABASE_VERSION = 1;
 
+    private final UnitConversionDescriptor identityConversion = new UnitConversionDescriptor("","","",1,0,0);
+
     public interface TABLES {
         String Conversions = "UnitConversions";
     }
@@ -43,6 +45,8 @@ public class UnitConversionDatabase extends SQLiteAssetHelper implements IUnitCo
 
     @Override
     public UnitConversionDescriptor getUnitConversionDescriptorBySourceDestination(String sourceUnit, String destinationUnit){
+        if(sourceUnit==null || sourceUnit.length()==0 || destinationUnit==null || destinationUnit.length()==0) return null;
+        if (sourceUnit.equals(destinationUnit)) return identityConversion;
         List<UnitConversionDescriptor> resultList =  queryUnitConversionDescriptors(String.format(
                         UnitConversionColumns.FromUnit + " = ? " +
                                 "and " + UnitConversionColumns.ToUnit + " = ?"),
