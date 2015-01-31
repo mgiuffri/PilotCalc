@@ -34,11 +34,18 @@ public class ShuntingYardEvaluator {
         put('d', Operator.DIVIDE);
     }};
 
-    public static boolean IsWellFormedExpression(String s){
+    public static Double calculate(String expression) throws IOException, IllegalArgumentException{
+        if (!isWellFormedExpression(expression)){
+            throw new IllegalArgumentException("Expression is not well formed.");
+        }
+        return evaluate(expression);
+    }
+
+    protected static boolean isWellFormedExpression(String s){
        return s.matches(WELL_FORMED_EXPRESSION_REGEX);
     }
 
-    public static Double Evaluate(String input) throws IOException {
+    protected static Double evaluate(String input) throws IOException {
         String z = input.replaceAll("÷", "d");
         StreamTokenizer tokenizer = new StreamTokenizer(new StringReader(z));
         tokenizer.resetSyntax();

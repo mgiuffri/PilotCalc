@@ -248,10 +248,7 @@ public class CalculatorFragment extends Fragment {
     }
 
     private Double Calculate() throws IOException, IllegalArgumentException {
-        if (ShuntingYardEvaluator.IsWellFormedExpression(inputText.getText().toString())){
-            return ShuntingYardEvaluator.Evaluate(inputText.getText().toString());
-        }
-        throw new IllegalArgumentException("Expression is not well formed");
+            return ShuntingYardEvaluator.calculate(inputText.getText().toString());
     }
 
     private void deleteLastInputCharacter() {

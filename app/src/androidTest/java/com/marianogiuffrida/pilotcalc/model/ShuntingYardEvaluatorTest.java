@@ -1,18 +1,9 @@
-package com.marianogiuffrida.pilotcalc;
+package com.marianogiuffrida.pilotcalc.model;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
-
-import com.marianogiuffrida.pilotcalc.database.UnitConversionDatabase;
-import com.marianogiuffrida.pilotcalc.model.ShuntingYardEvaluator;
-import com.marianogiuffrida.pilotcalc.model.UnitConversionDescriptor;
-import com.marianogiuffrida.pilotcalc.model.UnitConversionHelper;
-
-import junit.framework.Test;
 import junit.framework.TestCase;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ShuntingYardEvaluatorTest extends TestCase {
 
@@ -63,13 +54,13 @@ public class ShuntingYardEvaluatorTest extends TestCase {
 
     public void testShouldReturnFalseWhenExpressionIsNotWellFormed() throws Exception {
         for (String s : BadFormedExpressions) {
-            assertFalse(s, ShuntingYardEvaluator.IsWellFormedExpression(s));
+            assertFalse(s, ShuntingYardEvaluator.isWellFormedExpression(s));
         }
     }
 
     public void testShouldReturnTrueWhenExpressionIsWellFormed() throws Exception {
         for (String s : WellFormedExpressions) {
-            assertTrue(s, ShuntingYardEvaluator.IsWellFormedExpression(s));
+            assertTrue(s, ShuntingYardEvaluator.isWellFormedExpression(s));
         }
     }
 
@@ -79,7 +70,33 @@ public class ShuntingYardEvaluatorTest extends TestCase {
             Double r = ExpectedResults.get(i);
             assertEquals(String.format("%s -> %.2f", s, r),
                     r,
-                    ShuntingYardEvaluator.Evaluate(s),
+                    ShuntingYardEvaluator.evaluate(s),
+                    0.01);
+        }
+    }
+
+    public void testCalculateThrowsWhenBadFormedExpressions() {
+        for (String s : BadFormedExpressions) {
+            Exception e = null;
+            try {
+                ShuntingYardEvaluator.calculate(s);
+            } catch (IllegalArgumentException ex) {
+                e = ex;
+            } catch (IOException e1) {
+                e = e1;
+            }
+            assertNotNull(e);
+            assertTrue(e instanceof IllegalArgumentException);
+        }
+    }
+
+    public void testCalculateReturnsCorrectValue() throws Exception {
+        for (int i = 0; i < WellFormedExpressions.size(); i++) {
+            String s = WellFormedExpressions.get(i);
+            Double r = ExpectedResults.get(i);
+            assertEquals(String.format("%s -> %.2f", s, r),
+                    r,
+                    ShuntingYardEvaluator.calculate(s),
                     0.01);
         }
     }
