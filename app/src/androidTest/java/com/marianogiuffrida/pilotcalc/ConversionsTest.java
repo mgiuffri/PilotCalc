@@ -17,7 +17,6 @@ public class ConversionsTest extends ApplicationTestCase<Application> {
 
     public void testConvertValue() throws Exception {
         UnitConversionDescriptor d = new UnitConversionDescriptor("test", "from", "to", 2, -21, 1);
-        d.setValueOffset(1);
         double result = UnitConversionHelper.convertValue(10, d);
         assertEquals(result, 1, 0.001);
     }
