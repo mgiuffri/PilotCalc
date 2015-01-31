@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.marianogiuffrida.helpers.FragmentUtils;
+import com.marianogiuffrida.helpers.StringUtils;
 import com.marianogiuffrida.pilotcalc.model.ShuntingYardEvaluator;
 
 import java.io.IOException;
@@ -38,6 +39,7 @@ public class CalculatorFragment extends Fragment {
     private ButtonType lastPressed = ButtonType.NUMBER;
     private int consequetiveOperatorCount;
     private ColorStateList defaultFontColor;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -45,7 +47,7 @@ public class CalculatorFragment extends Fragment {
         inputText = (TextView) rootView.findViewById(R.id.CalculatorInputDisplay);
         inputText.setMovementMethod(ScrollingMovementMethod.getInstance());
         resultText = (TextView) rootView.findViewById(R.id.CalculatorResultDisplay);
-        defaultFontColor =  inputText.getTextColors();
+        defaultFontColor = inputText.getTextColors();
 
         setupUiListeners();
 
@@ -217,7 +219,7 @@ public class CalculatorFragment extends Fragment {
     }
 
     private void handleEqualButton() {
-        if(updateResult()){
+        if (updateResult()) {
             String result = resultText.getText().toString().replace(",", "");
             inputText.setText(result);
             resultText.setText("");
@@ -226,20 +228,22 @@ public class CalculatorFragment extends Fragment {
         }
     }
 
-    private boolean updateResult(){
+    private boolean updateResult() {
         resultText.setTextColor(defaultFontColor);
         String resultString = "";
         Boolean success = true;
         try {
-            NumberFormat format = NumberFormat.getInstance();
-            format.setMaximumFractionDigits(2);
-            resultString = format.format(Calculate());
-        } catch (IllegalArgumentException e){
+            String inputValue = inputText.getText().toString();
+            if (!StringUtils.isNullOrEmpty(inputValue)) {
+                NumberFormat format = NumberFormat.getInstance();
+                format.setMaximumFractionDigits(2);
+                resultString = format.format(Calculate());
+            }
+        } catch (IllegalArgumentException e) {
             resultString = "Error";
             resultText.setTextColor(getResources().getColor(R.color.calcError));
             success = false;
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             success = false;
         }
@@ -248,7 +252,7 @@ public class CalculatorFragment extends Fragment {
     }
 
     private Double Calculate() throws IOException, IllegalArgumentException {
-            return ShuntingYardEvaluator.calculate(inputText.getText().toString());
+        return ShuntingYardEvaluator.calculate(inputText.getText().toString());
     }
 
     private void deleteLastInputCharacter() {
