@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
+import com.marianogiuffrida.pilotcalc.model.ConversionTypes;
 import com.marianogiuffrida.pilotcalc.model.IUnitConversionRepository;
 import com.marianogiuffrida.pilotcalc.model.UnitConversionDescriptor;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
@@ -114,12 +115,13 @@ public class UnitConversionDatabase extends SQLiteAssetHelper implements IUnitCo
         if( c != null && c.moveToFirst() ){
             conversions = new LinkedList<>();
             do{
-                UnitConversionDescriptor uc = new UnitConversionDescriptor();
-                uc.setSourceUnit(c.getString(1));
-                uc.setDestionationUnit(c.getString(2));
-                uc.setConversionFactor(Double.parseDouble(c.getString(3)));
-                uc.setOffset(Double.parseDouble(c.getString(4)));
-                uc.setValueOffset(Double.parseDouble(c.getString(5)));
+                UnitConversionDescriptor uc = new UnitConversionDescriptor(
+                        c.getString(c.getColumnIndexOrThrow(UnitConversionColumns.ConversionType)),
+                        c.getString(c.getColumnIndexOrThrow(UnitConversionColumns.FromUnit)),
+                        c.getString(c.getColumnIndexOrThrow(UnitConversionColumns.ToUnit)),
+                        c.getDouble(c.getColumnIndexOrThrow(UnitConversionColumns.ConversionFactor)),
+                        c.getDouble(c.getColumnIndexOrThrow(UnitConversionColumns.Offset)),
+                        c.getDouble(c.getColumnIndexOrThrow(UnitConversionColumns.ValueOffset)));
                 conversions.add(uc);
             }while (c.moveToNext());
         }else{

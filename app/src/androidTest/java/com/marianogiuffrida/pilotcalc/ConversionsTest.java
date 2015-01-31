@@ -16,9 +16,7 @@ public class ConversionsTest extends ApplicationTestCase<Application> {
     }
 
     public void testConvertValue() throws Exception {
-        UnitConversionDescriptor d = new UnitConversionDescriptor();
-        d.setConversionFactor(2);
-        d.setOffset(-21);
+        UnitConversionDescriptor d = new UnitConversionDescriptor("test", "from", "to", 2, -21, 1);
         d.setValueOffset(1);
         double result = UnitConversionHelper.convertValue(10, d);
         assertEquals(result, 1, 0.001);
@@ -49,11 +47,11 @@ public class ConversionsTest extends ApplicationTestCase<Application> {
 
     private void doubleConvert(UnitConversionDatabase myDb, double initialValue, UnitConversionDescriptor d) {
         double convertedValue = UnitConversionHelper.convertValue(initialValue, d);
-        UnitConversionDescriptor reverseDesc = myDb.getUnitConversionDescriptorBySourceDestination(d.getDestionationUnit(), d.getSourceUnit());
-        assertNotNull(String.format("%s -> %s", d.getDestionationUnit(), d.getSourceUnit()),
+        UnitConversionDescriptor reverseDesc = myDb.getUnitConversionDescriptorBySourceDestination(d.getDestinationUnit(), d.getSourceUnit());
+        assertNotNull(String.format("%s -> %s", d.getDestinationUnit(), d.getSourceUnit()),
                 reverseDesc);
         assertEquals(
-                String.format("%s -> %s: %f", d.getSourceUnit(), d.getDestionationUnit(), convertedValue),
+                String.format("%s -> %s: %f", d.getSourceUnit(), d.getDestinationUnit(), convertedValue),
                 initialValue,
                 UnitConversionHelper.convertValue(convertedValue, reverseDesc),
                 0.001);
