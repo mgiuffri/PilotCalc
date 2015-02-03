@@ -11,16 +11,22 @@
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/radio_weight"
-            style="@style/conversion_button"
-            android:drawableTop="@drawable/temp_radio_selector"
-            android:text="@string/weight" />
-
-        <RadioButton
             android:id="@+id/radio_length"
             style="@style/conversion_button"
-            android:drawableTop="@drawable/temp_radio_selector"
+            android:drawableTop="@drawable/length_radio_selector"
             android:text="@string/length" />
+
+        <RadioButton
+            android:id="@+id/radio_pressure"
+            style="@style/conversion_button"
+            android:drawableTop="@drawable/pressure_radio_selector"
+            android:text="@string/pressure" />
+
+        <RadioButton
+            android:id="@+id/radio_speed"
+            style="@style/conversion_button"
+            android:drawableTop="@drawable/speed_radio_selector"
+            android:text="@string/speed" />
 
         <RadioButton
             android:id="@+id/radio_temp"
@@ -29,23 +35,16 @@
             android:text="@string/temperature" />
 
         <RadioButton
-            android:id="@+id/radio_pressure"
-            style="@style/conversion_button"
-            android:drawableTop="@drawable/temp_radio_selector"
-            android:text="@string/pressure" />
-
-        <RadioButton
             android:id="@+id/radio_volume"
             style="@style/conversion_button"
-            android:drawableTop="@drawable/temp_radio_selector"
+            android:drawableTop="@drawable/volume_radio_selector"
             android:text="@string/volume" />
 
         <RadioButton
-            android:id="@+id/radio_speed"
+            android:id="@+id/radio_weight"
             style="@style/conversion_button"
-            android:drawableTop="@drawable/temp_radio_selector"
-            android:text="@string/speed" />
-
+            android:drawableTop="@drawable/weight_radio_selector"
+            android:text="@string/weight" />
 
     </RadioGroup>
 

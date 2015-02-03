@@ -48,7 +48,7 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
     private UnitConversionDatabase db;
 //    private RadioButtonsTable radioConversionsType;
     private RadioGroup radioConvType;
-    private final int defaultConversionType = R.id.radio_weight;
+    private final int defaultConversionType = R.id.radio_length;
     private String selectedSourceUnit, selectedDestinationUnit;
 
     @Override
