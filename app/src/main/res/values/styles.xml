@@ -14,7 +14,16 @@
     <style name="CalculatorButton" parent="android:Widget.Holo.Button.Borderless">
         <item name="android:textSize">30sp</item>
         <item name="android:textColor">#fffdfdfe</item>
-        <item name="android:background">#ffbababa</item>
+        <item name="android:background">@color/calculator_operation_button_background</item>
     </style>
 
+    <style name="conversion_button">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">11sp</item>
+    </style>
 </resources>

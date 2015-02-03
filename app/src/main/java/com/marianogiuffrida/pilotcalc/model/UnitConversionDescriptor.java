@@ -5,15 +5,15 @@ package com.marianogiuffrida.pilotcalc.model;
  */
 public class UnitConversionDescriptor {
     private final String type;
-    private final String sourceUnit;
-    private final String destinationUnit;
+    private final Unit sourceUnit;
+    private final Unit destinationUnit;
     private final double conversionFactor;
     private final double offset;
     private final double valueOffset;
 
     public UnitConversionDescriptor(String type,
-                                    String sourceUnit,
-                                    String destinationUnit,
+                                    Unit sourceUnit,
+                                    Unit destinationUnit,
                                     double conversionFactor,
                                     double offset,
                                     double valueOffset) {
@@ -29,11 +29,11 @@ public class UnitConversionDescriptor {
         return type;
     }
 
-    public String getSourceUnit() {
+    public Unit getSourceUnit() {
         return sourceUnit;
     }
 
-    public String getDestinationUnit() {
+    public Unit getDestinationUnit() {
         return destinationUnit;
     }
 
@@ -51,6 +51,6 @@ public class UnitConversionDescriptor {
 
     public String toString() {
         return String.format("ConversionDescriptor: %s: %s -> %s => %.2f + (%.2f* (value + (%.2f))",
-                type, sourceUnit, destinationUnit, offset, conversionFactor, valueOffset);
+                type, sourceUnit.Name, destinationUnit.Name, offset, conversionFactor, valueOffset);
     }
 }

@@ -6,8 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
-import com.marianogiuffrida.pilotcalc.model.ConversionTypes;
 import com.marianogiuffrida.pilotcalc.model.IUnitConversionRepository;
+import com.marianogiuffrida.pilotcalc.model.Unit;
 import com.marianogiuffrida.pilotcalc.model.UnitConversionDescriptor;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
@@ -19,7 +19,7 @@ public class UnitConversionDatabase extends SQLiteAssetHelper implements IUnitCo
     private static final String DATABASE_NAME = "UnitConversions.db";
     private static final int DATABASE_VERSION = 1;
 
-    private final UnitConversionDescriptor identityConversion = new UnitConversionDescriptor("","","",1,0,0);
+    private final UnitConversionDescriptor identityConversion = new UnitConversionDescriptor("",null,null,1,0,0);
 
     public interface TABLES {
         String Conversions = "UnitConversions";
@@ -28,7 +28,9 @@ public class UnitConversionDatabase extends SQLiteAssetHelper implements IUnitCo
     public interface UnitConversionColumns {
         String ConversionType = "CONVERSION_TYPE";
         String FromUnit = "FROM_UNIT";
+        String FromUnitAbbr = "FROM_UNIT_SYMBOL";
         String ToUnit = "TO_UNIT";
+        String ToUnitAbbr = "TO_UNIT_SYMBOL";
         String ConversionFactor = "FACTOR";
         String Offset = "OFFSET";
         String ValueOffset = "VALUE_OFFSET";
@@ -58,53 +60,53 @@ public class UnitConversionDatabase extends SQLiteAssetHelper implements IUnitCo
     }
 
     @Override
-    public List<String> getSupportedUnits() {
+    public List<Unit> getSupportedUnits() {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(TABLES.Conversions);
         qb.setDistinct(true);
-        Cursor c = qb.query(db, new String[]{UnitConversionColumns.FromUnit}, null, null, null, null, null);
+        Cursor c = qb.query(db, new String[]{UnitConversionColumns.FromUnit, UnitConversionColumns.FromUnitAbbr }, null, null, null, null, null);
         c.moveToFirst();
-        List<String> fromUnits = new LinkedList<>();
+        List<Unit> fromUnits = new LinkedList<>();
         do{
-            fromUnits.add(c.getString(0));
+            fromUnits.add(new Unit(c.getString(0), c.getString(1)));
         }while (c.moveToNext());
         return fromUnits;
     }
 
     @Override
-    public List<String> getSupportedUnitsByConversionType(String conversionType) {
+    public List<Unit> getSupportedUnitsByConversionType(String conversionType) {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(TABLES.Conversions);
         qb.setDistinct(true);
         Cursor c = qb.query(db,
-                new String[]{UnitConversionColumns.FromUnit},
+                new String[]{UnitConversionColumns.FromUnit, UnitConversionColumns.FromUnitAbbr},
                 String.format(UnitConversionColumns.ConversionType + " = ?"),
                 new String[]{conversionType}, null, null, null);
         c.moveToFirst();
-        List<String> fromUnits = new LinkedList<>();
+        List<Unit> fromUnits = new LinkedList<>();
         do {
-            fromUnits.add(c.getString(0));
+            fromUnits.add(new Unit(c.getString(0), c.getString(1)));
         } while (c.moveToNext());
 
         return fromUnits;
     }
 
     @Override
-    public List<String> getDestinationUnitsBySourceUnit(String sourceUnit) {
+    public List<Unit> getDestinationUnitsBySourceUnit(String sourceUnit) {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(TABLES.Conversions);
         qb.setDistinct(true);
         Cursor c = qb.query(db,
-                new String[]{UnitConversionColumns.ToUnit},
+                new String[]{UnitConversionColumns.ToUnit, UnitConversionColumns.ToUnitAbbr},
                 String.format(UnitConversionColumns.FromUnit + " = ?"),
                 new String[]{sourceUnit}, null, null, null);
         c.moveToFirst();
-        List<String> destinationUnits = new LinkedList<>();
+        List<Unit> destinationUnits = new LinkedList<>();
         do {
-            destinationUnits.add(c.getString(0));
+            destinationUnits.add(new Unit(c.getString(0), c.getString(1)));
         } while (c.moveToNext());
 
         return destinationUnits;
@@ -121,8 +123,10 @@ public class UnitConversionDatabase extends SQLiteAssetHelper implements IUnitCo
             do{
                 UnitConversionDescriptor uc = new UnitConversionDescriptor(
                         c.getString(c.getColumnIndexOrThrow(UnitConversionColumns.ConversionType)),
-                        c.getString(c.getColumnIndexOrThrow(UnitConversionColumns.FromUnit)),
-                        c.getString(c.getColumnIndexOrThrow(UnitConversionColumns.ToUnit)),
+                        new Unit(c.getString(c.getColumnIndexOrThrow(UnitConversionColumns.FromUnit)),
+                                c.getString(c.getColumnIndexOrThrow(UnitConversionColumns.FromUnitAbbr))),
+                        new Unit(c.getString(c.getColumnIndexOrThrow(UnitConversionColumns.ToUnit)),
+                                c.getString(c.getColumnIndexOrThrow(UnitConversionColumns.ToUnitAbbr))),
                         c.getDouble(c.getColumnIndexOrThrow(UnitConversionColumns.ConversionFactor)),
                         c.getDouble(c.getColumnIndexOrThrow(UnitConversionColumns.Offset)),
                         c.getDouble(c.getColumnIndexOrThrow(UnitConversionColumns.ValueOffset)));

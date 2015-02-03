@@ -4,62 +4,101 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.marianogiuffrida.customview.RadioButtonsTable
+    <RadioGroup
         android:id="@+id/radio_conversionType"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <TableRow>
+        <RadioButton
+            android:id="@+id/radio_weight"
+            style="@style/conversion_button"
+            android:drawableTop="@drawable/temp_radio_selector"
+            android:text="@string/weight" />
 
-            <RadioButton
-                android:id="@+id/radio_weight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/weight" />
+        <RadioButton
+            android:id="@+id/radio_length"
+            style="@style/conversion_button"
+            android:drawableTop="@drawable/temp_radio_selector"
+            android:text="@string/length" />
 
-            <RadioButton
-                android:id="@+id/radio_length"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/length" />
+        <RadioButton
+            android:id="@+id/radio_temp"
+            style="@style/conversion_button"
+            android:drawableTop="@drawable/temp_radio_selector"
+            android:text="@string/temperature" />
 
-            <RadioButton
-                android:id="@+id/radio_temp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/temperature" />
+        <RadioButton
+            android:id="@+id/radio_pressure"
+            style="@style/conversion_button"
+            android:drawableTop="@drawable/temp_radio_selector"
+            android:text="@string/pressure" />
 
-        </TableRow>
+        <RadioButton
+            android:id="@+id/radio_volume"
+            style="@style/conversion_button"
+            android:drawableTop="@drawable/temp_radio_selector"
+            android:text="@string/volume" />
 
-        <TableRow>
+        <RadioButton
+            android:id="@+id/radio_speed"
+            style="@style/conversion_button"
+            android:drawableTop="@drawable/temp_radio_selector"
+            android:text="@string/speed" />
 
-            <RadioButton
-                android:id="@+id/radio_pressure"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/pressure" />
 
-            <RadioButton
-                android:id="@+id/radio_volume"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/volume" />
+    </RadioGroup>
 
-            <RadioButton
-                android:id="@+id/radio_speed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/speed" />
+    <!--<com.marianogiuffrida.customview.RadioButtonsTable-->
+    <!--android:id="@+id/radio_conversionType"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@color/lightGray">-->
 
-        </TableRow>
+    <!--<TableRow>-->
 
-    </com.marianogiuffrida.customview.RadioButtonsTable>
+    <!--<RadioButton-->
+    <!--android:id="@+id/radio_weight"-->
+    <!--style="@style/conversion_button"-->
+    <!--android:drawableTop="@drawable/temp_radio_selector"-->
+    <!--android:text="@string/weight" />-->
+
+    <!--<RadioButton-->
+    <!--android:id="@+id/radio_length"-->
+    <!--style="@style/conversion_button"-->
+    <!--android:drawableTop="@drawable/temp_radio_selector"-->
+    <!--android:text="@string/length" />-->
+
+    <!--<RadioButton-->
+    <!--android:id="@+id/radio_temp"-->
+    <!--style="@style/conversion_button"-->
+    <!--android:drawableTop="@drawable/temp_radio_selector"-->
+    <!--android:text="@string/temperature" />-->
+
+    <!--</TableRow>-->
+
+    <!--<TableRow>-->
+
+    <!--<RadioButton-->
+    <!--android:id="@+id/radio_pressure"-->
+    <!--style="@style/conversion_button"-->
+    <!--android:drawableTop="@drawable/temp_radio_selector"-->
+    <!--android:text="@string/pressure" />-->
+
+    <!--<RadioButton-->
+    <!--android:id="@+id/radio_volume"-->
+    <!--style="@style/conversion_button"-->
+    <!--android:drawableTop="@drawable/temp_radio_selector"-->
+    <!--android:text="@string/volume" />-->
+
+    <!--<RadioButton-->
+    <!--android:id="@+id/radio_speed"-->
+    <!--style="@style/conversion_button"-->
+    <!--android:drawableTop="@drawable/temp_radio_selector"-->
+    <!--android:text="@string/speed" />-->
+
+    <!--</TableRow>-->
+    <!--</com.marianogiuffrida.customview.RadioButtonsTable>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -103,6 +142,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
     </LinearLayout>
+
+    <!--<Button-->
+        <!--android:id="@+id/swap_units"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="swap" />-->
 
     <FrameLayout
         android:id="@+id/conversions_child_fragment"

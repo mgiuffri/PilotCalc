@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="appBlue">#ff7ac6ff</color>
-    <color name="list_item_title">#fff</color>
+    <color name="white">#fff</color>
+    <color name="lightBlue">#ff7ac6ff</color>
+    <color name="lightGray">#ffbababa</color>
+    <color name="darkGray">#ff3c3f41</color>
+    <color name="list_item_title">@color/white</color>
     <color name="list_background">#303030</color>
-    <color name="list_background_pressed">@color/appBlue</color>
+    <color name="list_background_pressed">@color/lightBlue</color>
     <color name="list_divider">#272727</color>
     <color name="counter_text_bg">#626262</color>
     <color name="counter_text_color">#c5c4c4</color>
-    <color name="calculator_numbers_background">#ff3c3f41</color>
-    <color name="calculator_numbers_background2">#ff41250b</color>
+    <color name="calculator_numbers_background">@color/darkGray</color>
     <color name="calcError">#ffc91e38</color>
+    <color name="calculator_operation_button_background">@color/lightGray</color>
 </resources>

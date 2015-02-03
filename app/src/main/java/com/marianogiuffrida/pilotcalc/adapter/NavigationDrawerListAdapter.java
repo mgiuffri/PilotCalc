@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * Created by Mariano on 12/01/2015.
  */
 public class NavigationDrawerListAdapter extends BaseAdapter {
-;
+
     private Context context;
     private ArrayList<NavigationDrawerItem> navigationItems;
 

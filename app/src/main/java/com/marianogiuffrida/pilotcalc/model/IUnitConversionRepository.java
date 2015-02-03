@@ -12,9 +12,9 @@ public interface IUnitConversionRepository {
 
     UnitConversionDescriptor getUnitConversionDescriptorBySourceDestination(String sourceUnit, String destinationUnit);
 
-    List<String> getSupportedUnits();
+    List<Unit> getSupportedUnits();
 
-    List<String> getSupportedUnitsByConversionType(String conversionType);
+    List<Unit> getSupportedUnitsByConversionType(String conversionType);
 
-    List<String> getDestinationUnitsBySourceUnit(String sourceUnit);
+    List<Unit> getDestinationUnitsBySourceUnit(String sourceUnit);
 }

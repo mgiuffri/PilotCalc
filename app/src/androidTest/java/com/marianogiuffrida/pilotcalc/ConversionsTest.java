@@ -4,6 +4,7 @@ import android.app.Application;
 import android.test.ApplicationTestCase;
 
 import com.marianogiuffrida.pilotcalc.database.UnitConversionDatabase;
+import com.marianogiuffrida.pilotcalc.model.Unit;
 import com.marianogiuffrida.pilotcalc.model.UnitConversionDescriptor;
 import com.marianogiuffrida.pilotcalc.model.UnitConversionHelper;
 
@@ -16,7 +17,7 @@ public class ConversionsTest extends ApplicationTestCase<Application> {
     }
 
     public void testConvertValue() throws Exception {
-        UnitConversionDescriptor d = new UnitConversionDescriptor("test", "from", "to", 2, -21, 1);
+        UnitConversionDescriptor d = new UnitConversionDescriptor("test", null, null, 2, -21, 1);
         double result = UnitConversionHelper.convertValue(10, d);
         assertEquals(result, 1, 0.001);
     }
@@ -40,13 +41,13 @@ public class ConversionsTest extends ApplicationTestCase<Application> {
 
     public void testDB() {
         UnitConversionDatabase myDb = new UnitConversionDatabase(this.getContext());
-        List<String> from = myDb.getSupportedUnits();
+        List<Unit> from = myDb.getSupportedUnits();
         assert (from.size() > 0);
     }
 
     private void doubleConvert(UnitConversionDatabase myDb, double initialValue, UnitConversionDescriptor d) {
         double convertedValue = UnitConversionHelper.convertValue(initialValue, d);
-        UnitConversionDescriptor reverseDesc = myDb.getUnitConversionDescriptorBySourceDestination(d.getDestinationUnit(), d.getSourceUnit());
+        UnitConversionDescriptor reverseDesc = myDb.getUnitConversionDescriptorBySourceDestination(d.getDestinationUnit().Name, d.getSourceUnit().Name);
         assertNotNull(String.format("%s -> %s", d.getDestinationUnit(), d.getSourceUnit()),
                 reverseDesc);
         assertEquals(

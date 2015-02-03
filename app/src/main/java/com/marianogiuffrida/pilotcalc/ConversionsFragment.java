@@ -8,32 +8,47 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.marianogiuffrida.customview.RadioButtonsTable;
+import com.marianogiuffrida.helpers.StringUtils;
+import com.marianogiuffrida.pilotcalc.adapter.UnitAdapter;
 import com.marianogiuffrida.pilotcalc.model.ConversionTypes;
 import com.marianogiuffrida.pilotcalc.database.UnitConversionDatabase;
+import com.marianogiuffrida.pilotcalc.model.Unit;
 import com.marianogiuffrida.pilotcalc.model.UnitConversionDescriptor;
 import com.marianogiuffrida.pilotcalc.model.UnitConversionHelper;
+
+import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Mariano on 12/01/2015.
  */
 public class ConversionsFragment extends Fragment implements IProvideResult {
 
-    public static final String ACTIVE_CONVERSION_TYPE = "conversionsType";
-    private static final String FROM_UNIT_POSIITION_ID = "fromUnitPosiitionId";
-    private static final String TO_UNIT_POSIITION_ID = "toUnitPosiitionId";
+    private static final String ACTIVE_CONVERSION_TYPE = "conversionsType";
+    private static final String SELECTED_SOURCE_UNIT = "selectedSourceUnit";
+    private static final String SELECTED_DESTINATION_UNIT = "selectedDestinationUnit";
+    private static final HashMap<Integer, String> typeMap;
+    static{
+        typeMap = new HashMap();
+        typeMap.put(R.id.radio_weight, ConversionTypes.Weight);
+        typeMap.put(R.id.radio_length, ConversionTypes.Length);
+        typeMap.put(R.id.radio_temp, ConversionTypes.Temperature);
+        typeMap.put(R.id.radio_pressure, ConversionTypes.Pressure);
+        typeMap.put(R.id.radio_speed, ConversionTypes.Speed);
+        typeMap.put(R.id.radio_volume, ConversionTypes.Volume);
+    }
 
-    private Spinner fromUnit;
+    private Spinner sourceUnitSpinner, destinationUnitSpinner;
+    private TextView inputTextView, outputTextView;
     private UnitConversionDatabase db;
-    private RadioButtonsTable radioConversionsType;
+//    private RadioButtonsTable radioConversionsType;
+    private RadioGroup radioConvType;
     private final int defaultConversionType = R.id.radio_weight;
-    private Spinner toUnit;
-    private TextView input, output;
-
     private String selectedSourceUnit, selectedDestinationUnit;
 
     @Override
@@ -41,38 +56,48 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.conversions_fragment, container, false);
-        fromUnit = (Spinner) rootView.findViewById(R.id.conversions_from_spinner);
-        toUnit = (Spinner) rootView.findViewById(R.id.conversions_to_spinner);
-        input = (TextView) rootView.findViewById(R.id.conversion_Input);
-        output = (TextView) rootView.findViewById(R.id.conversion_output);
+        destinationUnitSpinner = (Spinner) rootView.findViewById(R.id.conversions_to_spinner);
+        sourceUnitSpinner = (Spinner) rootView.findViewById(R.id.conversions_from_spinner);
+        inputTextView = (TextView) rootView.findViewById(R.id.conversion_Input);
+        outputTextView = (TextView) rootView.findViewById(R.id.conversion_output);
         db = new UnitConversionDatabase(getActivity().getApplicationContext());
 
         Fragment calculatorFragment = new CalculatorFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.conversions_child_fragment, calculatorFragment).commit();
 
-        radioConversionsType = (RadioButtonsTable) rootView.findViewById(R.id.radio_conversionType);
-        radioConversionsType.setOnCheckedChangeListener(new RadioButtonsTable.OnCheckedChangeListener() {
+//        radioConversionsType = (RadioButtonsTable) rootView.findViewById(R.id.radio_conversionType);
+//        radioConversionsType.setOnCheckedChangeListener(new RadioButtonsTable.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckChanged(View view, int checkedId) {
+//                onSelectedConversionType(checkedId);
+//            }
+//        });
+        radioConvType = (RadioGroup) rootView.findViewById(R.id.radio_conversionType);
+        radioConvType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onCheckChanged(View view, int checkedId) {
-                resolveConversionType(checkedId);
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                onSelectedConversionType(checkedId);
             }
         });
 
         if (savedInstanceState != null) {
             int activeConversionType = savedInstanceState.getInt(ACTIVE_CONVERSION_TYPE);
             initializeViewBasedOnConversionType(rootView, activeConversionType);
-            fromUnit.setSelection(savedInstanceState.getInt(FROM_UNIT_POSIITION_ID));
-            toUnit.setSelection(savedInstanceState.getInt(TO_UNIT_POSIITION_ID));
+            selectedSourceUnit = savedInstanceState.getString(SELECTED_SOURCE_UNIT);
+            selectedDestinationUnit = savedInstanceState.getString(SELECTED_DESTINATION_UNIT);
+            fillDestinationUnitSpinner(selectedSourceUnit);
+            destinationUnitSpinner.setSelection(((UnitAdapter) destinationUnitSpinner.getAdapter()).getPositionByName(selectedDestinationUnit));
+            sourceUnitSpinner.setSelection(((UnitAdapter) sourceUnitSpinner.getAdapter()).getPositionByName(selectedSourceUnit));
         } else {
             initializeViewBasedOnConversionType(rootView, defaultConversionType);
         }
 
-        fromUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        destinationUnitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedSourceUnit = (String) parent.getItemAtPosition(position);
-                setToUnitsSpinnerByFromUnits(selectedSourceUnit);
+                selectedDestinationUnit = ((Unit) parent.getItemAtPosition(position)).Name;
+                convertInputValue();
             }
 
             @Override
@@ -81,10 +106,12 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
             }
         });
 
-        toUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        sourceUnitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedDestinationUnit = (String) parent.getItemAtPosition(position);
+                selectedSourceUnit = ((Unit) parent.getItemAtPosition(position)).Name;
+                fillDestinationUnitSpinner(selectedSourceUnit);
+                convertInputValue();
             }
 
             @Override
@@ -97,58 +124,68 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
     }
 
     private void initializeViewBasedOnConversionType(View rootView, int activeConversionType) {
-        radioConversionsType.setActiveRadioButton((RadioButton) rootView.findViewById(activeConversionType));
-        resolveConversionType(activeConversionType);
+//        radioConversionsType.setActiveRadioButton((RadioButton) rootView.findViewById(activeConversionType));
+        radioConvType.check(activeConversionType);
+        onSelectedConversionType(activeConversionType);
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putInt(ACTIVE_CONVERSION_TYPE, radioConversionsType.getCheckedRadioButtonId());
-        savedInstanceState.putInt(FROM_UNIT_POSIITION_ID, fromUnit.getSelectedItemPosition());
-        savedInstanceState.putInt(TO_UNIT_POSIITION_ID, toUnit.getSelectedItemPosition());
+//        savedInstanceState.putInt(ACTIVE_CONVERSION_TYPE, radioConversionsType.getCheckedRadioButtonId());
+        savedInstanceState.putInt(ACTIVE_CONVERSION_TYPE, radioConvType.getCheckedRadioButtonId());
+        savedInstanceState.putString(SELECTED_SOURCE_UNIT, selectedSourceUnit);
+        savedInstanceState.putString(SELECTED_DESTINATION_UNIT, selectedDestinationUnit);
     }
 
-    private void resolveConversionType(int checkedId) {
-        switch (checkedId) {
-            case R.id.radio_weight:
-                setFromUnitsSpinnerByType(ConversionTypes.Weight);
-                break;
-            case R.id.radio_length:
-                setFromUnitsSpinnerByType(ConversionTypes.Length);
-                break;
-            case R.id.radio_temp:
-                setFromUnitsSpinnerByType(ConversionTypes.Temperature);
-                break;
-            case R.id.radio_pressure:
-                setFromUnitsSpinnerByType(ConversionTypes.Pressure);
-                break;
-            case R.id.radio_volume:
-                setFromUnitsSpinnerByType(ConversionTypes.Volume);
-                break;
-            case R.id.radio_speed:
-                setFromUnitsSpinnerByType(ConversionTypes.Speed);
-                break;
+    private void onSelectedConversionType(int checkedId) {
+        selectedSourceUnit = "";
+        selectedDestinationUnit = "";
+        fillSourceUnitSpinner(typeMap.get(checkedId));
+    }
+
+    private void fillSourceUnitSpinner(String conversionType) {
+        List<Unit> sourceUnits = db.getSupportedUnitsByConversionType(conversionType);
+        UnitAdapter adapter = new UnitAdapter(getActivity(), R.layout.spinner_item,
+                sourceUnits);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sourceUnitSpinner.setAdapter(adapter);
+        selectedSourceUnit = sourceUnits.get(0).Name;
+    }
+
+    private void fillDestinationUnitSpinner(String fromUnit) {
+        List<Unit> destinationUnits = db.getDestinationUnitsBySourceUnit(fromUnit);
+        UnitAdapter adapter = new UnitAdapter(getActivity(), R.layout.spinner_item, destinationUnits);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        destinationUnitSpinner.setAdapter(adapter);
+        if (selectedDestinationUnit != null) {
+            int index = adapter.getPositionByName(selectedDestinationUnit);
+            if (index > 0) destinationUnitSpinner.setSelection(index);
+        }else{
+            selectedDestinationUnit = destinationUnits.get(0).Name;
         }
-    }
-
-    private void setFromUnitsSpinnerByType(String conversionType) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, db.getSupportedUnitsByConversionType(conversionType));
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        fromUnit.setAdapter(adapter);
-    }
-
-    private void setToUnitsSpinnerByFromUnits(String fromUnit) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, db.getDestinationUnitsBySourceUnit(fromUnit));
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        toUnit.setAdapter(adapter);
     }
 
     @Override
     public void onNewResult(String result) {
-        input.setText(result);
-        UnitConversionDescriptor d = db.getUnitConversionDescriptorBySourceDestination(selectedSourceUnit, selectedDestinationUnit);
-        String convertedValue = Double.toString(UnitConversionHelper.convertValue(Double.parseDouble(result), d));
-        output.setText(convertedValue);
+        inputTextView.setText(result);
+        convertInputValue();
     }
+
+    private void convertInputValue() {
+        String inputValue = inputTextView.getText().toString();
+        if (StringUtils.isNullOrEmpty(inputValue) ||
+                StringUtils.isNullOrEmpty(selectedSourceUnit) ||
+                StringUtils.isNullOrEmpty(selectedDestinationUnit)) return;
+        UnitConversionDescriptor d = db.getUnitConversionDescriptorBySourceDestination(selectedSourceUnit, selectedDestinationUnit);
+        DecimalFormat defaultFormat = new DecimalFormat( "0.######" );
+        String convertedValue = defaultFormat.format(UnitConversionHelper.convertValue(Double.parseDouble(inputValue), d));
+        outputTextView.setText(convertedValue);
+    }
+
+    private void switchUnits(){
+        destinationUnitSpinner.setSelection(((UnitAdapter) destinationUnitSpinner.getAdapter()).getPositionByName(selectedSourceUnit));
+        sourceUnitSpinner.setSelection(((UnitAdapter) sourceUnitSpinner.getAdapter()).getPositionByName(selectedDestinationUnit));
+    }
+
 }
