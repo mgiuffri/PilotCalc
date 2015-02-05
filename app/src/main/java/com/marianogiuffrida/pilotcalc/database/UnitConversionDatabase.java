@@ -83,7 +83,7 @@ public class UnitConversionDatabase extends SQLiteAssetHelper implements IUnitCo
         Cursor c = qb.query(db,
                 new String[]{UnitConversionColumns.FromUnit, UnitConversionColumns.FromUnitAbbr},
                 String.format(UnitConversionColumns.ConversionType + " = ?"),
-                new String[]{conversionType}, null, null, null);
+                new String[]{conversionType}, null, null, UnitConversionColumns.FromUnitAbbr + " COLLATE NOCASE");
         c.moveToFirst();
         List<Unit> fromUnits = new LinkedList<>();
         do {
@@ -102,7 +102,7 @@ public class UnitConversionDatabase extends SQLiteAssetHelper implements IUnitCo
         Cursor c = qb.query(db,
                 new String[]{UnitConversionColumns.ToUnit, UnitConversionColumns.ToUnitAbbr},
                 String.format(UnitConversionColumns.FromUnit + " = ?"),
-                new String[]{sourceUnit}, null, null, null);
+                new String[]{sourceUnit}, null, null, UnitConversionColumns.ToUnitAbbr + " COLLATE NOCASE");
         c.moveToFirst();
         List<Unit> destinationUnits = new LinkedList<>();
         do {
@@ -117,7 +117,8 @@ public class UnitConversionDatabase extends SQLiteAssetHelper implements IUnitCo
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(TABLES.Conversions);
-        Cursor c = qb.query(db, null, selection, selectionArgs, null, null, null);
+        Cursor c = qb.query(db, null, selection, selectionArgs, null, null, UnitConversionColumns.FromUnitAbbr
+                + "," + UnitConversionColumns.ToUnitAbbr + " COLLATE NOCASE");
         if( c != null && c.moveToFirst() ){
             conversions = new LinkedList<>();
             do{
