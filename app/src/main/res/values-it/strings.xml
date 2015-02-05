@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">PilotCalc</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Impostazioni</string>
+    <string name="title_activity_main_activity_drawer">main_activity_drawer</string>
+    <string name="description_icon_drawer_item">icon</string>
+    <string name="open_drawer">Apri il menu</string>
+    <string name="close_drawer">Chiudi il menu</string>
+
+    <string-array name="nav_drawer_items">
+        <item>Conversioni</item>
+        <item>Calcolatrice</item>
+    </string-array>
+
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in -->
+    <array name="nav_drawer_icons">
+        <item>@drawable/ic_conversions</item>
+        <item>@drawable/ic_calculator</item>
+    </array>
+
+    <string name="weight">Peso</string>
+    <string name="length">Lunghezza</string>
+    <string name="temperature">Temperatura</string>
+    <string name="pressure">Pressione</string>
+    <string name="volume">Volume</string>
+    <string name="speed">Velocità</string>
+
+</resources>
