@@ -10,18 +10,32 @@ import java.math.BigDecimal;
 public class Measurement {
 
     private final BigDecimal magnitude;
-    private final String unit;
+    private final Unit unit;
 
     public Measurement(BigDecimal value, String unit){
+        magnitude = value;
+        this.unit = new Unit(unit, unit);
+    }
+
+    public Measurement(BigDecimal value, Unit unit){
         magnitude = value;
         this.unit = unit;
     }
 
-    public String getUnit() {
+    public Unit getUnit(){
         return unit;
+    }
+
+    public String getUnitName() {
+        return unit.Name;
     }
 
     public BigDecimal getMagnitude() {
         return magnitude;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Measurement{%s %s}", magnitude, unit.Symbol);
     }
 }

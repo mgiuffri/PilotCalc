@@ -32,7 +32,7 @@ public class StandardAtmosphere {
     public BigDecimal calculateStandardTemperatureAtAltitude(Measurement altitude){
         ArgumentCheck.IsNotNull(altitude, "altitude");
         BigDecimal altitudeInFeet = altitude.getMagnitude();
-        if(!altitude.getUnit().equals(TropopauseAltitudeUnit)){
+        if(!altitude.getUnitName().equals(TropopauseAltitudeUnit)){
             altitudeInFeet = BigDecimal.valueOf(unitConversions.getConverter().convertMeasurement(altitude, TropopauseAltitudeUnit));
         }
 

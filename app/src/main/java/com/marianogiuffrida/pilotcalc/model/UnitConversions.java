@@ -7,10 +7,6 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
 import com.marianogiuffrida.helpers.ArgumentCheck;
-import com.marianogiuffrida.pilotcalc.model.IUnitConversionRepository;
-import com.marianogiuffrida.pilotcalc.model.Measurement;
-import com.marianogiuffrida.pilotcalc.model.Unit;
-import com.marianogiuffrida.pilotcalc.model.UnitConversionDescriptor;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.LinkedList;
@@ -44,10 +40,10 @@ public class UnitConversions extends SQLiteAssetHelper implements IUnitConversio
         public double convertMeasurement(Measurement value, String toUnit) throws IllegalArgumentException{
             ArgumentCheck.IsNotNull(value, "value");
             ArgumentCheck.IsNotNullorEmpty(toUnit, "toUnit");
-            UnitConversionDescriptor d = getUnitConversionDescriptorBySourceDestination(value.getUnit(), toUnit);
+            UnitConversionDescriptor d = getUnitConversionDescriptorBySourceDestination(value.getUnitName(), toUnit);
 
             if (d == null) throw new UnsupportedOperationException("no conversion from "
-                    + value.getUnit()
+                    + value.getUnitName()
                     + " to "
                     + toUnit);
 
