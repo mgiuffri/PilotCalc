@@ -1,4 +1,4 @@
-package com.marianogiuffrida.pilotcalc;
+package com.marianogiuffrida.pilotcalc.UI.fragments;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -12,6 +12,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.marianogiuffrida.helpers.StringUtils;
+import com.marianogiuffrida.pilotcalc.R;
+import com.marianogiuffrida.pilotcalc.UI.notifications.IProvideResult;
 import com.marianogiuffrida.pilotcalc.adapter.UnitAdapter;
 import com.marianogiuffrida.pilotcalc.model.UnitConversions;
 import com.marianogiuffrida.pilotcalc.model.ConversionTypes;

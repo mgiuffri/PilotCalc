@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.marianogiuffrida.pilotcalc.R;
-import com.marianogiuffrida.pilotcalc.navigation.model.NavigationDrawerItem;
+import com.marianogiuffrida.pilotcalc.UI.navigation.NavigationDrawerItem;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.marianogiuffrida.pilotcalc.navigation.model;
+package com.marianogiuffrida.pilotcalc.UI.navigation;
 
 /**
  * Created by Mariano on 12/01/2015.

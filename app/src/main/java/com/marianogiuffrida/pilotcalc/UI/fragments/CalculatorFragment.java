@@ -1,4 +1,4 @@
-package com.marianogiuffrida.pilotcalc;
+package com.marianogiuffrida.pilotcalc.UI.fragments;
 
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.marianogiuffrida.helpers.FragmentUtils;
 import com.marianogiuffrida.helpers.StringUtils;
+import com.marianogiuffrida.pilotcalc.R;
+import com.marianogiuffrida.pilotcalc.UI.notifications.IProvideResult;
 import com.marianogiuffrida.pilotcalc.model.ShuntingYardEvaluator;
 
 import java.io.IOException;

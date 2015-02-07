@@ -1,4 +1,4 @@
-package com.marianogiuffrida.pilotcalc;
+package com.marianogiuffrida.pilotcalc.UI;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -15,8 +15,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.marianogiuffrida.pilotcalc.R;
+import com.marianogiuffrida.pilotcalc.UI.fragments.CalculatorFragment;
+import com.marianogiuffrida.pilotcalc.UI.fragments.ConversionsFragment;
 import com.marianogiuffrida.pilotcalc.adapter.NavigationDrawerListAdapter;
-import com.marianogiuffrida.pilotcalc.navigation.model.NavigationDrawerItem;
+import com.marianogiuffrida.pilotcalc.UI.navigation.NavigationDrawerItem;
 
 import java.util.ArrayList;
 
