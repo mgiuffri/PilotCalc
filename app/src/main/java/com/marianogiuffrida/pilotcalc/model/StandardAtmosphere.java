@@ -19,7 +19,7 @@ public class StandardAtmosphere {
     public static final BigDecimal StandardPressure = BigDecimal.valueOf(1013.25);//hPa
     public static final String StandardPressureUnit = "HECTOPASCAL";//hPa
 
-    //Standard tropopose altitude in ft.
+    //Standard tropopause altitude in ft.
     public static final BigDecimal TropopauseAltitude = BigDecimal.valueOf(36089.24); //ft
     public static final String TropopauseAltitudeUnit = "FOOT"; //ft
     public static final BigDecimal StandardTropopauseTemperature = BigDecimal.valueOf(-56.5);
