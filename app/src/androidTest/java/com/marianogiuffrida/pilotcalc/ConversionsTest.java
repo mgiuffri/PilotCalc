@@ -3,7 +3,7 @@ package com.marianogiuffrida.pilotcalc;
 import android.app.Application;
 import android.test.ApplicationTestCase;
 
-import com.marianogiuffrida.pilotcalc.database.UnitConversions;
+import com.marianogiuffrida.pilotcalc.model.UnitConversions;
 import com.marianogiuffrida.pilotcalc.model.Unit;
 import com.marianogiuffrida.pilotcalc.model.UnitConversionDescriptor;
 

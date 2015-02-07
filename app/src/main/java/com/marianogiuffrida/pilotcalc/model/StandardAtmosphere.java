@@ -1,7 +1,6 @@
 package com.marianogiuffrida.pilotcalc.model;
 
 import com.marianogiuffrida.helpers.ArgumentCheck;
-import com.marianogiuffrida.pilotcalc.database.UnitConversions;
 
 import java.math.BigDecimal;
 

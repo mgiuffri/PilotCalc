@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.marianogiuffrida.helpers.StringUtils;
 import com.marianogiuffrida.pilotcalc.adapter.UnitAdapter;
-import com.marianogiuffrida.pilotcalc.database.UnitConversions;
+import com.marianogiuffrida.pilotcalc.model.UnitConversions;
 import com.marianogiuffrida.pilotcalc.model.ConversionTypes;
 import com.marianogiuffrida.pilotcalc.model.Unit;
 import com.marianogiuffrida.pilotcalc.model.UnitConversionDescriptor;

@@ -1,4 +1,4 @@
-package com.marianogiuffrida.pilotcalc.database;
+package com.marianogiuffrida.pilotcalc.model;
 
 import android.content.Context;
 import android.database.Cursor;
