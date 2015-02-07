@@ -1,4 +1,4 @@
-package com.marianogiuffrida.pilotcalc.adapter;
+package com.marianogiuffrida.pilotcalc.UI.adapters;
 
 import android.app.Activity;
 import android.content.Context;

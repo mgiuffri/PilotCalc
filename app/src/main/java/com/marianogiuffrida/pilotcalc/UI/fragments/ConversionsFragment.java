@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.marianogiuffrida.helpers.StringUtils;
 import com.marianogiuffrida.pilotcalc.R;
 import com.marianogiuffrida.pilotcalc.UI.notifications.IProvideResult;
-import com.marianogiuffrida.pilotcalc.adapter.UnitAdapter;
+import com.marianogiuffrida.pilotcalc.UI.adapters.UnitAdapter;
 import com.marianogiuffrida.pilotcalc.model.UnitConversions;
 import com.marianogiuffrida.pilotcalc.model.ConversionTypes;
 import com.marianogiuffrida.pilotcalc.model.Unit;

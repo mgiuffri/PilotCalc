@@ -1,20 +1,10 @@
-package com.marianogiuffrida.pilotcalc.adapter;
+package com.marianogiuffrida.pilotcalc.UI.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.marianogiuffrida.pilotcalc.R;
 import com.marianogiuffrida.pilotcalc.model.Unit;
-import com.marianogiuffrida.pilotcalc.model.UnitConversionDescriptor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
