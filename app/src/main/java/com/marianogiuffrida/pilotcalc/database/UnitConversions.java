@@ -6,7 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
+import com.marianogiuffrida.helpers.ArgumentCheck;
 import com.marianogiuffrida.pilotcalc.model.IUnitConversionRepository;
+import com.marianogiuffrida.pilotcalc.model.Measurement;
 import com.marianogiuffrida.pilotcalc.model.Unit;
 import com.marianogiuffrida.pilotcalc.model.UnitConversionDescriptor;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
@@ -14,12 +16,7 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UnitConversionDatabase extends SQLiteAssetHelper implements IUnitConversionRepository {
-
-    private static final String DATABASE_NAME = "UnitConversions.db";
-    private static final int DATABASE_VERSION = 1;
-
-    private final UnitConversionDescriptor identityConversion = new UnitConversionDescriptor("",null,null,1,0,0);
+public class UnitConversions extends SQLiteAssetHelper implements IUnitConversionRepository {
 
     public interface TABLES {
         String Conversions = "UnitConversions";
@@ -36,8 +33,41 @@ public class UnitConversionDatabase extends SQLiteAssetHelper implements IUnitCo
         String ValueOffset = "VALUE_OFFSET";
     }
 
-    public UnitConversionDatabase(Context context) {
+    public class Converter {
+
+        public double convertValue(double value, UnitConversionDescriptor conversionDescriptor){
+            ArgumentCheck.IsNotNull(conversionDescriptor, "conversionDescriptor");
+            return (conversionDescriptor.getOffset()) +
+                    (value + conversionDescriptor.getValueOffset()) * conversionDescriptor.getConversionFactor();
+        }
+
+        public double convertMeasurement(Measurement value, String toUnit) throws IllegalArgumentException{
+            ArgumentCheck.IsNotNull(value, "value");
+            ArgumentCheck.IsNotNullorEmpty(toUnit, "toUnit");
+            UnitConversionDescriptor d = getUnitConversionDescriptorBySourceDestination(value.getUnit(), toUnit);
+
+            if (d == null) throw new UnsupportedOperationException("no conversion from "
+                    + value.getUnit()
+                    + " to "
+                    + toUnit);
+
+            return convertValue(value.getMagnitude().doubleValue(), d);
+        }
+    }
+
+    private static final String DATABASE_NAME = "UnitConversions.db";
+    private static final int DATABASE_VERSION = 1;
+
+    private final UnitConversionDescriptor identityConversion = new UnitConversionDescriptor("",null,null,1,0,0);
+    private final Converter converter;
+
+    public Converter getConverter() {
+        return converter;
+    }
+
+    public UnitConversions(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.converter = new Converter();
     }
 
     @Override
@@ -138,5 +168,4 @@ public class UnitConversionDatabase extends SQLiteAssetHelper implements IUnitCo
         }
         return conversions;
     }
-
 }

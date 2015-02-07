@@ -7,18 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.marianogiuffrida.helpers.StringUtils;
 import com.marianogiuffrida.pilotcalc.adapter.UnitAdapter;
+import com.marianogiuffrida.pilotcalc.database.UnitConversions;
 import com.marianogiuffrida.pilotcalc.model.ConversionTypes;
-import com.marianogiuffrida.pilotcalc.database.UnitConversionDatabase;
 import com.marianogiuffrida.pilotcalc.model.Unit;
 import com.marianogiuffrida.pilotcalc.model.UnitConversionDescriptor;
-import com.marianogiuffrida.pilotcalc.model.UnitConversionHelper;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -45,7 +43,7 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
 
     private Spinner sourceUnitSpinner, destinationUnitSpinner;
     private TextView inputTextView, outputTextView;
-    private UnitConversionDatabase db;
+    private UnitConversions unitConversionsRepository;
 //    private RadioButtonsTable radioConversionsType;
     private RadioGroup radioConvType;
     private final int defaultConversionType = R.id.radio_length;
@@ -60,7 +58,7 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
         sourceUnitSpinner = (Spinner) rootView.findViewById(R.id.conversions_from_spinner);
         inputTextView = (TextView) rootView.findViewById(R.id.conversion_Input);
         outputTextView = (TextView) rootView.findViewById(R.id.conversion_output);
-        db = new UnitConversionDatabase(getActivity().getApplicationContext());
+        unitConversionsRepository = new UnitConversions(getActivity().getApplicationContext());
 
         Fragment calculatorFragment = new CalculatorFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
@@ -145,7 +143,7 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
     }
 
     private void fillSourceUnitSpinner(String conversionType) {
-        List<Unit> sourceUnits = db.getSupportedUnitsByConversionType(conversionType);
+        List<Unit> sourceUnits = unitConversionsRepository.getSupportedUnitsByConversionType(conversionType);
         UnitAdapter adapter = new UnitAdapter(getActivity(), R.layout.spinner_item,
                 sourceUnits);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -154,7 +152,7 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
     }
 
     private void fillDestinationUnitSpinner(String fromUnit) {
-        List<Unit> destinationUnits = db.getDestinationUnitsBySourceUnit(fromUnit);
+        List<Unit> destinationUnits = unitConversionsRepository.getDestinationUnitsBySourceUnit(fromUnit);
         UnitAdapter adapter = new UnitAdapter(getActivity(), R.layout.spinner_item, destinationUnits);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         destinationUnitSpinner.setAdapter(adapter);
@@ -177,9 +175,9 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
         if (StringUtils.isNullOrEmpty(inputValue) ||
                 StringUtils.isNullOrEmpty(selectedSourceUnit) ||
                 StringUtils.isNullOrEmpty(selectedDestinationUnit)) return;
-        UnitConversionDescriptor d = db.getUnitConversionDescriptorBySourceDestination(selectedSourceUnit, selectedDestinationUnit);
+        UnitConversionDescriptor d = unitConversionsRepository.getUnitConversionDescriptorBySourceDestination(selectedSourceUnit, selectedDestinationUnit);
         DecimalFormat defaultFormat = new DecimalFormat( "0.######" );
-        String convertedValue = defaultFormat.format(UnitConversionHelper.convertValue(Double.parseDouble(inputValue), d));
+        String convertedValue = defaultFormat.format(unitConversionsRepository.getConverter().convertValue(Double.parseDouble(inputValue), d));
         outputTextView.setText(convertedValue);
     }
 
