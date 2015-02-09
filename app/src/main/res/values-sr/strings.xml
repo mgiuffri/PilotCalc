@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">PilotCalc</string>
+    <string name="action_settings">Подешавања</string>
+    <string name="title_activity_main_activity_drawer">main_activity_drawer</string>
+    <string name="description_icon_drawer_item">icon</string>
+    <string name="open_drawer">Отворите мени</string>
+    <string name="close_drawer">Затворите мени</string>
+
+    <string-array name="nav_drawer_items">
+        <item>Конверзије</item>
+        <item>Pачунар</item>
+    </string-array>
+
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in -->
+    <array name="nav_drawer_icons">
+        <item>@drawable/ic_conversions</item>
+        <item>@drawable/ic_calculator</item>
+    </array>
+
+    <string name="weight">тежина</string>
+    <string name="length">дужина</string>
+    <string name="temperature">температура</string>
+    <string name="pressure">притисак</string>
+    <string name="volume">запремина</string>
+    <string name="speed">брзина</string>
+
+</resources>
