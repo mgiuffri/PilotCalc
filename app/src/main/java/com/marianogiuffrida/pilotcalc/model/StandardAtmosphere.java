@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 /**
  * Created by Mariano on 7/02/2015.
  */
-public class StandardAtmosphere {
+public final class StandardAtmosphere {
 
     // Standard temperature at Sea Level in Celsius
     public static final BigDecimal StandardTemperature = BigDecimal.valueOf(15); //*C
