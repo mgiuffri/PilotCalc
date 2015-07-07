@@ -7,6 +7,28 @@ import com.marianogiuffrida.helpers.ArgumentCheck;
  */
 public class WindTriangleCalculator {
 
+    public WindTriangleVector calculateAirVector(WindTriangleVector windVector, WindTriangleVector groundVector){
+        ArgumentCheck.IsNotNull(windVector, "windVector");
+        ArgumentCheck.IsNotNull(groundVector, "groundVector");
+
+        double windSpeed = windVector.speed;
+        double windDirection = windVector.directionInRadians;
+        double groundSpeed = groundVector.speed;
+        double trueCourse = groundVector.directionInRadians;
+
+        double windToTrackAngle = trueCourse - (Math.PI + windDirection) % (2 * Math.PI);
+
+        double trueAirspeed = Math.sqrt(windSpeed * windSpeed
+                + groundSpeed * groundSpeed
+                - 2 * windSpeed * groundSpeed * Math.cos(windToTrackAngle));
+
+        double windCorrectionAngle = Math.asin((windSpeed / trueAirspeed) * Math.sin(windDirection - trueCourse));
+
+        double trueHeading = (trueCourse + windCorrectionAngle) % (2 * Math.PI);
+
+        return new WindTriangleVector(trueHeading , trueAirspeed);
+    }
+
     public WindTriangleVector calculateGroundVector(WindTriangleVector windVector, WindTriangleVector airVector){
         ArgumentCheck.IsNotNull(windVector, "windVector");
         ArgumentCheck.IsNotNull(airVector, "airVector");
@@ -16,12 +38,14 @@ public class WindTriangleCalculator {
         double trueAirSpeed = airVector.speed;
         double trueHeading = airVector.directionInRadians;
 
+        double windToHeadingAngle = trueHeading - windDirection;
+
         double groundSpeed = Math.sqrt(windSpeed * windSpeed
                 + trueAirSpeed * trueAirSpeed
-                - 2 * windSpeed * trueAirSpeed * Math.cos(trueHeading - windDirection));
+                - 2 * windSpeed * trueAirSpeed * Math.cos(windToHeadingAngle));
 
-        double windCorrectionAngle = Math.atan2(windSpeed * Math.sin(trueHeading - windDirection),
-                                        trueAirSpeed - windSpeed * Math.cos(trueHeading - windDirection));
+        double windCorrectionAngle = Math.atan2(windSpeed * Math.sin(windToHeadingAngle),
+                trueAirSpeed - windSpeed * Math.cos(windToHeadingAngle));
 
         double course = (trueHeading + windCorrectionAngle) % (2 * Math.PI);
 
@@ -37,9 +61,9 @@ public class WindTriangleCalculator {
         double trueAirSpeed = airVector.speed;
         double trueHeading = airVector.directionInRadians;
 
-        double windSpeed = Math.sqrt(
-                    Math.pow( trueAirSpeed - groundSpeed, 2)
-                    + 4 * trueAirSpeed * groundSpeed * Math.pow(Math.sin((trueHeading - trueCourse)/2), 2));
+        double windSpeed = Math.sqrt(groundSpeed * groundSpeed
+                + trueAirSpeed * trueAirSpeed
+                - 2 * groundSpeed * trueAirSpeed * Math.cos(trueHeading - trueCourse));
 
         double windDirection = trueCourse +
                 Math.atan2( trueAirSpeed * Math.sin(trueHeading - trueCourse),
@@ -47,5 +71,22 @@ public class WindTriangleCalculator {
 
 
         return new WindTriangleVector(windDirection % (2 * Math.PI), windSpeed);
+    }
+
+    public WindTriangleVector calculateHeadingAndGroundSpeed(WindTriangleVector windVector,
+                                                             double trueCourse,
+                                                             double trueAirspeed){
+
+        double windSpeed = windVector.speed;
+        double windDirection = windVector.directionInRadians;
+
+        double SWC = (windSpeed / trueAirspeed) * Math.sin(windDirection - trueCourse);
+
+        double trueHeading = trueCourse + Math.asin(SWC);
+
+        double groundSpeed = trueAirspeed * Math.sqrt(1 - Math.pow(SWC,2))
+                - windSpeed * Math.cos(windDirection - trueCourse);
+
+        return new WindTriangleVector(trueHeading % (2 * Math.PI), groundSpeed);
     }
 }

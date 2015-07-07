@@ -33,4 +33,41 @@ public class WindTriangleCalculatorTest extends TestCase {
         assertEquals(angleConverter.ToDegrees(result.directionInRadians), 175 , 1);
         assertEquals(result.speed, 144 , 1);
     }
+
+    public void testCalculateAirVector(){
+        WindTriangleVector windVector = new WindTriangleVector(angleConverter.ToRadians(118), 55);
+        WindTriangleVector groundVector = new WindTriangleVector(angleConverter.ToRadians(175), 144 );
+        WindTriangleVector result = calculator.calculateAirVector(windVector, groundVector);
+        assertNotNull(result);
+        assertEquals(result.speed, 180 , 1);
+        assertEquals(angleConverter.ToDegrees(result.directionInRadians), 160 , 1);
+    }
+
+    public void testCalculateAirVector2(){
+        WindTriangleVector windVector = new WindTriangleVector(angleConverter.ToRadians(120), 45);
+        WindTriangleVector groundVector = new WindTriangleVector(angleConverter.ToRadians(56), 166 );
+        WindTriangleVector result = calculator.calculateAirVector(windVector, groundVector);
+        assertNotNull(result);
+        assertEquals(result.speed, 190 , 1);
+        assertEquals(angleConverter.ToDegrees(result.directionInRadians), 68 , 1);
+    }
+    public void testCalculateHeadingAndGroundSpeed(){
+        WindTriangleVector windVector = new WindTriangleVector(angleConverter.ToRadians(118), 55);
+        WindTriangleVector result = calculator.calculateHeadingAndGroundSpeed(windVector,
+                angleConverter.ToRadians(175), 180);
+
+        assertNotNull(result);
+        assertEquals(angleConverter.ToDegrees(result.directionInRadians), 160 , 1);
+        assertEquals(result.speed, 144 , 1);
+    }
+
+    public void testCalculateHeadingAndGroundSpeed2(){
+        WindTriangleVector windVector = new WindTriangleVector(angleConverter.ToRadians(100), 40);
+        WindTriangleVector result = calculator.calculateHeadingAndGroundSpeed(windVector,
+                angleConverter.ToRadians(186), 180);
+
+        assertNotNull(result);
+        assertEquals(angleConverter.ToDegrees(result.directionInRadians), 173 , 1);
+        assertEquals(result.speed, 172 , 1);
+    }
 }
