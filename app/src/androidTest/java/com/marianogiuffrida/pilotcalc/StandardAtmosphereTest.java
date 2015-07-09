@@ -3,15 +3,15 @@ package com.marianogiuffrida.pilotcalc;
 import android.app.Application;
 import android.test.ApplicationTestCase;
 
-import com.marianogiuffrida.pilotcalc.model.UnitConversions;
-import com.marianogiuffrida.pilotcalc.model.Measurement;
-import com.marianogiuffrida.pilotcalc.model.StandardAtmosphere;
+import com.marianogiuffrida.pilotcalc.data.UnitConversionRepository;
+import com.marianogiuffrida.pilotcalc.model.Common.Measurement;
+import com.marianogiuffrida.pilotcalc.model.Altimetry.StandardAtmosphere;
 
 import java.math.BigDecimal;
 
 public class StandardAtmosphereTest extends ApplicationTestCase<Application> {
 
-    private UnitConversions unitConversions;
+    private UnitConversionRepository unitConversions;
     private StandardAtmosphere standardAtmosphere;
 
     public StandardAtmosphereTest() {
@@ -21,7 +21,7 @@ public class StandardAtmosphereTest extends ApplicationTestCase<Application> {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        unitConversions = new UnitConversions(this.getContext());
+        unitConversions = new UnitConversionRepository(this.getContext());
         standardAtmosphere = new StandardAtmosphere(unitConversions);
     }
 

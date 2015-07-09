@@ -1,4 +1,4 @@
-package com.marianogiuffrida.pilotcalc.model;
+package com.marianogiuffrida.pilotcalc.model.Calculator;
 
 import java.io.IOException;
 import java.io.StreamTokenizer;

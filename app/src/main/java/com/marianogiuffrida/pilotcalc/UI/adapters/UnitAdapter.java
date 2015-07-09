@@ -3,7 +3,7 @@ package com.marianogiuffrida.pilotcalc.UI.adapters;
 import android.content.Context;
 import android.widget.ArrayAdapter;
 
-import com.marianogiuffrida.pilotcalc.model.Unit;
+import com.marianogiuffrida.pilotcalc.model.Common.Unit;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.marianogiuffrida.pilotcalc.model;
+package com.marianogiuffrida.pilotcalc.model.Conversions;
 
 /**
  * Created by Mariano on 6/07/2015.

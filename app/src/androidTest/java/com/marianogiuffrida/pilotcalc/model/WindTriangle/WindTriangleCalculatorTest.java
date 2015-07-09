@@ -1,6 +1,6 @@
 package com.marianogiuffrida.pilotcalc.model.WindTriangle;
 
-import com.marianogiuffrida.pilotcalc.model.AngleConverter;
+import com.marianogiuffrida.pilotcalc.model.Conversions.AngleConverter;
 
 import junit.framework.TestCase;
 

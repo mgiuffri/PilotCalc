@@ -1,4 +1,6 @@
-package com.marianogiuffrida.pilotcalc.model;
+package com.marianogiuffrida.pilotcalc.model.Conversions;
+
+import com.marianogiuffrida.pilotcalc.model.Common.Unit;
 
 /**
  * Created by Mariano on 11/01/2015.

@@ -3,15 +3,15 @@ package com.marianogiuffrida.pilotcalc;
 import android.app.Application;
 import android.test.ApplicationTestCase;
 
-import com.marianogiuffrida.pilotcalc.model.UnitConversions;
-import com.marianogiuffrida.pilotcalc.model.Unit;
-import com.marianogiuffrida.pilotcalc.model.UnitConversionDescriptor;
+import com.marianogiuffrida.pilotcalc.data.UnitConversionRepository;
+import com.marianogiuffrida.pilotcalc.model.Common.Unit;
+import com.marianogiuffrida.pilotcalc.model.Conversions.UnitConversionDescriptor;
 
 import java.util.List;
 
 public class ConversionsTest extends ApplicationTestCase<Application> {
 
-    private UnitConversions unitConversions;
+    private UnitConversionRepository unitConversions;
 
     public ConversionsTest() {
         super(Application.class);
@@ -20,7 +20,7 @@ public class ConversionsTest extends ApplicationTestCase<Application> {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        unitConversions = new UnitConversions(this.getContext());
+        unitConversions = new UnitConversionRepository(this.getContext());
     }
 
     public void testConvertValue() throws Exception {

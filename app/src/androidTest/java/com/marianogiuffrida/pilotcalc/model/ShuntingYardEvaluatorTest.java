@@ -1,5 +1,7 @@
 package com.marianogiuffrida.pilotcalc.model;
 
+import com.marianogiuffrida.pilotcalc.model.Calculator.ShuntingYardEvaluator;
+
 import junit.framework.TestCase;
 
 import java.io.IOException;

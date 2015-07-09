@@ -15,10 +15,12 @@ import com.marianogiuffrida.helpers.StringUtils;
 import com.marianogiuffrida.pilotcalc.R;
 import com.marianogiuffrida.pilotcalc.UI.notification.IProvideResult;
 import com.marianogiuffrida.pilotcalc.UI.adapters.UnitAdapter;
-import com.marianogiuffrida.pilotcalc.model.UnitConversions;
-import com.marianogiuffrida.pilotcalc.model.ConversionTypes;
-import com.marianogiuffrida.pilotcalc.model.Unit;
-import com.marianogiuffrida.pilotcalc.model.UnitConversionDescriptor;
+import com.marianogiuffrida.pilotcalc.data.SqlLiteDataStore;
+import com.marianogiuffrida.pilotcalc.data.UnitConversionRepository;
+import com.marianogiuffrida.pilotcalc.model.Conversions.ConversionCalculator;
+import com.marianogiuffrida.pilotcalc.model.Conversions.ConversionTypes;
+import com.marianogiuffrida.pilotcalc.model.Common.Unit;
+import com.marianogiuffrida.pilotcalc.model.Conversions.UnitConversionDescriptor;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -45,8 +47,8 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
 
     private Spinner sourceUnitSpinner, destinationUnitSpinner;
     private TextView inputTextView, outputTextView;
-    private UnitConversions unitConversionsRepository;
-//    private RadioButtonsTable radioConversionsType;
+    private UnitConversionRepository unitConversionsRepository;
+    private ConversionCalculator conversionCalculator;
     private RadioGroup radioConvType;
     private final int defaultConversionType = R.id.radio_length;
     private String selectedSourceUnit, selectedDestinationUnit;
@@ -60,19 +62,14 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
         sourceUnitSpinner = (Spinner) rootView.findViewById(R.id.conversions_from_spinner);
         inputTextView = (TextView) rootView.findViewById(R.id.conversion_Input);
         outputTextView = (TextView) rootView.findViewById(R.id.conversion_output);
-        unitConversionsRepository = new UnitConversions(getActivity().getApplicationContext());
+        SqlLiteDataStore dataStore = new SqlLiteDataStore(getActivity().getApplicationContext());
+        unitConversionsRepository = new UnitConversionRepository(dataStore);
+        conversionCalculator = new ConversionCalculator(unitConversionsRepository);
 
         Fragment calculatorFragment = new CalculatorFragment();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.conversions_child_fragment, calculatorFragment).commit();
 
-//        radioConversionsType = (RadioButtonsTable) rootView.findViewById(R.id.radio_conversionType);
-//        radioConversionsType.setOnCheckedChangeListener(new RadioButtonsTable.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckChanged(View view, int checkedId) {
-//                onSelectedConversionType(checkedId);
-//            }
-//        });
         radioConvType = (RadioGroup) rootView.findViewById(R.id.radio_conversionType);
         radioConvType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -179,7 +176,7 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
                 StringUtils.isNullOrEmpty(selectedDestinationUnit)) return;
         UnitConversionDescriptor d = unitConversionsRepository.getUnitConversionDescriptorBySourceDestination(selectedSourceUnit, selectedDestinationUnit);
         DecimalFormat defaultFormat = new DecimalFormat( "0.######" );
-        String convertedValue = defaultFormat.format(unitConversionsRepository.getConverter().convertValue(Double.parseDouble(inputValue), d));
+        String convertedValue = defaultFormat.format(conversionCalculator.convertValue(Double.parseDouble(inputValue), d));
         outputTextView.setText(convertedValue);
     }
 
