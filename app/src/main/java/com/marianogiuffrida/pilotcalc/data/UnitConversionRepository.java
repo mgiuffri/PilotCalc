@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.marianogiuffrida.pilotcalc.model.Conversions.IUnitConversionRepository;
 import com.marianogiuffrida.pilotcalc.model.Conversions.UnitConversionDescriptor;
-import com.marianogiuffrida.pilotcalc.model.Common.Unit;
+import com.marianogiuffrida.pilotcalc.model.comm.Unit;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.marianogiuffrida.pilotcalc.model.Altimetry;
 
-import com.marianogiuffrida.pilotcalc.model.Common.Measurement;
+import com.marianogiuffrida.pilotcalc.model.comm.Measurement;
 import com.marianogiuffrida.pilotcalc.data.UnitConversionRepository;
 
 import java.math.BigDecimal;

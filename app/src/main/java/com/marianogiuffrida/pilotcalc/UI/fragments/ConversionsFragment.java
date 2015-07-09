@@ -19,7 +19,7 @@ import com.marianogiuffrida.pilotcalc.data.SqlLiteDataStore;
 import com.marianogiuffrida.pilotcalc.data.UnitConversionRepository;
 import com.marianogiuffrida.pilotcalc.model.Conversions.ConversionCalculator;
 import com.marianogiuffrida.pilotcalc.model.Conversions.ConversionTypes;
-import com.marianogiuffrida.pilotcalc.model.Common.Unit;
+import com.marianogiuffrida.pilotcalc.model.comm.Unit;
 import com.marianogiuffrida.pilotcalc.model.Conversions.UnitConversionDescriptor;
 
 import java.text.DecimalFormat;

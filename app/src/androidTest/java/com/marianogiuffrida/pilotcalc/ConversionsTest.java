@@ -4,7 +4,7 @@ import android.app.Application;
 import android.test.ApplicationTestCase;
 
 import com.marianogiuffrida.pilotcalc.data.UnitConversionRepository;
-import com.marianogiuffrida.pilotcalc.model.Common.Unit;
+import com.marianogiuffrida.pilotcalc.model.comm.Unit;
 import com.marianogiuffrida.pilotcalc.model.Conversions.UnitConversionDescriptor;
 
 import java.util.List;

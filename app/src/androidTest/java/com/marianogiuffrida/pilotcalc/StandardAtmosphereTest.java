@@ -4,7 +4,7 @@ import android.app.Application;
 import android.test.ApplicationTestCase;
 
 import com.marianogiuffrida.pilotcalc.data.UnitConversionRepository;
-import com.marianogiuffrida.pilotcalc.model.Common.Measurement;
+import com.marianogiuffrida.pilotcalc.model.comm.Measurement;
 import com.marianogiuffrida.pilotcalc.model.Altimetry.StandardAtmosphere;
 
 import java.math.BigDecimal;

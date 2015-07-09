@@ -1,7 +1,6 @@
 package com.marianogiuffrida.pilotcalc.model.Conversions;
 
-import com.marianogiuffrida.pilotcalc.model.Common.Unit;
-import com.marianogiuffrida.pilotcalc.model.Conversions.UnitConversionDescriptor;
+import com.marianogiuffrida.pilotcalc.model.comm.Unit;
 
 import java.util.List;
 
