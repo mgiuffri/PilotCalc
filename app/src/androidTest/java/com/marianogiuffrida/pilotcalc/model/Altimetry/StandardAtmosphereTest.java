@@ -1,4 +1,4 @@
-package com.marianogiuffrida.pilotcalc;
+package com.marianogiuffrida.pilotcalc.model.Altimetry;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

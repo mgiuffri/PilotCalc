@@ -1,4 +1,4 @@
-package com.marianogiuffrida.pilotcalc;
+package com.marianogiuffrida.pilotcalc.model.Converter;
 
 import com.marianogiuffrida.pilotcalc.model.Conversions.AngleConverter;
 

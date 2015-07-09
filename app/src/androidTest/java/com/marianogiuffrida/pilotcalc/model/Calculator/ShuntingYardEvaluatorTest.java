@@ -1,4 +1,4 @@
-package com.marianogiuffrida.pilotcalc.model;
+package com.marianogiuffrida.pilotcalc.model.Calculator;
 
 import com.marianogiuffrida.pilotcalc.model.Calculator.ShuntingYardEvaluator;
 
