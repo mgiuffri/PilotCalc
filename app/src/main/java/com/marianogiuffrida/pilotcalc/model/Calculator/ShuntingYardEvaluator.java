@@ -41,11 +41,11 @@ public class ShuntingYardEvaluator {
         return evaluate(expression);
     }
 
-    protected static boolean isWellFormedExpression(String s){
+    public static boolean isWellFormedExpression(String s){
        return s.matches(WELL_FORMED_EXPRESSION_REGEX);
     }
 
-    protected static Double evaluate(String input) throws IOException {
+    public static Double evaluate(String input) throws IOException {
         String z = input.replaceAll("÷", "d");
         StreamTokenizer tokenizer = new StreamTokenizer(new StringReader(z));
         tokenizer.resetSyntax();

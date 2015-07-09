@@ -1,7 +1,7 @@
 package com.marianogiuffrida.pilotcalc.model.Conversions;
 
 import com.marianogiuffrida.helpers.ArgumentCheck;
-import com.marianogiuffrida.pilotcalc.model.comm.Measurement;
+import com.marianogiuffrida.pilotcalc.model.Common.Measurement;
 import com.marianogiuffrida.pilotcalc.data.UnitConversionRepository;
 
 /**
