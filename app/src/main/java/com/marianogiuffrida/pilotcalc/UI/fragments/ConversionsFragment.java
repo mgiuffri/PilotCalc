@@ -176,7 +176,7 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
                 StringUtils.isNullOrEmpty(selectedDestinationUnit)) return;
         UnitConversionDescriptor d = unitConversionsRepository.getUnitConversionDescriptorBySourceDestination(selectedSourceUnit, selectedDestinationUnit);
         DecimalFormat defaultFormat = new DecimalFormat( "0.######" );
-        String convertedValue = defaultFormat.format(conversionCalculator.convertValue(Double.parseDouble(inputValue), d));
+        String convertedValue = defaultFormat.format(conversionCalculator.convert(Double.parseDouble(inputValue), d));
         outputTextView.setText(convertedValue);
     }
 

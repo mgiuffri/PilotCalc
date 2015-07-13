@@ -4,6 +4,7 @@ import com.marianogiuffrida.helpers.ArgumentCheck;
 import com.marianogiuffrida.pilotcalc.model.Common.Measurement;
 import com.marianogiuffrida.pilotcalc.data.UnitConversionRepository;
 import com.marianogiuffrida.pilotcalc.model.Conversions.ConversionCalculator;
+import com.marianogiuffrida.pilotcalc.model.Conversions.UnitValidator;
 import com.marianogiuffrida.pilotcalc.model.Conversions.Units;
 
 import java.math.BigDecimal;
@@ -37,18 +38,30 @@ public final class StandardAtmosphere {
 
     public Measurement calculateStandardTemperatureAtAltitude(Measurement altitude) {
         ArgumentCheck.IsNotNull(altitude, "altitude");
+        if(!UnitValidator.isUnitSupported(altitude.getUnitName(), Units.Length.class))
+            throw new IllegalArgumentException(String.format("%1 is not a valid unit for an altitude", altitude.getUnitName()));
+
         BigDecimal altitudeInFeet = altitude.getMagnitude();
+
         if (!altitude.getUnitName().equals(TropopauseAltitudeInFeet.getUnitName())) {
-            altitudeInFeet = BigDecimal.valueOf(conversionCalculator.convertMeasurement(altitude,
-                    TropopauseAltitudeInFeet.getUnitName()));
+            altitudeInFeet = (conversionCalculator.convert(altitude,TropopauseAltitudeInFeet.getUnitName())).getMagnitude();
         }
 
-        if (altitudeInFeet.compareTo(TropopauseAltitudeInFeet.getMagnitude()) > 0)
+        if (altitudeInFeet.compareTo(TropopauseAltitudeInFeet.getMagnitude()) > 0) {
             return StandardTropopauseTemperature;
+        }
 
         BigDecimal result = StandardTemperatureInCelsius.getMagnitude()
                 .subtract(altitudeInFeet.multiply(StandardTemperatureLapseRate.getMagnitude()));
 
         return new Measurement(result.stripTrailingZeros(), Units.Temperature.Celsius);
+    }
+
+    public Measurement calculateStandardTemperatureAtAltitude(Measurement altitude, String resultUnit) {
+        if(!UnitValidator.isUnitSupported(resultUnit, Units.Temperature.class))
+            throw new IllegalArgumentException(String.format("%1 is not a valid unit for a temperature", resultUnit));
+
+        Measurement result = calculateStandardTemperatureAtAltitude(altitude);
+        return conversionCalculator.convert(result, resultUnit);
     }
 }

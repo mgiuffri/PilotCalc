@@ -8,6 +8,11 @@ import com.marianogiuffrida.pilotcalc.data.UnitConversionRepository;
 import com.marianogiuffrida.pilotcalc.model.Common.Measurement;
 import com.marianogiuffrida.pilotcalc.model.Conversions.Units;
 
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
 import java.math.BigDecimal;
 
 public class StandardAtmosphereTest extends ApplicationTestCase<Application> {
@@ -26,39 +31,67 @@ public class StandardAtmosphereTest extends ApplicationTestCase<Application> {
         standardAtmosphere = new StandardAtmosphere(unitConversions);
     }
 
-    public void testAltitudeAboveTropo(){
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
+    @Test
+    public void ShouldThrowIfCalculatingTempWithNullAltitude(){
+            standardAtmosphere.calculateStandardTemperatureAtAltitude(null);
+            exception.expect(IllegalArgumentException.class);
+            exception.expectMessage("altitude");
+    }
+
+    @Test
+    public void ShouldThrowIfCalculatingTempWithInvalidMeasure(){
+        standardAtmosphere.calculateStandardTemperatureAtAltitude(new Measurement(1.0, Units.Pressure.HectoPascal));
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("HECTOPASCAL is not a valid unit for an altitude");
+    }
+
+    @Test
+    public void ShouldThrowIfRequestingInvalidConversion(){
+        standardAtmosphere.calculateStandardTemperatureAtAltitude(new Measurement(1.0, Units.Length.Foot), Units.Length.Foot);
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("FOOT is not a valid unit for a temperature");
+    }
+
+    @Test
+    public void calculateTemperatureAtAltitudeAboveTropopauseGivenInFeet(){
         Measurement result = standardAtmosphere.calculateStandardTemperatureAtAltitude(
                 new Measurement(BigDecimal.valueOf(40000), Units.Length.Foot));
 
         assertEquals(result.getMagnitude(),standardAtmosphere.StandardTropopauseTemperature.getMagnitude());
     }
 
-    public void testAltitudeAboveTropoWithConversion(){
+    @Test
+    public void calculateTemperatureAtAltitudeAboveTropopauseGivenInKilometre(){
         Measurement result = standardAtmosphere.calculateStandardTemperatureAtAltitude(
                 new Measurement(BigDecimal.valueOf(12), Units.Length.Kilometre));
 
         assertEquals(result.getMagnitude(),standardAtmosphere.StandardTropopauseTemperature.getMagnitude());
     }
 
-    public void testAltitude(){
+    @Test
+    public void calculateTemperatureAtAltitudeBelowTropopauseGivenInFeet(){
         Measurement result = standardAtmosphere.calculateStandardTemperatureAtAltitude(
                 new Measurement(BigDecimal.valueOf(3000), Units.Length.Foot));
 
         assertEquals(result.getMagnitude(), new BigDecimal("9.0564"));
     }
 
-    public void testAltitudeWithConv(){
+    @Test
+    public void calculateTemperatureAtAltitudeBelowTropopauseGivenInMetre(){
         Measurement result = standardAtmosphere.calculateStandardTemperatureAtAltitude(
                 new Measurement(BigDecimal.valueOf(300), Units.Length.Metre));
 
         assertEquals(result.getMagnitude().doubleValue(), BigDecimal.valueOf(13.05).doubleValue(), 0.01);
     }
 
-    public void testAltitudeAtSeaLevel(){
+    @Test
+    public void calculateTemperatureAtSeaLevelGivenInFeet(){
         Measurement result = standardAtmosphere.calculateStandardTemperatureAtAltitude(
                 new Measurement(BigDecimal.valueOf(0), Units.Length.Foot));
 
         assertEquals(result.getMagnitude(), standardAtmosphere.StandardTemperatureInCelsius.getMagnitude());
     }
-
 }

@@ -4,6 +4,8 @@ import com.marianogiuffrida.helpers.ArgumentCheck;
 import com.marianogiuffrida.pilotcalc.model.Common.Measurement;
 import com.marianogiuffrida.pilotcalc.data.UnitConversionRepository;
 
+import java.math.BigDecimal;
+
 /**
  * Created by Mariano on 9/07/2015.
  */
@@ -15,22 +17,26 @@ public class ConversionCalculator {
         this.unitConversions = unitConversions;
     }
 
-    public double convertValue(double value, UnitConversionDescriptor conversionDescriptor) {
+    public double convert(double value, UnitConversionDescriptor conversionDescriptor) {
         ArgumentCheck.IsNotNull(conversionDescriptor, "conversionDescriptor");
         return (conversionDescriptor.getOffset()) +
                 (value + conversionDescriptor.getValueOffset()) * conversionDescriptor.getConversionFactor();
     }
 
-    public double convertMeasurement(Measurement value, String toUnit) throws IllegalArgumentException {
-        ArgumentCheck.IsNotNull(value, "value");
+    public BigDecimal convert(BigDecimal input, UnitConversionDescriptor conversionDescriptor){
+        return BigDecimal.valueOf(convert(input.doubleValue(), conversionDescriptor));
+    }
+
+    public Measurement convert(Measurement input, String toUnit) throws IllegalArgumentException {
+        ArgumentCheck.IsNotNull(input, "input");
         ArgumentCheck.IsNotNullorEmpty(toUnit, "toUnit");
-        UnitConversionDescriptor d = unitConversions.getUnitConversionDescriptorBySourceDestination(value.getUnitName(), toUnit);
+        UnitConversionDescriptor d = unitConversions.getUnitConversionDescriptorBySourceDestination(input.getUnitName(), toUnit);
 
         if (d == null) throw new UnsupportedOperationException("no conversion from "
-                + value.getUnitName()
+                + input.getUnitName()
                 + " to "
                 + toUnit);
 
-        return convertValue(value.getMagnitude().doubleValue(), d);
+        return new Measurement(convert(input.getMagnitude(), d), toUnit);
     }
 }

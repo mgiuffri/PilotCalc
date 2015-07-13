@@ -12,14 +12,21 @@ public class Measurement {
     private final BigDecimal magnitude;
     private final Unit unit;
 
-    public Measurement(BigDecimal value, String unit) {
-        magnitude = value;
-        this.unit = new Unit(unit, unit);
-    }
-
     public Measurement(BigDecimal value, Unit unit) {
         magnitude = value;
         this.unit = unit;
+    }
+
+    public Measurement(BigDecimal value, String unit) {
+        this(value,new Unit(unit, unit));
+    }
+
+    public Measurement(double value, Unit unit) {
+        this(BigDecimal.valueOf(value), unit);
+    }
+
+    public Measurement(double value, String unit) {
+        this(BigDecimal.valueOf(value), new Unit(unit, unit));
     }
 
     public Unit getUnit() {

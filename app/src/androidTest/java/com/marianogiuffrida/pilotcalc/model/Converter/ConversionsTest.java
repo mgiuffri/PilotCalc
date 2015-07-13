@@ -29,7 +29,7 @@ public class ConversionsTest extends ApplicationTestCase<Application> {
 
     public void testConvertValue() throws Exception {
         UnitConversionDescriptor d = new UnitConversionDescriptor("test", null, null, 2, -21, 1);
-        double result = converter.convertValue(10, d);
+        double result = converter.convert(10, d);
         assertEquals(result, 1, 0.001);
     }
 
@@ -54,14 +54,14 @@ public class ConversionsTest extends ApplicationTestCase<Application> {
     }
 
     private void doubleConvert(double initialValue, UnitConversionDescriptor d) {
-        double convertedValue = converter.convertValue(initialValue, d);
+        double convertedValue = converter.convert(initialValue, d);
         UnitConversionDescriptor reverseDesc = unitConversionRepo.getUnitConversionDescriptorBySourceDestination(d.getDestinationUnit().Name, d.getSourceUnit().Name);
         assertNotNull(String.format("%s -> %s", d.getDestinationUnit(), d.getSourceUnit()),
                 reverseDesc);
         assertEquals(
                 String.format("%s -> %s: %f", d.getSourceUnit(), d.getDestinationUnit(), convertedValue),
                 initialValue,
-                converter.convertValue(convertedValue, reverseDesc),
+                converter.convert(convertedValue, reverseDesc),
                 0.001);
     }
 
