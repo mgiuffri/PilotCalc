@@ -1,7 +1,10 @@
 package com.marianogiuffrida.pilotcalc.model.Altimetry;
 
+import com.marianogiuffrida.helpers.ArgumentCheck;
 import com.marianogiuffrida.pilotcalc.model.Common.Measurement;
 import com.marianogiuffrida.pilotcalc.data.UnitConversionRepository;
+import com.marianogiuffrida.pilotcalc.model.Conversions.ConversionCalculator;
+import com.marianogiuffrida.pilotcalc.model.Conversions.Units;
 
 import java.math.BigDecimal;
 
@@ -11,37 +14,41 @@ import java.math.BigDecimal;
 public final class StandardAtmosphere {
 
     // Standard temperature at Sea Level in Celsius
-    public static final Measurement StandardTemperatureInCelsius = new Measurement(BigDecimal.valueOf(15), "CELSIUS");
-    public static final Measurement StandardTemperatureInKelvin = new Measurement(BigDecimal.valueOf(288.15), "KELVIN");
+    public static final Measurement StandardTemperatureInCelsius = new Measurement(BigDecimal.valueOf(15), Units.Temperature.Celsius);
+    public static final Measurement StandardTemperatureInKelvin = new Measurement(BigDecimal.valueOf(288.15), Units.Temperature.Kelvin);
 
-    public static final BigDecimal StandardTemperatureLapseRate = BigDecimal.valueOf(0.0019812); //* C per ft
+    public static final Measurement StandardTemperatureLapseRate = new Measurement(BigDecimal.valueOf(0.0019812), "CELSIUS_PER_FOOT");
 
     //Standard temperature in Pa.
-    public static final Measurement StandardPressureInhPa =  new Measurement( BigDecimal.valueOf(1013.25), "HECTOPASCAL");
-    public static final Measurement StandardPressureInHg =  new Measurement( BigDecimal.valueOf(29.92), "INCHOFMERCURY");
+    public static final Measurement StandardPressureInhPa = new Measurement(BigDecimal.valueOf(1013.25), Units.Pressure.HectoPascal);
+    public static final Measurement StandardPressureInHg = new Measurement(BigDecimal.valueOf(29.92), Units.Pressure.HectoPascal);
 
     //Standard tropopause altitude in ft.
-    public static final Measurement TropopauseAltitudeInFeet =new Measurement( BigDecimal.valueOf(36089.24), "FOOT");
-    public static final Measurement StandardTropopauseTemperature = new Measurement(BigDecimal.valueOf(-56.5), "CELSIUS");
+    public static final Measurement TropopauseAltitudeInFeet = new Measurement(BigDecimal.valueOf(36089.24), Units.Length.Foot);
+    public static final Measurement StandardTropopauseTemperature = new Measurement(BigDecimal.valueOf(-56.5), Units.Temperature.Celsius);
 
     private final UnitConversionRepository unitConversions;
+    private final ConversionCalculator conversionCalculator;
 
-    public StandardAtmosphere(UnitConversionRepository uc){
+    public StandardAtmosphere(UnitConversionRepository uc) {
         unitConversions = uc;
+        conversionCalculator = new ConversionCalculator(uc);
     }
 
-    public Measurement calculateStandardTemperatureAtAltitude(Measurement altitude){
-//        ArgumentCheck.IsNotNull(altitude, "altitude");
-//        BigDecimal altitudeInFeet = altitude.getMagnitude();
-//        if(!altitude.getUnitName().equals(TropopauseAltitudeUnit)){
-//            altitudeInFeet = BigDecimal.valueOf(unitConversions.getConverter().convertMeasurement(altitude, TropopauseAltitudeUnit));
-//        }
-//
-//        if (altitudeInFeet.compareTo(TropopauseAltitudeInFeet) > 0) return StandardTropopauseTemperature;
-//
-//        return StandardTemperatureInCelsius.subtract(altitudeInFeet.multiply(StandardTemperatureLapseRate));
-        return null;
+    public Measurement calculateStandardTemperatureAtAltitude(Measurement altitude) {
+        ArgumentCheck.IsNotNull(altitude, "altitude");
+        BigDecimal altitudeInFeet = altitude.getMagnitude();
+        if (!altitude.getUnitName().equals(TropopauseAltitudeInFeet.getUnitName())) {
+            altitudeInFeet = BigDecimal.valueOf(conversionCalculator.convertMeasurement(altitude,
+                    TropopauseAltitudeInFeet.getUnitName()));
+        }
+
+        if (altitudeInFeet.compareTo(TropopauseAltitudeInFeet.getMagnitude()) > 0)
+            return StandardTropopauseTemperature;
+
+        BigDecimal result = StandardTemperatureInCelsius.getMagnitude()
+                .subtract(altitudeInFeet.multiply(StandardTemperatureLapseRate.getMagnitude()));
+
+        return new Measurement(result.stripTrailingZeros(), Units.Temperature.Celsius);
     }
-
-
 }

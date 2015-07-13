@@ -18,7 +18,7 @@ import com.marianogiuffrida.pilotcalc.UI.adapters.UnitAdapter;
 import com.marianogiuffrida.pilotcalc.data.SqlLiteDataStore;
 import com.marianogiuffrida.pilotcalc.data.UnitConversionRepository;
 import com.marianogiuffrida.pilotcalc.model.Conversions.ConversionCalculator;
-import com.marianogiuffrida.pilotcalc.model.Conversions.ConversionTypes;
+import com.marianogiuffrida.pilotcalc.model.Conversions.Units;
 import com.marianogiuffrida.pilotcalc.model.Common.Unit;
 import com.marianogiuffrida.pilotcalc.model.Conversions.UnitConversionDescriptor;
 
@@ -37,12 +37,12 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
     private static final HashMap<Integer, String> typeMap;
     static{
         typeMap = new HashMap();
-        typeMap.put(R.id.radio_weight, ConversionTypes.Weight);
-        typeMap.put(R.id.radio_length, ConversionTypes.Length);
-        typeMap.put(R.id.radio_temp, ConversionTypes.Temperature);
-        typeMap.put(R.id.radio_pressure, ConversionTypes.Pressure);
-        typeMap.put(R.id.radio_speed, ConversionTypes.Speed);
-        typeMap.put(R.id.radio_volume, ConversionTypes.Volume);
+        typeMap.put(R.id.radio_weight, Units.Weight.Name);
+        typeMap.put(R.id.radio_length, Units.Length.Name);
+        typeMap.put(R.id.radio_temp, Units.Temperature.Name);
+        typeMap.put(R.id.radio_pressure, Units.Pressure.Name);
+        typeMap.put(R.id.radio_speed, Units.Speed.Name);
+        typeMap.put(R.id.radio_volume, Units.Volume.Name);
     }
 
     private Spinner sourceUnitSpinner, destinationUnitSpinner;
