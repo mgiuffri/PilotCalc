@@ -9,10 +9,10 @@ public class UnitValidatorTest extends TestCase {
 
 
     public void testOnce(){
-        assertTrue(UnitValidator.isUnitSupported(Units.Length.Foot, Units.Length.class));
+        assertTrue(Units.Validator.isUnitSupported(Units.Length.Foot, Units.Length.class));
     }
 
     public void testFails(){
-        assertFalse(UnitValidator.isUnitSupported(Units.Length.Foot, Units.Weight.class));
+        assertFalse(Units.Validator.isUnitSupported(Units.Length.Foot, Units.Weight.class));
     }
 }

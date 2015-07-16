@@ -16,7 +16,4 @@ public final class AngleConverter {
     public final double ToDegrees(double radians){
         return 57.2957795 * radians;
     }
-
-
-
 }

@@ -1,7 +1,6 @@
 package com.marianogiuffrida.pilotcalc.model.Converter;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
+import android.test.AndroidTestCase;
 
 import com.marianogiuffrida.pilotcalc.data.SqlLiteDataStore;
 import com.marianogiuffrida.pilotcalc.data.UnitConversionRepository;
@@ -11,14 +10,10 @@ import com.marianogiuffrida.pilotcalc.model.Conversions.UnitConversionDescriptor
 
 import java.util.List;
 
-public class ConversionsTest extends ApplicationTestCase<Application> {
+public class ConversionsTest extends AndroidTestCase {
 
     private UnitConversionRepository unitConversionRepo;
     private ConversionCalculator converter;
-
-    public ConversionsTest() {
-        super(Application.class);
-    }
 
     @Override
     protected void setUp() throws Exception {
