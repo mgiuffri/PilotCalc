@@ -28,7 +28,7 @@ public class ConversionsTest extends AndroidTestCase {
         assertEquals(result, 1, 0.001);
     }
 
-    public void testqueryAllUnitConversion() {
+    public void testQueryAllUnitConversion() {
         List<UnitConversionDescriptor> all = unitConversionRepo.getSupportedUnitConversions();
         assertEquals(all.size(), 126.0, 0.0);
     }
@@ -59,5 +59,4 @@ public class ConversionsTest extends AndroidTestCase {
                 converter.convert(convertedValue, reverseDesc),
                 0.001);
     }
-
 }

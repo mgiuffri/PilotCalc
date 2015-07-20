@@ -30,6 +30,9 @@ public class ConversionCalculator {
     public Measurement convert(Measurement input, String toUnit) throws IllegalArgumentException {
         ArgumentCheck.IsNotNull(input, "input");
         ArgumentCheck.IsNotNullorEmpty(toUnit, "toUnit");
+
+        if(input.getUnit().equals(toUnit)) return input;
+
         UnitConversionDescriptor d = unitConversions.getUnitConversionDescriptorBySourceDestination(input.getUnitName(), toUnit);
 
         if (d == null) throw new UnsupportedOperationException("no conversion from "

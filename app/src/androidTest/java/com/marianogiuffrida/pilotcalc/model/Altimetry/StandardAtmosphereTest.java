@@ -93,7 +93,6 @@ public class StandardAtmosphereTest extends AndroidTestCase{
 
     //region calculatePressureAltitude(pressure, measurement)
 
-    
     public void testShouldThrowIfPressureIsNull() {
         try{
             standardAtmosphere.calculatePressureAltitude(null, new Measurement(BigDecimal.valueOf(0), Units.Length.Foot));
@@ -103,7 +102,6 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         }
     }
 
-    
     public void testShouldThrowIfElevationIsNull() {
         try{
             standardAtmosphere.calculatePressureAltitude(new Measurement(0, Units.Pressure.InchMercury), (Measurement) null);
@@ -113,7 +111,6 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         }
     }
 
-    
     public void testCalculateStandardPressureAtZero() {
         Measurement result = standardAtmosphere.calculatePressureAltitude(
                 new Measurement(BigDecimal.valueOf(29.92), Units.Pressure.InchMercury),
@@ -122,7 +119,6 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         assertEquals(result.getMagnitude().doubleValue(), 0d);
     }
 
-    
     public void testCalculateStandardPressure() {
         Measurement result = standardAtmosphere.calculatePressureAltitude(
                 new Measurement(BigDecimal.valueOf(29.32), Units.Pressure.InchMercury),
@@ -135,7 +131,6 @@ public class StandardAtmosphereTest extends AndroidTestCase{
 
     //region calculatePressureAltitude(pressure, measurement, unit)
 
-    
     public void testShouldThrowIfPressureIsNull_withConversion() {
         try{
             standardAtmosphere.calculatePressureAltitude(null,
@@ -147,7 +142,6 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         }
     }
 
-    
     public void testShouldThrowIfElevationIsNull_withConversion() {
         try{
             standardAtmosphere.calculatePressureAltitude(new Measurement(0, Units.Pressure.InchMercury)
@@ -155,11 +149,9 @@ public class StandardAtmosphereTest extends AndroidTestCase{
                     , Units.Length.Foot);
             fail("Should have thrown IllegalArgumentException");
         }catch(IllegalArgumentException e){
-
         }
     }
 
-    
     public void testShouldThrowIfUnitIsNull_withConversion() {
         try{
             standardAtmosphere.calculatePressureAltitude(new Measurement(0, Units.Pressure.InchMercury)
@@ -171,7 +163,6 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         }
     }
 
-    
     public void testCalculateStandardPressureAtZero_withConversion() {
         Measurement result = standardAtmosphere.calculatePressureAltitude(
                 new Measurement(BigDecimal.valueOf(29.92), Units.Pressure.InchMercury),
@@ -181,7 +172,6 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         assertEquals(result.getMagnitude().doubleValue(), 0d);
     }
 
-    
     public void testCalculateStandardPressure_withConversion() {
         Measurement result = standardAtmosphere.calculatePressureAltitude(
                 new Measurement(BigDecimal.valueOf(29.32), Units.Pressure.InchMercury),
@@ -191,7 +181,6 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         assertEquals(result.getMagnitude().doubleValue(), 335.28d, 0.01);
     }
 
-    
     public void testCalculateStandardPressure_withConversions() {
         Measurement result = standardAtmosphere.calculatePressureAltitude(
                 new Measurement(BigDecimal.valueOf(993), Units.Pressure.HectoPascal),
@@ -200,12 +189,10 @@ public class StandardAtmosphereTest extends AndroidTestCase{
 
         assertEquals(result.getMagnitude().doubleValue(), 335.28d, 3);
     }
-
     //endregion
 
     //region calculatePressureAltitude(pressure)
 
-    
     public void testShouldThrowIfPressureIsNull_noElevation() {
         try{
             standardAtmosphere.calculatePressureAltitude(null);
@@ -215,7 +202,6 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         }
     }
 
-    
     public void testCalculateStandardPressureAtZero_noElevation() {
         Measurement result = standardAtmosphere.calculatePressureAltitude(
                 new Measurement(BigDecimal.valueOf(29.92), Units.Pressure.InchMercury),
@@ -224,19 +210,16 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         assertEquals(result.getMagnitude().doubleValue(), 0d);
     }
 
-    
     public void testCalculateStandardPressure_noElevation() {
         Measurement result = standardAtmosphere.calculatePressureAltitude(
                 new Measurement(BigDecimal.valueOf(29.32), Units.Pressure.InchMercury));
 
         assertEquals(result.getMagnitude().doubleValue(), 600d);
     }
-
     //endregion
 
     //region calculatePressureAltitude(pressure, unit)
 
-    
     public void testShouldThrowIfPressureIsNull_noElevationWithConversion() {
         try {
             standardAtmosphere.calculatePressureAltitude(null, Units.Length.Foot);
@@ -246,7 +229,6 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         }
     }
 
-    
     public void testShouldThrowIfUnitIsNull_noElevationWithConversion() {
         try{
             standardAtmosphere.calculatePressureAltitude(new Measurement(0, Units.Pressure.InchMercury)
@@ -257,7 +239,6 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         }
     }
 
-    
     public void testCalculateStandardPressureAtZero_noElevationWithConversion() {
         Measurement result = standardAtmosphere.calculatePressureAltitude(
                 new Measurement(BigDecimal.valueOf(29.92), Units.Pressure.InchMercury),
@@ -267,7 +248,6 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         assertEquals(result.getMagnitude().doubleValue(), 0.0);
     }
 
-    
     public void testCalculateStandardPressure_noElevationWithConversion() {
         Measurement result = standardAtmosphere.calculatePressureAltitude(
                 new Measurement(BigDecimal.valueOf(29.32), Units.Pressure.InchMercury),
@@ -278,4 +258,58 @@ public class StandardAtmosphereTest extends AndroidTestCase{
 
     //endregion
 
+    //region calculateDensityAltitude(altitude, OAT)
+
+    public void testShouldThrowIfPressureAltitudeIsNull() {
+        try{
+            standardAtmosphere.calculateDensityAltitude(null, new Measurement(BigDecimal.valueOf(0), Units.Temperature.Celsius));
+            fail("Should have thrown IllegalArgumentException");
+        }catch(IllegalArgumentException e){
+
+        }
+    }
+
+    public void testShouldThrowIfOATIsNull() {
+        try{
+            standardAtmosphere.calculateDensityAltitude(new Measurement(0, Units.Pressure.InchMercury), (Measurement) null);
+            fail("Should have thrown IllegalArgumentException");
+        }catch(IllegalArgumentException e){
+
+        }
+    }
+
+    public void testCalculateDensityAltitude_AtZero() {
+        Measurement result = standardAtmosphere.calculateDensityAltitude(
+                new Measurement(BigDecimal.valueOf(0), Units.Length.Foot),
+                new Measurement(BigDecimal.valueOf(15), Units.Temperature.Celsius));
+
+        assertEquals(result.getMagnitude().doubleValue(), 0d);
+    }
+
+    public void testCalculateDensityAltitude() {
+        Measurement result = standardAtmosphere.calculateDensityAltitude(
+                new Measurement(BigDecimal.valueOf(3000), Units.Length.Foot),
+                new Measurement(BigDecimal.valueOf(25), Units.Temperature.Celsius));
+
+        assertEquals(result.getMagnitude().doubleValue(), 4900, 50);
+    }
+
+    public void testCalculateDensityAltitudeInMeters() {
+        Measurement result = standardAtmosphere.calculateDensityAltitude(
+                new Measurement(BigDecimal.valueOf(3000), Units.Length.Foot),
+                new Measurement(BigDecimal.valueOf(25), Units.Temperature.Celsius),
+                        Units.Length.Metre);
+
+        assertEquals(result.getMagnitude().doubleValue(), 1493, 15);
+    }
+
+    public void testCalculateDensityAltitude2() {
+        Measurement result = standardAtmosphere.calculateDensityAltitude(
+                new Measurement(BigDecimal.valueOf(1500), Units.Length.Foot),
+                new Measurement(BigDecimal.valueOf(35), Units.Temperature.Celsius));
+
+        assertEquals(result.getMagnitude().doubleValue(), 4220, 50);
+    }
+
+    //endregion
 }
