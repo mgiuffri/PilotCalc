@@ -7,10 +7,6 @@ import com.marianogiuffrida.pilotcalc.data.UnitConversionRepository;
 import com.marianogiuffrida.pilotcalc.model.Common.Measurement;
 import com.marianogiuffrida.pilotcalc.model.Conversions.Units;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
 import java.math.BigDecimal;
 
 public class StandardAtmosphereTest extends AndroidTestCase{
@@ -25,33 +21,36 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         standardAtmosphere = new StandardAtmosphere(unitConversions);
     }
 
-    @Rule
-    ExpectedException exception = ExpectedException.none();
-
     //region calculateStandardTemperature
 
-    @Test
-    public void ShouldThrowIfCalculatingTempWithNullAltitude() {
-        standardAtmosphere.calculateStandardTemperature(null);
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("altitude");
+    public void testShouldThrowIfCalculatingTempWithNullAltitude() {
+        try{
+            standardAtmosphere.calculateStandardTemperature(null);
+            fail("Should have thrown IllegalArgumentException");
+        }catch(IllegalArgumentException e){
+
+        }
     }
 
-    @Test
-    public void ShouldThrowIfCalculatingTempWithInvalidMeasure() {
-        standardAtmosphere.calculateStandardTemperature(new Measurement(1.0, Units.Pressure.HectoPascal));
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("HECTOPASCAL is not a valid unit for an altitude");
+    
+    public void testShouldThrowIfCalculatingTempWithInvalidMeasure() {
+        try{
+            standardAtmosphere.calculateStandardTemperature(new Measurement(1.0, Units.Pressure.HectoPascal));
+            fail("Should have thrown IllegalArgumentException");
+        }catch(IllegalArgumentException e){
+
+        }
     }
 
-    @Test
-    public void ShouldThrowIfRequestingInvalidConversion() {
-        standardAtmosphere.calculateStandardTemperature(new Measurement(1.0, Units.Length.Foot), Units.Length.Foot);
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("FOOT is not a valid unit for a temperature");
-    }
+    public void testShouldThrowIfRequestingInvalidConversion() {
+        try{
+            standardAtmosphere.calculateStandardTemperature(new Measurement(1.0, Units.Length.Foot), Units.Length.Foot);
+            fail("Should have thrown IllegalArgumentException");
+        }catch(IllegalArgumentException e){
 
-    @Test
+        }
+    }
+    
     public void testCalculateTemperatureAtAltitudeAboveTropopauseGivenInFeet() {
         Measurement result = standardAtmosphere.calculateStandardTemperature(
                 new Measurement(BigDecimal.valueOf(40000), Units.Length.Foot));
@@ -59,7 +58,7 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         assertEquals(result.getMagnitude().doubleValue(), standardAtmosphere.StandardTropopauseTemperature.getMagnitude().doubleValue());
     }
 
-    @Test
+    
     public void testCalculateTemperatureAtAltitudeAboveTropopauseGivenInKilometre() {
         Measurement result = standardAtmosphere.calculateStandardTemperature(
                 new Measurement(BigDecimal.valueOf(12), Units.Length.Kilometre));
@@ -67,7 +66,7 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         assertEquals(result.getMagnitude().doubleValue(), standardAtmosphere.StandardTropopauseTemperature.getMagnitude().doubleValue());
     }
 
-    @Test
+    
     public void testCalculateTemperatureAtAltitudeBelowTropopauseGivenInFeet() {
         Measurement result = standardAtmosphere.calculateStandardTemperature(
                 new Measurement(BigDecimal.valueOf(3000), Units.Length.Foot));
@@ -75,7 +74,7 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         assertEquals(result.getMagnitude().doubleValue(), 9.0564);
     }
 
-    @Test
+    
     public void testCalculateTemperatureAtAltitudeBelowTropopauseGivenInMetre() {
         Measurement result = standardAtmosphere.calculateStandardTemperature(
                 new Measurement(BigDecimal.valueOf(300), Units.Length.Metre));
@@ -83,7 +82,7 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         assertEquals(result.getMagnitude().doubleValue(), 13.05, 0.01);
     }
 
-    @Test
+    
     public void testCalculateTemperatureAtSeaLevelGivenInFeet() {
         Measurement result = standardAtmosphere.calculateStandardTemperature(
                 new Measurement(BigDecimal.valueOf(0), Units.Length.Foot));
@@ -94,21 +93,27 @@ public class StandardAtmosphereTest extends AndroidTestCase{
 
     //region calculatePressureAltitude(pressure, measurement)
 
-    @Test
-    public void ShouldThrowIfPressureIsNull() {
-        standardAtmosphere.calculatePressureAltitude(null, new Measurement(BigDecimal.valueOf(0), Units.Length.Foot));
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("altitude");
+    
+    public void testShouldThrowIfPressureIsNull() {
+        try{
+            standardAtmosphere.calculatePressureAltitude(null, new Measurement(BigDecimal.valueOf(0), Units.Length.Foot));
+            fail("Should have thrown IllegalArgumentException");
+        }catch(IllegalArgumentException e){
+
+        }
     }
 
-    @Test
-    public void ShouldThrowIfElevationIsNull() {
-        standardAtmosphere.calculatePressureAltitude(new Measurement(0, Units.Pressure.InchMercury), (Measurement)null);
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("altitude");
+    
+    public void testShouldThrowIfElevationIsNull() {
+        try{
+            standardAtmosphere.calculatePressureAltitude(new Measurement(0, Units.Pressure.InchMercury), (Measurement) null);
+            fail("Should have thrown IllegalArgumentException");
+        }catch(IllegalArgumentException e){
+
+        }
     }
 
-    @Test
+    
     public void testCalculateStandardPressureAtZero() {
         Measurement result = standardAtmosphere.calculatePressureAltitude(
                 new Measurement(BigDecimal.valueOf(29.92), Units.Pressure.InchMercury),
@@ -117,7 +122,7 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         assertEquals(result.getMagnitude().doubleValue(), 0d);
     }
 
-    @Test
+    
     public void testCalculateStandardPressure() {
         Measurement result = standardAtmosphere.calculatePressureAltitude(
                 new Measurement(BigDecimal.valueOf(29.32), Units.Pressure.InchMercury),
@@ -130,34 +135,43 @@ public class StandardAtmosphereTest extends AndroidTestCase{
 
     //region calculatePressureAltitude(pressure, measurement, unit)
 
-    @Test
-    public void ShouldThrowIfPressureIsNull_withConversion() {
-        standardAtmosphere.calculatePressureAltitude(null,
-                new Measurement(BigDecimal.valueOf(0), Units.Length.Foot),
-                Units.Length.Foot);
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("altitude");
+    
+    public void testShouldThrowIfPressureIsNull_withConversion() {
+        try{
+            standardAtmosphere.calculatePressureAltitude(null,
+                    new Measurement(BigDecimal.valueOf(0), Units.Length.Foot),
+                    Units.Length.Foot);
+            fail("Should have thrown IllegalArgumentException");
+        }catch(IllegalArgumentException e){
+
+        }
     }
 
-    @Test
-    public void ShouldThrowIfElevationIsNull_withConversion() {
-        standardAtmosphere.calculatePressureAltitude(new Measurement(0, Units.Pressure.InchMercury)
-                , null
-                , Units.Length.Foot);
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("altitude");
+    
+    public void testShouldThrowIfElevationIsNull_withConversion() {
+        try{
+            standardAtmosphere.calculatePressureAltitude(new Measurement(0, Units.Pressure.InchMercury)
+                    , null
+                    , Units.Length.Foot);
+            fail("Should have thrown IllegalArgumentException");
+        }catch(IllegalArgumentException e){
+
+        }
     }
 
-    @Test
-    public void ShouldThrowIfUnitIsNull_withConversion() {
-        standardAtmosphere.calculatePressureAltitude(new Measurement(0, Units.Pressure.InchMercury)
-                , new Measurement(0, Units.Length.Foot)
-                , null);
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("\" is not a valid unit for a inchmercury\"");
+    
+    public void testShouldThrowIfUnitIsNull_withConversion() {
+        try{
+            standardAtmosphere.calculatePressureAltitude(new Measurement(0, Units.Pressure.InchMercury)
+                    , new Measurement(0, Units.Length.Foot)
+                    , null);
+            fail("Should have thrown IllegalArgumentException");
+        }catch(IllegalArgumentException e){
+
+        }
     }
 
-    @Test
+    
     public void testCalculateStandardPressureAtZero_withConversion() {
         Measurement result = standardAtmosphere.calculatePressureAltitude(
                 new Measurement(BigDecimal.valueOf(29.92), Units.Pressure.InchMercury),
@@ -167,7 +181,7 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         assertEquals(result.getMagnitude().doubleValue(), 0d);
     }
 
-    @Test
+    
     public void testCalculateStandardPressure_withConversion() {
         Measurement result = standardAtmosphere.calculatePressureAltitude(
                 new Measurement(BigDecimal.valueOf(29.32), Units.Pressure.InchMercury),
@@ -177,7 +191,7 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         assertEquals(result.getMagnitude().doubleValue(), 335.28d, 0.01);
     }
 
-    @Test
+    
     public void testCalculateStandardPressure_withConversions() {
         Measurement result = standardAtmosphere.calculatePressureAltitude(
                 new Measurement(BigDecimal.valueOf(993), Units.Pressure.HectoPascal),
@@ -191,14 +205,17 @@ public class StandardAtmosphereTest extends AndroidTestCase{
 
     //region calculatePressureAltitude(pressure)
 
-    @Test
-    public void ShouldThrowIfPressureIsNull_noElevation() {
-        standardAtmosphere.calculatePressureAltitude(null);
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("altitude");
+    
+    public void testShouldThrowIfPressureIsNull_noElevation() {
+        try{
+            standardAtmosphere.calculatePressureAltitude(null);
+            fail("Should have thrown IllegalArgumentException");
+        }catch(IllegalArgumentException e){
+
+        }
     }
 
-    @Test
+    
     public void testCalculateStandardPressureAtZero_noElevation() {
         Measurement result = standardAtmosphere.calculatePressureAltitude(
                 new Measurement(BigDecimal.valueOf(29.92), Units.Pressure.InchMercury),
@@ -207,7 +224,7 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         assertEquals(result.getMagnitude().doubleValue(), 0d);
     }
 
-    @Test
+    
     public void testCalculateStandardPressure_noElevation() {
         Measurement result = standardAtmosphere.calculatePressureAltitude(
                 new Measurement(BigDecimal.valueOf(29.32), Units.Pressure.InchMercury));
@@ -219,22 +236,28 @@ public class StandardAtmosphereTest extends AndroidTestCase{
 
     //region calculatePressureAltitude(pressure, unit)
 
-    @Test
-    public void ShouldThrowIfPressureIsNull_noElevationWithConversion() {
-        standardAtmosphere.calculatePressureAltitude(null, Units.Length.Foot);
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("altitude");
+    
+    public void testShouldThrowIfPressureIsNull_noElevationWithConversion() {
+        try {
+            standardAtmosphere.calculatePressureAltitude(null, Units.Length.Foot);
+            fail("Should have thrown IllegalArgumentException");
+        }catch(IllegalArgumentException e){
+
+        }
     }
 
-    @Test
-    public void ShouldThrowIfUnitIsNull_noElevationWithConversion() {
-        standardAtmosphere.calculatePressureAltitude(new Measurement(0, Units.Pressure.InchMercury)
-                , (String)null);
-        exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("\" is not a valid unit for a inchmercury\"");
+    
+    public void testShouldThrowIfUnitIsNull_noElevationWithConversion() {
+        try{
+            standardAtmosphere.calculatePressureAltitude(new Measurement(0, Units.Pressure.InchMercury)
+                    , (String) null);
+            fail("Should have thrown IllegalArgumentException");
+        }catch(IllegalArgumentException e){
+
+        }
     }
 
-    @Test
+    
     public void testCalculateStandardPressureAtZero_noElevationWithConversion() {
         Measurement result = standardAtmosphere.calculatePressureAltitude(
                 new Measurement(BigDecimal.valueOf(29.92), Units.Pressure.InchMercury),
@@ -244,7 +267,7 @@ public class StandardAtmosphereTest extends AndroidTestCase{
         assertEquals(result.getMagnitude().doubleValue(), 0.0);
     }
 
-    @Test
+    
     public void testCalculateStandardPressure_noElevationWithConversion() {
         Measurement result = standardAtmosphere.calculatePressureAltitude(
                 new Measurement(BigDecimal.valueOf(29.32), Units.Pressure.InchMercury),
