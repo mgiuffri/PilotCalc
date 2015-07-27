@@ -93,18 +93,44 @@ public final class StandardAtmosphere {
         Units.Validator.check(pressureAltitude, Units.Length.class);
         Units.Validator.check(outsideTemperature, Units.Temperature.class);
 
-        BigDecimal presAltitude = conversionCalculator.convert(pressureAltitude, Units.Length.Foot).getMagnitude();
-        BigDecimal OAT = conversionCalculator.convert(outsideTemperature, Units.Temperature.Celsius).getMagnitude();
-        BigDecimal standardTemperature = calculateStandardTemperature(pressureAltitude).getMagnitude();
+        double PA = conversionCalculator.convert(pressureAltitude, Units.Length.Foot).getMagnitude().doubleValue();
+        double OAT = conversionCalculator.convert(outsideTemperature, Units.Temperature.Kelvin).getMagnitude().doubleValue();
+        double standardTemperature = calculateStandardTemperature(pressureAltitude, Units.Temperature.Kelvin).getMagnitude().doubleValue();
+        double standardTemperatureLapseRate = StandardTemperatureLapseRate.getMagnitude().doubleValue();
+        double res = PA + standardTemperature /
+                standardTemperatureLapseRate * (1.0D - Math.pow(standardTemperature/ OAT, 0.234969D));
 
-        BigDecimal result = presAltitude.add(BigDecimal.valueOf(118.8).multiply(OAT.subtract(standardTemperature)));
-
-        return new Measurement(result.stripTrailingZeros(), Units.Length.Foot);
+        return new Measurement(BigDecimal.valueOf(res), Units.Length.Foot);
     }
 
     public Measurement calculateDensityAltitude(Measurement pressureAltitude, Measurement outsideTemperature, String resultUnit) {
         Units.Validator.check(resultUnit, Units.Length.class);
         Measurement result = calculateDensityAltitude(pressureAltitude, outsideTemperature);
+        return conversionCalculator.convert(result, resultUnit);
+    }
+
+    public Measurement calculateTrueAltitude(Measurement pressureAltitude, Measurement calibratedAltitude, Measurement outsideTemperature, Measurement elevation ){
+        ArgumentCheck.IsNotNull(pressureAltitude, "pressureAltitude");
+        ArgumentCheck.IsNotNull(calibratedAltitude, "calibratedAltitude");
+        ArgumentCheck.IsNotNull(outsideTemperature, "outsideTemperature");
+        ArgumentCheck.IsNotNull(elevation, "outsideTemperature");
+        Units.Validator.check(pressureAltitude, Units.Length.class);
+        Units.Validator.check(calibratedAltitude, Units.Length.class);
+        Units.Validator.check(outsideTemperature, Units.Temperature.class);
+        Units.Validator.check(elevation, Units.Length.class);
+
+        double CA = conversionCalculator.convert(calibratedAltitude, Units.Length.Foot).getMagnitude().doubleValue();
+        double FE = conversionCalculator.convert(elevation, Units.Length.Foot).getMagnitude().doubleValue();
+        double OAT = conversionCalculator.convert(outsideTemperature, Units.Temperature.Celsius).getMagnitude().doubleValue();
+        double standardTemperature = calculateStandardTemperature(pressureAltitude).getMagnitude().doubleValue();
+
+        double result = CA + (CA-FE) * (OAT - standardTemperature) / (OAT + 273.15);
+        return new Measurement(result, Units.Length.Foot);
+    }
+
+    public Measurement calculateTrueAltitude(Measurement pressureAltitude, Measurement calibratedAltitude, Measurement outsideTemperature, Measurement elevation, String resultUnit){
+        Units.Validator.check(resultUnit, Units.Length.class);
+        Measurement result = calculateTrueAltitude(pressureAltitude, calibratedAltitude, outsideTemperature, elevation);
         return conversionCalculator.convert(result, resultUnit);
     }
 }

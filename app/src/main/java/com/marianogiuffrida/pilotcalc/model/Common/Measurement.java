@@ -1,6 +1,8 @@
 package com.marianogiuffrida.pilotcalc.model.Common;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 
 /**
  * Created by Mariano on 7/02/2015.
@@ -22,7 +24,8 @@ public class Measurement {
     }
 
     public Measurement(double value, Unit unit) {
-        this(BigDecimal.valueOf(value), unit);
+
+        this(BigDecimal.valueOf(value).round(new MathContext(2, RoundingMode.HALF_UP)), unit);
     }
 
     public Measurement(double value, String unit) {
