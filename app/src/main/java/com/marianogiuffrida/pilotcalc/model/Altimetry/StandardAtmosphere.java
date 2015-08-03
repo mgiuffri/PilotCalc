@@ -52,6 +52,45 @@ public final class StandardAtmosphere {
         return new Measurement(result.stripTrailingZeros(), Units.Temperature.Celsius);
     }
 
+    public Measurement calculateOutsideAirTemperature(
+            Measurement indicatedAirTemperature,
+            Measurement machNumber,
+            double recoveryCoefficient) {
+
+        ArgumentCheck.IsNotNull(indicatedAirTemperature, "indicatedAirTemperature");
+        Units.Validator.check(indicatedAirTemperature, Units.Temperature.class);
+
+        double IAT = conversionCalculator.convert(indicatedAirTemperature, Units.Temperature.Kelvin).getMagnitude().doubleValue();
+        double M = machNumber.getMagnitude().doubleValue();
+
+        double OAT = IAT / (1.0 + 0.2 * recoveryCoefficient * Math.pow(M, 2.0D)) - 273.15D;
+
+        return new Measurement(OAT, Units.Temperature.Celsius);
+    }
+
+    public Measurement calculatePressure(Measurement pressureAltitude) {
+        ArgumentCheck.IsNotNull(pressureAltitude, "pressureAltitude");
+        Units.Validator.check(pressureAltitude, Units.Length.class);
+
+        double p0 = StandardPressureInHg.getMagnitude().doubleValue();
+        double PA = conversionCalculator.convert(pressureAltitude, Units.Length.Foot).getMagnitude().doubleValue();
+        double P = p0 * Math.pow(1.0D - 6.8755856E-006D * PA, 5.2558797D);
+
+        return new Measurement(P, Units.Pressure.InchMercury);
+    }
+
+    public Measurement calculateDifferentialPressure(Measurement calibratedAirspeed) {
+        ArgumentCheck.IsNotNull(calibratedAirspeed, "calibratedAirspeed");
+        Units.Validator.check(calibratedAirspeed, Units.Speed.class);
+
+        double p0 = StandardPressureInHg.getMagnitude().doubleValue();
+        double CAS = conversionCalculator.convert(calibratedAirspeed, Units.Speed.Knot).getMagnitude().doubleValue();
+        double CS_0 = 661.4786D; //Knots
+        double differentialPressure = p0 * (Math.pow(1 + 0.2 * Math.pow(CAS / CS_0, 2.0D), 3.5D) - 1);
+
+        return new Measurement(differentialPressure, "Whatever");
+    }
+
     public Measurement calculatePressureAltitude(Measurement pressureReading){
         ArgumentCheck.IsNotNull(pressureReading, "pressureReading");
         Units.Validator.check(pressureReading, Units.Pressure.class);

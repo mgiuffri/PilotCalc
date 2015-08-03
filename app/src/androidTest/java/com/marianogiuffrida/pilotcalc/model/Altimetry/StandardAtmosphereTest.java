@@ -32,7 +32,6 @@ public class StandardAtmosphereTest extends AndroidTestCase {
         }
     }
 
-
     public void testShouldThrowIfCalculatingTempWithInvalidMeasure() {
         try {
             standardAtmosphere.calculateStandardTemperature(new Measurement(1.0, Units.Pressure.HectoPascal));
@@ -415,5 +414,19 @@ public class StandardAtmosphereTest extends AndroidTestCase {
                 new Measurement(BigDecimal.valueOf(1900), Units.Length.Foot));
 
         assertEquals(result.getMagnitude().doubleValue(), 7580, 50);
+    }
+
+    public void testCalculateDiffPressure() {
+        Measurement result = standardAtmosphere.calculateDifferentialPressure(
+                new Measurement(250.0, Units.Speed.Knot));
+
+        assertEquals(result.getMagnitude().doubleValue(), 3.1001, 0.01);
+    }
+
+    public void testCalculatePressureAtAltitude() {
+        Measurement result = standardAtmosphere.calculatePressure(
+                new Measurement(10000, Units.Length.Foot));
+
+        assertEquals(result.getMagnitude().doubleValue(), 20.571, 0.01);
     }
 }
