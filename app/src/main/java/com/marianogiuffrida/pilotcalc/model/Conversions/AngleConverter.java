@@ -5,15 +5,21 @@ package com.marianogiuffrida.pilotcalc.model.Conversions;
  */
 public final class AngleConverter {
 
-    public final double ToRadians(int d, int m, int s){
-        return ToRadians(d + m/60 + s/3600);
+    private AngleConverter(){}
+
+    public static final double toRadians(int d, int m, int s){
+        return toRadians(toDegrees(d, m, s));
     }
 
-    public final double ToRadians(double degree){
+    public static final double toDegrees(int d, int m, int s){
+        return d + m / 60 + s / 3600;
+    }
+
+    public static final double toRadians(double degree){
         return 0.0174532925 * degree;
     }
 
-    public final double ToDegrees(double radians){
+    public static final double toDegrees(double radians){
         return 57.2957795 * radians;
     }
 }
