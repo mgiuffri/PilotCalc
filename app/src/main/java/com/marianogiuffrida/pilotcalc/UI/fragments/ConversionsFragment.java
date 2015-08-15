@@ -41,7 +41,7 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
     private static final String OUTPUT_NUMBER = "output";
     private static final String CALCULATOR_TAG = "calculator";
 
-    static{
+    static {
         typeMap = new HashMap();
         typeMap.put(R.id.radio_weight, Units.Weight.Name);
         typeMap.put(R.id.radio_length, Units.Length.Name);
@@ -70,18 +70,21 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
         inputTextView = (TextView) rootView.findViewById(R.id.conversion_Input);
         outputTextView = (TextView) rootView.findViewById(R.id.conversion_output);
         swapUnitsButton = (ImageButton) rootView.findViewById(R.id.swap_units);
+        radioConvType = (RadioGroup) rootView.findViewById(R.id.radio_conversionType);
+
         SqlLiteDataStore dataStore = new SqlLiteDataStore(getActivity().getApplicationContext());
         unitConversionsRepository = new UnitConversionRepository(dataStore);
         conversionCalculator = new ConversionCalculator(unitConversionsRepository);
 
 
-        radioConvType = (RadioGroup) rootView.findViewById(R.id.radio_conversionType);
-        radioConvType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                onSelectedConversionType(checkedId);
-            }
-        });
+        if (!tryRehydrateSavedState(savedInstanceState)) {
+            Fragment calculatorFragment = new CalculatorFragment();
+            getChildFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.conversions_child_fragment, calculatorFragment, CALCULATOR_TAG)
+                    .commit();
+            initializeViewBasedOnConversionType(defaultConversionType);
+        }
 
         swapUnitsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,24 +92,6 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
                 switchUnits();
             }
         });
-        if (savedInstanceState != null) {
-            int activeConversionType = savedInstanceState.getInt(ACTIVE_CONVERSION_TYPE);
-            initializeViewBasedOnConversionType(rootView, activeConversionType);
-            selectedSourceUnit = savedInstanceState.getString(SELECTED_SOURCE_UNIT);
-            selectedDestinationUnit = savedInstanceState.getString(SELECTED_DESTINATION_UNIT);
-            fillDestinationUnitSpinner(selectedSourceUnit);
-            destinationUnitSpinner.setSelection(((UnitAdapter) destinationUnitSpinner.getAdapter()).getPositionByName(selectedDestinationUnit));
-            sourceUnitSpinner.setSelection(((UnitAdapter) sourceUnitSpinner.getAdapter()).getPositionByName(selectedSourceUnit));
-            inputTextView.setText(savedInstanceState.getString(INPUT_NUMBER));
-            outputTextView.setText(savedInstanceState.getString(OUTPUT_NUMBER));
-        } else {
-            Fragment calculatorFragment = new CalculatorFragment();
-            getChildFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.conversions_child_fragment, calculatorFragment, CALCULATOR_TAG)
-                    .commit();
-            initializeViewBasedOnConversionType(rootView, defaultConversionType);
-        }
 
         destinationUnitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -135,11 +120,33 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
             }
         });
 
+        radioConvType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                onSelectedConversionType(checkedId);
+            }
+        });
+
         return rootView;
     }
 
-    private void initializeViewBasedOnConversionType(View rootView, int activeConversionType) {
-//        radioConversionsType.setActiveRadioButton((RadioButton) rootView.findViewById(activeConversionType));
+    private boolean tryRehydrateSavedState(Bundle savedInstanceState) {
+        if (savedInstanceState == null) return false;
+
+        int activeConversionType = savedInstanceState.getInt(ACTIVE_CONVERSION_TYPE);
+        initializeViewBasedOnConversionType(activeConversionType);
+        selectedSourceUnit = savedInstanceState.getString(SELECTED_SOURCE_UNIT);
+        selectedDestinationUnit = savedInstanceState.getString(SELECTED_DESTINATION_UNIT);
+        fillDestinationUnitSpinner(selectedSourceUnit);
+        destinationUnitSpinner.setSelection(((UnitAdapter) destinationUnitSpinner.getAdapter()).getPositionByName(selectedDestinationUnit));
+        sourceUnitSpinner.setSelection(((UnitAdapter) sourceUnitSpinner.getAdapter()).getPositionByName(selectedSourceUnit));
+        inputTextView.setText(savedInstanceState.getString(INPUT_NUMBER));
+        outputTextView.setText(savedInstanceState.getString(OUTPUT_NUMBER));
+        return true;
+    }
+
+    private void initializeViewBasedOnConversionType(int activeConversionType) {
         radioConvType.check(activeConversionType);
         onSelectedConversionType(activeConversionType);
     }
@@ -147,7 +154,6 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-//        savedInstanceState.putInt(ACTIVE_CONVERSION_TYPE, radioConversionsType.getCheckedRadioButtonId());
         savedInstanceState.putInt(ACTIVE_CONVERSION_TYPE, radioConvType.getCheckedRadioButtonId());
         savedInstanceState.putString(SELECTED_SOURCE_UNIT, selectedSourceUnit);
         savedInstanceState.putString(SELECTED_DESTINATION_UNIT, selectedDestinationUnit);
@@ -178,7 +184,7 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
         if (selectedDestinationUnit != null) {
             int index = adapter.getPositionByName(selectedDestinationUnit);
             if (index > 0) destinationUnitSpinner.setSelection(index);
-        }else{
+        } else {
             selectedDestinationUnit = destinationUnits.get(0).Name;
         }
     }
@@ -195,15 +201,14 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
                 StringUtils.isNullOrEmpty(selectedSourceUnit) ||
                 StringUtils.isNullOrEmpty(selectedDestinationUnit)) return;
         UnitConversionDescriptor d = unitConversionsRepository.getUnitConversionDescriptorBySourceDestination(selectedSourceUnit, selectedDestinationUnit);
-        DecimalFormat defaultFormat = new DecimalFormat( "0.######" );
+        DecimalFormat defaultFormat = new DecimalFormat("0.##");
         String convertedValue = defaultFormat.format(conversionCalculator.convert(Double.parseDouble(inputValue), d));
         outputTextView.setText(convertedValue);
     }
 
-    private void switchUnits(){
+    private void switchUnits() {
         destinationUnitSpinner.setSelection(((UnitAdapter) destinationUnitSpinner.getAdapter()).getPositionByName(selectedSourceUnit));
         sourceUnitSpinner.setSelection(((UnitAdapter) sourceUnitSpinner.getAdapter()).getPositionByName(selectedDestinationUnit));
         inputTextView.setText(outputTextView.getText());
     }
-
 }

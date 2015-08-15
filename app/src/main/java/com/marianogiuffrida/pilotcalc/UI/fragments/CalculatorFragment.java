@@ -52,14 +52,7 @@ public class CalculatorFragment extends Fragment {
         defaultFontColor = inputText.getTextColors();
 
         setupUiListeners();
-
-        if (savedInstanceState != null) {
-            inputText.setText(savedInstanceState.getCharSequence(INPUT_TEXT));
-            resultText.setText(savedInstanceState.getCharSequence(RESULT_TEXT));
-            lastPressed = (ButtonType) savedInstanceState.getSerializable(LAST_PRESSED);
-            consequetiveOperatorCount = savedInstanceState.getInt(CONSECUTIVE_OPS);
-        }
-
+        tryRehydrateSavedState(savedInstanceState);
         callBack = FragmentUtils.getParent(this, IProvideResult.class);
 
         return rootView;
@@ -220,51 +213,12 @@ public class CalculatorFragment extends Fragment {
         });
     }
 
-    private void handleEqualButton() {
-        if (updateResult()) {
-            String result = resultText.getText().toString().replace(",", "");
-            inputText.setText(result);
-            resultText.setText("");
-            inputText.startAnimation(AnimationUtils.loadAnimation(rootView.getContext(), R.anim.calculator_input_text_translatein));
-            if (callBack != null) callBack.onNewResult(result);
-        }
-    }
-
-    private boolean updateResult() {
-        resultText.setTextColor(defaultFontColor);
-        String resultString = "";
-        Boolean success = true;
-        try {
-            String inputValue = inputText.getText().toString();
-            if (!StringUtils.isNullOrEmpty(inputValue)) {
-                NumberFormat format = NumberFormat.getInstance();
-                format.setMaximumFractionDigits(2);
-                resultString = format.format(Calculate());
-            }
-        } catch (IllegalArgumentException e) {
-            resultString = "Error";
-            resultText.setTextColor(getResources().getColor(R.color.calcError));
-            success = false;
-        } catch (IOException e) {
-            e.printStackTrace();
-            success = false;
-        }
-        resultText.setText(resultString);
-        return success;
-    }
-
-    private Double Calculate() throws IOException, IllegalArgumentException {
-        return ShuntingYardEvaluator.calculate(inputText.getText().toString());
-    }
-
-    private void deleteLastInputCharacter() {
-        CharSequence input = inputText.getText();
-        if (input.length() > 0) {
-            inputText.setText(TextUtils.substring(input, 0, input.length() - 1));
-            if (lastPressed != ButtonType.NUMBER) /*IS AN OPERATION*/ {
-                consequetiveOperatorCount--;
-            }
-            updateResult();
+    private void tryRehydrateSavedState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            inputText.setText(savedInstanceState.getCharSequence(INPUT_TEXT));
+            resultText.setText(savedInstanceState.getCharSequence(RESULT_TEXT));
+            lastPressed = (ButtonType) savedInstanceState.getSerializable(LAST_PRESSED);
+            consequetiveOperatorCount = savedInstanceState.getInt(CONSECUTIVE_OPS);
         }
     }
 
@@ -273,14 +227,6 @@ public class CalculatorFragment extends Fragment {
         consequetiveOperatorCount = 0;
         inputText.setText(TextUtils.concat(inputText.getText(), button.getText()));
         updateResult();
-    }
-
-    private void clearAll() {
-        resultText.setText("");
-        inputText.setText("");
-        resultText.startAnimation(AnimationUtils.loadAnimation(rootView.getContext(), R.anim.abc_fade_out));
-        inputText.startAnimation(AnimationUtils.loadAnimation(rootView.getContext(), R.anim.abc_fade_out));
-        consequetiveOperatorCount = 0;
     }
 
     private void handleOperationClick(Button button) {
@@ -311,6 +257,62 @@ public class CalculatorFragment extends Fragment {
         consequetiveOperatorCount++;
     }
 
+    private void handleEqualButton() {
+        if (updateResult()) {
+            String result = resultText.getText().toString().replace(",", "");
+            inputText.setText(result);
+            resultText.setText("");
+            inputText.startAnimation(AnimationUtils.loadAnimation(rootView.getContext(), R.anim.calculator_input_text_translatein));
+            if (callBack != null) callBack.onNewResult(result);
+        }
+    }
+
+    private boolean updateResult() {
+        resultText.setTextColor(defaultFontColor);
+        String resultString = "";
+        Boolean success = true;
+        try {
+            String inputValue = inputText.getText().toString();
+            if (!StringUtils.isNullOrEmpty(inputValue)) {
+                NumberFormat format = NumberFormat.getInstance();
+                format.setMaximumFractionDigits(2);
+                resultString = format.format(calculate());
+            }
+        } catch (IllegalArgumentException e) {
+            resultString = "Error";
+            resultText.setTextColor(getResources().getColor(R.color.calcError));
+            success = false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            success = false;
+        }
+        resultText.setText(resultString);
+        return success;
+    }
+
+    private Double calculate() throws IOException, IllegalArgumentException {
+        return ShuntingYardEvaluator.calculate(inputText.getText().toString());
+    }
+
+    private void deleteLastInputCharacter() {
+        CharSequence input = inputText.getText();
+        if (input.length() > 0) {
+            inputText.setText(TextUtils.substring(input, 0, input.length() - 1));
+            if (lastPressed != ButtonType.NUMBER) /*IS AN OPERATION*/ {
+                consequetiveOperatorCount--;
+            }
+            updateResult();
+        }
+    }
+
+    private void clearAll() {
+        resultText.setText("");
+        inputText.setText("");
+        resultText.startAnimation(AnimationUtils.loadAnimation(rootView.getContext(), R.anim.abc_fade_out));
+        inputText.startAnimation(AnimationUtils.loadAnimation(rootView.getContext(), R.anim.abc_fade_out));
+        consequetiveOperatorCount = 0;
+    }
+
     private void appendToInputText(String buttonText) {
         inputText.setText(inputText.getText() + buttonText);
     }
@@ -338,6 +340,4 @@ public class CalculatorFragment extends Fragment {
                 lastPressed = ButtonType.DIV;
         }
     }
-
-
 }
