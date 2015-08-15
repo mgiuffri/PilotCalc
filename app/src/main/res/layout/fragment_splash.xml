@@ -1,0 +1,58 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/CalculatorLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_splash"
+            android:adjustViewBounds="true"/>
+
+        <TextView
+            android:id="@+id/WelcomeTitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:maxLines="2"
+            android:scrollHorizontally="true"
+            android:scrollbars="horizontal"
+            android:text="Pilot Calc"
+            android:textSize="50sp" />
+
+        <TextView
+            android:id="@+id/WelcomeDescription"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:maxLines="3"
+            android:scrollHorizontally="true"
+            android:scrollbars="horizontal"
+            android:text="Solve the most common flight calculations.This calculator is a digital port loosely based on Jeppensen's CR-3"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/WelcomeCopyright"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:maxLines="3"
+            android:scrollHorizontally="true"
+            android:scrollbars="horizontal"
+            android:text="® Mariano Giuffrida (2015)"
+            android:textSize="16sp" />
+    </LinearLayout>
+</FrameLayout>

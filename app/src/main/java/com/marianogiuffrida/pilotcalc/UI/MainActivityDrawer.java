@@ -19,6 +19,7 @@ import com.marianogiuffrida.pilotcalc.R;
 import com.marianogiuffrida.pilotcalc.UI.fragments.CalculatorFragment;
 import com.marianogiuffrida.pilotcalc.UI.fragments.ConversionsFragment;
 import com.marianogiuffrida.pilotcalc.UI.adapters.NavigationDrawerListAdapter;
+import com.marianogiuffrida.pilotcalc.UI.fragments.SplashFragment;
 import com.marianogiuffrida.pilotcalc.UI.fragments.WindFragment;
 import com.marianogiuffrida.pilotcalc.UI.navigation.NavigationDrawerItem;
 
@@ -62,7 +63,7 @@ public class MainActivityDrawer extends ActionBarActivity {
 
         navDrawerItems = new ArrayList<>();
         int index = 0;
-        for (String s : navMenuTitles){
+        for (String s : navMenuTitles) {
             navDrawerItems.add(new NavigationDrawerItem(s, navMenuIcons.getResourceId(index++, -1)));
         }
 
@@ -73,7 +74,7 @@ public class MainActivityDrawer extends ActionBarActivity {
         navDrawerAdapter = new NavigationDrawerListAdapter(getApplicationContext(), navDrawerItems);
         mDrawerList.setAdapter(navDrawerAdapter);
 
-        if(mDrawerLayout!= null) {
+        if (mDrawerLayout != null) {
             // enabling action bar app icon and behaving it as toggle button
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
@@ -103,6 +104,8 @@ public class MainActivityDrawer extends ActionBarActivity {
         }
 
         mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
+
+        displayView(-1);
     }
 
     @Override
@@ -132,11 +135,11 @@ public class MainActivityDrawer extends ActionBarActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // if nav drawer is opened, hide the action items
-        if(mDrawerLayout!= null) {
+        if (mDrawerLayout != null) {
             boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
             menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         }
-            return super.onPrepareOptionsMenu(menu);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -148,7 +151,7 @@ public class MainActivityDrawer extends ActionBarActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        if(mDrawerLayout!= null)
+        if (mDrawerLayout != null)
             mDrawerToggle.syncState();
     }
 
@@ -163,12 +166,13 @@ public class MainActivityDrawer extends ActionBarActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
             // display view for selected nav drawer item
-            displayView(position);
+            if (displayView(position)) updateDrawerSelection(position);
+
         }
     }
 
-    private void displayView(int position) {
-        Fragment fragment = null;
+    private boolean displayView(int position) {
+        Fragment fragment;
         switch (position) {
             case 0:
                 fragment = new ConversionsFragment();
@@ -180,6 +184,7 @@ public class MainActivityDrawer extends ActionBarActivity {
                 fragment = new WindFragment();
                 break;
             default:
+                fragment = new SplashFragment();
                 break;
         }
 
@@ -187,17 +192,21 @@ public class MainActivityDrawer extends ActionBarActivity {
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, fragment).commit();
+            return true;
+        }
 
-            // update selected item and title, then close the drawer
-            mDrawerList.setItemChecked(position, true);
-            mDrawerList.setSelection(position);
-            setTitle(navMenuTitles[position]);
-            if(mDrawerLayout != null){
+        // error in creating fragment
+        Log.e("MainActivity", "Error in creating fragment");
+        return false;
+    }
+
+    private void updateDrawerSelection(int position) {
+        // update selected item and title, then close the drawer
+        mDrawerList.setItemChecked(position, true);
+        mDrawerList.setSelection(position);
+        setTitle(navMenuTitles[position]);
+        if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mDrawerList);
-            }
-        } else {
-            // error in creating fragment
-            Log.e("MainActivity", "Error in creating fragment");
         }
     }
 }
