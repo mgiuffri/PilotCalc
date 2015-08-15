@@ -57,7 +57,7 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.conversions_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_conversions, container, false);
         destinationUnitSpinner = (Spinner) rootView.findViewById(R.id.conversions_to_spinner);
         sourceUnitSpinner = (Spinner) rootView.findViewById(R.id.conversions_from_spinner);
         inputTextView = (TextView) rootView.findViewById(R.id.conversion_Input);
