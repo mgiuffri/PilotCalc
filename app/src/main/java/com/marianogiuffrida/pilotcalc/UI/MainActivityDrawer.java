@@ -99,13 +99,14 @@ public class MainActivityDrawer extends ActionBarActivity {
             mDrawerLayout.setDrawerListener(mDrawerToggle);
         }
         if (savedInstanceState == null) {
+            displayView(-1);
             // on first time display view for first nav item
             //displayView(0);
         }
 
         mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 
-        displayView(-1);
+
     }
 
     @Override

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RadioGroup
+        android:id="@+id/radio_conversionType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radio_length"
+            style="@style/conversion_button"
+            android:drawableTop="@drawable/length_radio_selector"
+            android:text="@string/length" />
+
+        <RadioButton
+            android:id="@+id/radio_pressure"
+            style="@style/conversion_button"
+            android:drawableTop="@drawable/pressure_radio_selector"
+            android:text="@string/pressure" />
+
+        <RadioButton
+            android:id="@+id/radio_speed"
+            style="@style/conversion_button"
+            android:drawableTop="@drawable/speed_radio_selector"
+            android:text="@string/speed" />
+
+        <RadioButton
+            android:id="@+id/radio_temp"
+            style="@style/conversion_button"
+            android:drawableTop="@drawable/temp_radio_selector"
+            android:text="@string/temperature" />
+
+        <RadioButton
+            android:id="@+id/radio_volume"
+            style="@style/conversion_button"
+            android:drawableTop="@drawable/volume_radio_selector"
+            android:text="@string/volume" />
+
+        <RadioButton
+            android:id="@+id/radio_weight"
+            style="@style/conversion_button"
+            android:drawableTop="@drawable/weight_radio_selector"
+            android:text="@string/weight" />
+
+    </RadioGroup>
+
+    <!--<com.marianogiuffrida.customview.RadioButtonsTable-->
+    <!--android:id="@+id/radio_conversionType"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@color/lightGray">-->
+
+    <!--<TableRow>-->
+
+    <!--<RadioButton-->
+    <!--android:id="@+id/radio_weight"-->
+    <!--style="@style/conversion_button"-->
+    <!--android:drawableTop="@drawable/temp_radio_selector"-->
+    <!--android:text="@string/weight" />-->
+
+    <!--<RadioButton-->
+    <!--android:id="@+id/radio_length"-->
+    <!--style="@style/conversion_button"-->
+    <!--android:drawableTop="@drawable/temp_radio_selector"-->
+    <!--android:text="@string/length" />-->
+
+    <!--<RadioButton-->
+    <!--android:id="@+id/radio_temp"-->
+    <!--style="@style/conversion_button"-->
+    <!--android:drawableTop="@drawable/temp_radio_selector"-->
+    <!--android:text="@string/temperature" />-->
+
+    <!--</TableRow>-->
+
+    <!--<TableRow>-->
+
+    <!--<RadioButton-->
+    <!--android:id="@+id/radio_pressure"-->
+    <!--style="@style/conversion_button"-->
+    <!--android:drawableTop="@drawable/temp_radio_selector"-->
+    <!--android:text="@string/pressure" />-->
+
+    <!--<RadioButton-->
+    <!--android:id="@+id/radio_volume"-->
+    <!--style="@style/conversion_button"-->
+    <!--android:drawableTop="@drawable/temp_radio_selector"-->
+    <!--android:text="@string/volume" />-->
+
+    <!--<RadioButton-->
+    <!--android:id="@+id/radio_speed"-->
+    <!--style="@style/conversion_button"-->
+    <!--android:drawableTop="@drawable/temp_radio_selector"-->
+    <!--android:text="@string/speed" />-->
+
+    <!--</TableRow>-->
+    <!--</com.marianogiuffrida.customview.RadioButtonsTable>-->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/conversion_Input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:maxLines="1"
+                    android:scrollbars="horizontal"
+                    android:textSize="20sp" />
+
+                <Spinner
+                    android:id="@+id/conversions_from_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/conversion_output"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:maxLines="1"
+                    android:scrollbars="horizontal"
+                    android:textSize="30sp" />
+
+                <Spinner
+                    android:id="@+id/conversions_to_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/swap_units"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="right"
+            android:adjustViewBounds="true"
+            android:background="@drawable/ic_swap"
+            android:backgroundTint="@color/lightGray" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/conversions_child_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
