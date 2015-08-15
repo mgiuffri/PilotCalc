@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -52,6 +54,7 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
     private RadioGroup radioConvType;
     private final int defaultConversionType = R.id.radio_length;
     private String selectedSourceUnit, selectedDestinationUnit;
+    private ImageButton swapUnitsButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,6 +65,7 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
         sourceUnitSpinner = (Spinner) rootView.findViewById(R.id.conversions_from_spinner);
         inputTextView = (TextView) rootView.findViewById(R.id.conversion_Input);
         outputTextView = (TextView) rootView.findViewById(R.id.conversion_output);
+        swapUnitsButton = (ImageButton) rootView.findViewById(R.id.swap_units);
         SqlLiteDataStore dataStore = new SqlLiteDataStore(getActivity().getApplicationContext());
         unitConversionsRepository = new UnitConversionRepository(dataStore);
         conversionCalculator = new ConversionCalculator(unitConversionsRepository);
@@ -75,6 +79,13 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 onSelectedConversionType(checkedId);
+            }
+        });
+
+        swapUnitsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchUnits();
             }
         });
 
@@ -183,6 +194,7 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
     private void switchUnits(){
         destinationUnitSpinner.setSelection(((UnitAdapter) destinationUnitSpinner.getAdapter()).getPositionByName(selectedSourceUnit));
         sourceUnitSpinner.setSelection(((UnitAdapter) sourceUnitSpinner.getAdapter()).getPositionByName(selectedDestinationUnit));
+        inputTextView.setText(outputTextView.getText());
     }
 
 }

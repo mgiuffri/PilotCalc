@@ -142,11 +142,14 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-    <!--<Button-->
-        <!--android:id="@+id/swap_units"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="swap" />-->
+    <ImageButton
+        android:id="@+id/swap_units"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_swap"
+        android:adjustViewBounds="true"
+        android:backgroundTint="@color/lightGray"
+        android:layout_gravity="right" />
 
     <FrameLayout
         android:id="@+id/conversions_child_fragment"
