@@ -12,6 +12,7 @@
     <string-array name="nav_drawer_items">
         <item>Unit Conversions</item>
         <item>Calculator</item>
+        <item>Wind</item>
     </string-array>
 
     <!-- Nav Drawer List Item Icons -->
@@ -19,6 +20,7 @@
     <array name="nav_drawer_icons">
         <item>@drawable/ic_conversions</item>
         <item>@drawable/ic_calculator</item>
+        <item>@drawable/ic_wind</item>
     </array>
 
     <string name="weight">Weight</string>

@@ -19,6 +19,7 @@ import com.marianogiuffrida.pilotcalc.R;
 import com.marianogiuffrida.pilotcalc.UI.fragments.CalculatorFragment;
 import com.marianogiuffrida.pilotcalc.UI.fragments.ConversionsFragment;
 import com.marianogiuffrida.pilotcalc.UI.adapters.NavigationDrawerListAdapter;
+import com.marianogiuffrida.pilotcalc.UI.fragments.WindFragment;
 import com.marianogiuffrida.pilotcalc.UI.navigation.NavigationDrawerItem;
 
 import java.util.ArrayList;
@@ -59,11 +60,11 @@ public class MainActivityDrawer extends ActionBarActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
 
-        navDrawerItems = new ArrayList<NavigationDrawerItem>();
-
-        // adding nav drawer items to array
-        navDrawerItems.add(new NavigationDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
-        navDrawerItems.add(new NavigationDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
+        navDrawerItems = new ArrayList<>();
+        int index = 0;
+        for (String s : navMenuTitles){
+            navDrawerItems.add(new NavigationDrawerItem(s, navMenuIcons.getResourceId(index++, -1)));
+        }
 
         // Recycle the typed array
         navMenuIcons.recycle();
@@ -174,6 +175,9 @@ public class MainActivityDrawer extends ActionBarActivity {
                 break;
             case 1:
                 fragment = new CalculatorFragment();
+                break;
+            case 2:
+                fragment = new WindFragment();
                 break;
             default:
                 break;
