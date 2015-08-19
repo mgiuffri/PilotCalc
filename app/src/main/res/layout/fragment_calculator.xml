@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/appBackground"
     tools:context="com.marianogiuffrida.pilotcalc.UI.fragments.CalculatorFragment">
 
     <LinearLayout
@@ -22,6 +23,7 @@
             android:scrollbars="horizontal"
             android:text=""
             android:textSize="28sp"
+            android:textColor="@color/white"
             android:scrollHorizontally="true"/>
 
         <TextView
@@ -32,6 +34,7 @@
             android:maxLines="1"
             android:scrollHorizontally="true"
             android:text=""
+            android:textColor="@color/white"
             android:textSize="35sp" />
 
         <LinearLayout

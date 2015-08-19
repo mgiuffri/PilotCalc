@@ -76,7 +76,6 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
         unitConversionsRepository = new UnitConversionRepository(dataStore);
         conversionCalculator = new ConversionCalculator(unitConversionsRepository);
 
-
         if (!tryRehydrateSavedState(savedInstanceState)) {
             Fragment calculatorFragment = new CalculatorFragment();
             getChildFragmentManager()

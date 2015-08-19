@@ -2,6 +2,7 @@
 <resources>
     <color name="white">#fff</color>
     <color name="lightBlue">#ff7ac6ff</color>
+    <color name="appBackground">#898989</color>
     <color name="lightGray">#ffbababa</color>
     <color name="darkGray">#ff3c3f41</color>
     <color name="list_item_title">@color/white</color>
@@ -13,4 +14,5 @@
     <color name="calculator_numbers_background">@color/darkGray</color>
     <color name="calcError">#ffc91e38</color>
     <color name="calculator_operation_button_background">@color/lightGray</color>
+    <color name="black">#050000</color>
 </resources>

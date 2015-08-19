@@ -1,0 +1,119 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    tools:context="com.marianogiuffrida.pilotcalc.UI.fragments.InFlightWindFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/inputLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Input Parameters"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/black" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/round_corners_rectangle"
+            android:layout_below="@+id/inputLabel">
+
+            <TextView
+                android:id="@+id/headingLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Heading"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp" />
+
+            <antistatic.spinnerwheel.WheelVerticalView
+                android:id="@+id/heading0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/headingLabel" />
+
+            <antistatic.spinnerwheel.WheelVerticalView
+                android:id="@+id/heading1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/headingLabel"
+                android:layout_toRightOf="@+id/heading0" />
+
+            <antistatic.spinnerwheel.WheelVerticalView
+                android:id="@+id/heading2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/headingLabel"
+                android:layout_toRightOf="@+id/heading1" />
+
+            <TextView
+                android:id="@+id/trackLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="@string/track"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp" />
+
+            <antistatic.spinnerwheel.WheelVerticalView
+                android:id="@+id/track2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/trackLabel" />
+
+            <antistatic.spinnerwheel.WheelVerticalView
+                android:id="@+id/track1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/trackLabel"
+                android:layout_toLeftOf="@id/track2" />
+
+            <TextView
+                android:id="@+id/tasLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/true_air_speed"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/black"
+                android:layout_below="@+id/heading0"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp" />
+
+            <EditText
+                android:id="@+id/tas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:layout_below="@+id/tasLabel" />
+
+            <Spinner
+                android:id="@+id/tasSpinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_below="@+id/tasLabel"
+                android:layout_toRightOf="@+id/tas" />
+
+            <antistatic.spinnerwheel.WheelVerticalView
+                android:id="@+id/track0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentStart="false"
+                android:layout_below="@id/trackLabel"
+                android:layout_toLeftOf="@id/track1" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+</FrameLayout>

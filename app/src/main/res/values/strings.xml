@@ -32,5 +32,13 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="inflightWind">In-flight wind</string>
+    <string name="groundvector">Track &amp; Ground Speed</string>
+    <string name="airvector">Heading &amp; True Airspeed</string>
+    <string name="what_wind">Calculate...</string>
+    <string name="windcomponents">Wind Components</string>
+    <string name="true_air_speed">True AirSpeed</string>
+    <string name="track">Track</string>
+    <string name="ground_speed">Ground Speed</string>
 
 </resources>
