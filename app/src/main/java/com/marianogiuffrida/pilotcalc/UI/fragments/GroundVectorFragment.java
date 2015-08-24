@@ -1,7 +1,7 @@
 package com.marianogiuffrida.pilotcalc.UI.fragments;
 
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -33,8 +33,8 @@ import antistatic.spinnerwheel.AbstractWheel;
 import antistatic.spinnerwheel.OnWheelChangedListener;
 import antistatic.spinnerwheel.adapters.NumericWheelAdapter;
 
-public class InFlightWindFragment extends Fragment {
-    public static final int ID = 0;
+public class GroundVectorFragment extends Fragment {
+    public static final int ID = 1;
 
     private View rootView;
     private Spinner trueAirspeedSpinner;
@@ -47,25 +47,25 @@ public class InFlightWindFragment extends Fragment {
     private String selectedWindSpeedUnit;
     private WindTriangleCalculator calculator;
     private EditText tasEditText;
-    private EditText groundSpeedEditText;
+    private EditText windSpeedEditText;
     private BigDecimal inputTas;
-    private BigDecimal inputGS;
-    private TextView windDirectionText;
-    private TextView windSpeedText;
+    private BigDecimal inputWS;
+    private TextView trackText;
+    private TextView groundSpeedText;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        rootView = inflater.inflate(R.layout.fragment_in_flight_wind, container, false);
+        rootView = inflater.inflate(R.layout.fragment_ground_vector, container, false);
         trueAirspeedSpinner = (Spinner) rootView.findViewById(R.id.tasSpinner);
         groundSpeedSpinner = (Spinner) rootView.findViewById(R.id.groundSpeedSpinner);
         windSpeedSpinner = (Spinner) rootView.findViewById(R.id.windSpeedSpinner);
 
         tasEditText = (EditText) rootView.findViewById(R.id.tas);
-        groundSpeedEditText = (EditText) rootView.findViewById(R.id.groundSpeed);
-        windDirectionText = (TextView) rootView.findViewById(R.id.windDirection);
-        windSpeedText = (TextView) rootView.findViewById(R.id.windSpeed);
+        windSpeedEditText = (EditText) rootView.findViewById(R.id.windSpeed);
+        trackText = (TextView) rootView.findViewById(R.id.track);
+        groundSpeedText = (TextView) rootView.findViewById(R.id.groundSpeed);
 
         SqlLiteDataStore dataStore = new SqlLiteDataStore(getActivity().getApplicationContext());
         unitConversionsRepository = new UnitConversionRepository(dataStore);
@@ -76,10 +76,10 @@ public class InFlightWindFragment extends Fragment {
         initWheel(R.id.heading1, 9);
         initWheel(R.id.heading2, 9);
 
-        initWheel(R.id.track0, 3);
-        getWheel(R.id.track0).addChangingListener(limitTrackTrigger);
-        initWheel(R.id.track1, 9);
-        initWheel(R.id.track2, 9);
+        initWheel(R.id.wind0, 3);
+        getWheel(R.id.wind0).addChangingListener(limitWindTrigger);
+        initWheel(R.id.wind1, 9);
+        initWheel(R.id.wind2, 9);
 
         selectedGroundSpeedUnit = fillSpinner(groundSpeedSpinner);
         selectedWindSpeedUnit = fillSpinner(windSpeedSpinner);
@@ -105,7 +105,7 @@ public class InFlightWindFragment extends Fragment {
             }
         });
 
-        groundSpeedEditText.addTextChangedListener(new TextWatcher() {
+        windSpeedEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -113,8 +113,8 @@ public class InFlightWindFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length() > 0){
-                    inputGS = new BigDecimal(s.toString());
+                if (s.length() > 0) {
+                    inputWS = new BigDecimal(s.toString());
                     calculate();
                 }
             }
@@ -202,13 +202,13 @@ public class InFlightWindFragment extends Fragment {
         }
     };
 
-    private OnWheelChangedListener limitTrackTrigger = new OnWheelChangedListener() {
+    private OnWheelChangedListener limitWindTrigger = new OnWheelChangedListener() {
         public void onChanged(AbstractWheel wheel, int oldValue, int newValue) {
-            AbstractWheel track1 = getWheel(R.id.track1);
+            AbstractWheel wind1 = getWheel(R.id.wind1);
             if (wheel.getCurrentItem() == 3)
-                track1.setViewAdapter(new NumericWheelAdapter(getActivity().getApplicationContext(), 0, 5));
+                wind1.setViewAdapter(new NumericWheelAdapter(getActivity().getApplicationContext(), 0, 5));
             else{
-                track1.setViewAdapter(new NumericWheelAdapter(getActivity().getApplicationContext(), 0, 9));
+                wind1.setViewAdapter(new NumericWheelAdapter(getActivity().getApplicationContext(), 0, 9));
             }
         }
     };
@@ -222,9 +222,9 @@ public class InFlightWindFragment extends Fragment {
         return getWheel(id).getCurrentItem();
     }
 
-    private CompassDirection getTrack() {
-        return new CompassDirection(getCurrentItem(R.id.track0) * 100
-                + getCurrentItem(R.id.track1) * 10 + getCurrentItem(R.id.track2), 0, 0);
+    private CompassDirection getWind() {
+        return new CompassDirection(getCurrentItem(R.id.wind0) * 100
+                + getCurrentItem(R.id.wind1) * 10 + getCurrentItem(R.id.wind2), 0, 0);
     }
 
     private CompassDirection getHeading() {
@@ -233,18 +233,18 @@ public class InFlightWindFragment extends Fragment {
     }
 
     private void calculate() {
-        CompassDirection track = getTrack();
+        CompassDirection wind = getWind();
         CompassDirection heading = getHeading();
-        if (inputGS != null && inputTas != null) {
-            WindTriangleVector wind = calculator.calculateWindVector(
-                    new WindTriangleVector(track, new Measurement(inputGS, selectedGroundSpeedUnit)),
+        if (inputWS != null && inputTas != null) {
+            WindTriangleVector groundVector = calculator.calculateGroundVector(
+                    new WindTriangleVector(wind, new Measurement(inputWS, selectedWindSpeedUnit)),
                     new WindTriangleVector(heading, new Measurement(inputTas, selectedTrueAirspeedUnit)),
-                    selectedWindSpeedUnit);
+                    selectedGroundSpeedUnit);
 
             NumberFormat format = NumberFormat.getInstance();
             format.setMaximumFractionDigits(0);
-            windDirectionText.setText(format.format(wind.getDirection().getDegrees()));
-            windSpeedText.setText(format.format(wind.getSpeed().getMagnitude()));
+            trackText.setText(format.format(groundVector.getDirection().getDegrees()));
+            groundSpeedText.setText(format.format(groundVector.getSpeed().getMagnitude()));
         }
     }
 }

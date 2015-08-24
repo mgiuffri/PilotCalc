@@ -44,5 +44,6 @@
     <string name="heading">Heading</string>
     <string name="inputs">Input Parameters</string>
     <string name="results">Result</string>
+    <string name="wind_speed">Wind Speed</string>
 
 </resources>

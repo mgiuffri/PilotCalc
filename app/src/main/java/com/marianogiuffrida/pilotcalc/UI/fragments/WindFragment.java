@@ -33,10 +33,24 @@ public class WindFragment extends Fragment implements OnSelectionListener {
     @Override
     public void onNewSelection(int position) {
         switch (position) {
-            case 0:
+            case InFlightWindFragment.ID:
                 getChildFragmentManager()
                         .beginTransaction()
                         .replace(R.id.wind_frame_container, new InFlightWindFragment())
+                        .addToBackStack("ciao")
+                        .commit();
+                break;
+            case GroundVectorFragment.ID:
+                getChildFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.wind_frame_container, new GroundVectorFragment())
+                        .addToBackStack("ciao")
+                        .commit();
+                break;
+            case AirVectorFragment.ID:
+                getChildFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.wind_frame_container, new AirVectorFragment())
                         .addToBackStack("ciao")
                         .commit();
                 break;

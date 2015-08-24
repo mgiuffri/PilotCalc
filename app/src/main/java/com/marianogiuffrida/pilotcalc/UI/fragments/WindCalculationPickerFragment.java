@@ -29,10 +29,10 @@ public class WindCalculationPickerFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.fragment_wind_choose_calculation, container, false);
-        inflightWindButton = (Button)rootView.findViewById(R.id.inflightwind);
-        groundVectorButton = (Button)rootView.findViewById(R.id.groundvector);
-        airVectorButton = (Button)rootView.findViewById(R.id.airvector);
-        componentsButton = (Button)rootView.findViewById(R.id.windcomponents);
+        inflightWindButton = (Button) rootView.findViewById(R.id.inflightwind);
+        groundVectorButton = (Button) rootView.findViewById(R.id.groundvector);
+        airVectorButton = (Button) rootView.findViewById(R.id.airvector);
+        componentsButton = (Button) rootView.findViewById(R.id.windcomponents);
 
         inflightWindButton.setOnClickListener(
                 new View.OnClickListener() {
@@ -43,7 +43,25 @@ public class WindCalculationPickerFragment extends Fragment {
                 }
         );
 
-        mListener =  FragmentUtils.getParent(this, OnSelectionListener.class);
+        groundVectorButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListener.onNewSelection(GroundVectorFragment.ID);
+                    }
+                }
+        );
+
+        airVectorButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListener.onNewSelection(AirVectorFragment.ID);
+                    }
+                }
+        );
+
+        mListener = FragmentUtils.getParent(this, OnSelectionListener.class);
         return rootView;
     }
 }
