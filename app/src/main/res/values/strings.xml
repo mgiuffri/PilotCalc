@@ -37,8 +37,12 @@
     <string name="airvector">Heading &amp; True Airspeed</string>
     <string name="what_wind">Calculate...</string>
     <string name="windcomponents">Wind Components</string>
-    <string name="true_air_speed">True AirSpeed</string>
+    <string name="true_air_speed">Air Speed</string>
     <string name="track">Track</string>
     <string name="ground_speed">Ground Speed</string>
+    <string name="wind">Wind</string>
+    <string name="heading">Heading</string>
+    <string name="inputs">Input Parameters</string>
+    <string name="results">Result</string>
 
 </resources>

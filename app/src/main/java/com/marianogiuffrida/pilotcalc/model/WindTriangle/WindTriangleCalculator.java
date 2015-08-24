@@ -17,7 +17,14 @@ public class WindTriangleCalculator {
         conversionCalculator = new ConversionCalculator(uc);
     }
 
-    public WindTriangleVector calculateAirVector(WindTriangleVector windVector, WindTriangleVector groundVector){
+    public WindTriangleVector calculateAirVector(WindTriangleVector windVector, WindTriangleVector groundVector, String resultUnit) {
+        Units.Validator.check(resultUnit, Units.Speed.class);
+        WindTriangleVector result = calculateAirVector(windVector, groundVector);
+        Measurement convertedSpeed = conversionCalculator.convert(result.getSpeed(), resultUnit);
+        return new WindTriangleVector(result.getDirection(), convertedSpeed);
+    }
+
+    public WindTriangleVector calculateAirVector(WindTriangleVector windVector, WindTriangleVector groundVector) {
 
         ArgumentCheck.IsNotNull(windVector, "windVector");
         ArgumentCheck.IsNotNull(groundVector, "groundVector");
@@ -43,7 +50,14 @@ public class WindTriangleCalculator {
                 new Measurement(trueAirspeed, Units.Speed.Knot));
     }
 
-    public WindTriangleVector calculateGroundVector(WindTriangleVector windVector, WindTriangleVector airVector){
+    public WindTriangleVector calculateGroundVector(WindTriangleVector windVector, WindTriangleVector airVector, String resultUnit) {
+        Units.Validator.check(resultUnit, Units.Speed.class);
+        WindTriangleVector result = calculateGroundVector(windVector, airVector);
+        Measurement convertedSpeed = conversionCalculator.convert(result.getSpeed(), resultUnit);
+        return new WindTriangleVector(result.getDirection(), convertedSpeed);
+    }
+
+    public WindTriangleVector calculateGroundVector(WindTriangleVector windVector, WindTriangleVector airVector) {
         ArgumentCheck.IsNotNull(windVector, "windVector");
         ArgumentCheck.IsNotNull(airVector, "airVector");
         Units.Validator.check(windVector.getSpeed(), Units.Speed.class);
@@ -69,7 +83,14 @@ public class WindTriangleCalculator {
                 new Measurement(groundSpeed, Units.Speed.Knot));
     }
 
-    public WindTriangleVector calculateWindVector(WindTriangleVector groundVector, WindTriangleVector airVector){
+    public WindTriangleVector calculateWindVector(WindTriangleVector groundVector, WindTriangleVector airVector, String resultUnit) {
+        Units.Validator.check(resultUnit, Units.Speed.class);
+        WindTriangleVector result = calculateGroundVector(groundVector, airVector);
+        Measurement convertedSpeed = conversionCalculator.convert(result.getSpeed(), resultUnit);
+        return new WindTriangleVector(result.getDirection(), convertedSpeed);
+    }
+
+    public WindTriangleVector calculateWindVector(WindTriangleVector groundVector, WindTriangleVector airVector) {
         ArgumentCheck.IsNotNull(groundVector, "groundVector");
         ArgumentCheck.IsNotNull(airVector, "airVector");
         Units.Validator.check(groundVector.getSpeed(), Units.Speed.class);
@@ -86,7 +107,7 @@ public class WindTriangleCalculator {
                 - 2 * groundSpeed * trueAirSpeed * Math.cos(trueHeading - trueCourse));
 
         double windDirection = trueCourse +
-                Math.atan2( trueAirSpeed * Math.sin(trueHeading - trueCourse),
+                Math.atan2(trueAirSpeed * Math.sin(trueHeading - trueCourse),
                         trueAirSpeed * Math.cos(trueHeading - trueCourse) - groundSpeed);
 
         return new WindTriangleVector(
@@ -96,7 +117,17 @@ public class WindTriangleCalculator {
 
     public WindTriangleVector calculateHeadingAndGroundSpeed(WindTriangleVector windVector,
                                                              CompassDirection trueCourse,
-                                                             Measurement trueAirspeed){
+                                                             Measurement trueAirspeed,
+                                                             String resultUnit) {
+        Units.Validator.check(resultUnit, Units.Speed.class);
+        WindTriangleVector result = calculateHeadingAndGroundSpeed(windVector, trueCourse, trueAirspeed);
+        Measurement convertedSpeed = conversionCalculator.convert(result.getSpeed(), resultUnit);
+        return new WindTriangleVector(result.getDirection(), convertedSpeed);
+    }
+
+    public WindTriangleVector calculateHeadingAndGroundSpeed(WindTriangleVector windVector,
+                                                             CompassDirection trueCourse,
+                                                             Measurement trueAirspeed) {
         ArgumentCheck.IsNotNull(windVector, "windVector");
         ArgumentCheck.IsNotNull(trueCourse, "trueCourse");
         ArgumentCheck.IsNotNull(trueAirspeed, "trueAirspeed");
@@ -111,7 +142,7 @@ public class WindTriangleCalculator {
 
         double trueHeading = TC + Math.asin(SWC);
 
-        double groundSpeed = TAS * Math.sqrt(1 - Math.pow(SWC,2))
+        double groundSpeed = TAS * Math.sqrt(1 - Math.pow(SWC, 2))
                 - windSpeed * Math.cos(windDirection - TC);
 
         return new WindTriangleVector(
@@ -119,7 +150,17 @@ public class WindTriangleCalculator {
                 new Measurement(groundSpeed, Units.Speed.Knot));
     }
 
-    public WindComponents calculateWindComponents(CompassDirection runwayDirection, WindTriangleVector windVector){
+    public WindComponents calculateWindComponents(CompassDirection runwayDirection,
+                                                  WindTriangleVector windVector,
+                                                  String resultUnit) {
+        Units.Validator.check(resultUnit, Units.Speed.class);
+        WindComponents result = calculateWindComponents(runwayDirection, windVector);
+        Measurement convertedHeadwind = conversionCalculator.convert(result.getHeadWind(), resultUnit);
+        Measurement convertedCrosswind = conversionCalculator.convert(result.getCrossWind(), resultUnit);
+        return new WindComponents(convertedHeadwind, convertedCrosswind);
+    }
+
+    public WindComponents calculateWindComponents(CompassDirection runwayDirection, WindTriangleVector windVector) {
         ArgumentCheck.IsNotNull(windVector, "windVector");
         Units.Validator.check(windVector.getSpeed(), Units.Speed.class);
 
