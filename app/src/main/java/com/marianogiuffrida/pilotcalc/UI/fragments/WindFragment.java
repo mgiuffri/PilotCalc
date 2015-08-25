@@ -13,7 +13,7 @@ import com.marianogiuffrida.pilotcalc.UI.notification.OnSelectionListener;
 /**
  * Created by Mariano on 17/08/2015.
  */
-public class WindFragment extends Fragment implements OnSelectionListener {
+public class WindFragment extends BackHandledFragment implements OnSelectionListener {
 
     private View rootView;
 
@@ -66,5 +66,19 @@ public class WindFragment extends Fragment implements OnSelectionListener {
         }
     }
 
+    @Override
+    public String getTagText() {
+        return null;
+    }
 
+    @Override
+    public boolean onBackPressed() {
+        if(getChildFragmentManager().getBackStackEntryCount() > 0){
+            getChildFragmentManager().popBackStack();
+            return true;
+        }
+        return false;
+    }
 }
+
+

@@ -16,18 +16,17 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.marianogiuffrida.pilotcalc.R;
+import com.marianogiuffrida.pilotcalc.UI.fragments.BackHandledFragment;
 import com.marianogiuffrida.pilotcalc.UI.fragments.CalculatorFragment;
 import com.marianogiuffrida.pilotcalc.UI.fragments.ConversionsFragment;
 import com.marianogiuffrida.pilotcalc.UI.adapters.NavigationDrawerListAdapter;
 import com.marianogiuffrida.pilotcalc.UI.fragments.SplashFragment;
-import com.marianogiuffrida.pilotcalc.UI.fragments.WindCalculationPickerFragment;
 import com.marianogiuffrida.pilotcalc.UI.fragments.WindFragment;
 import com.marianogiuffrida.pilotcalc.UI.navigation.NavigationDrawerItem;
 
 import java.util.ArrayList;
 
-
-public class MainActivityDrawer extends ActionBarActivity {
+public class MainActivityDrawer extends ActionBarActivity implements BackHandledFragment.BackHandlerInterface{
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -44,6 +43,7 @@ public class MainActivityDrawer extends ActionBarActivity {
 
     private ArrayList<NavigationDrawerItem> navDrawerItems;
     private NavigationDrawerListAdapter navDrawerAdapter;
+    private BackHandledFragment selectedFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,6 +163,11 @@ public class MainActivityDrawer extends ActionBarActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    @Override
+    public void setSelectedFragment(BackHandledFragment backHandledFragment) {
+        selectedFragment = backHandledFragment;
+    }
+
     private class SlideMenuClickListener implements android.widget.AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -192,8 +197,11 @@ public class MainActivityDrawer extends ActionBarActivity {
 
         if (fragment != null) {
             FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.frame_container, fragment).commit();
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.frame_container, fragment)
+                    .addToBackStack("Fragment")
+                    .commit();
             return true;
         }
 
@@ -209,6 +217,17 @@ public class MainActivityDrawer extends ActionBarActivity {
         setTitle(navMenuTitles[position]);
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mDrawerList);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(selectedFragment == null || !selectedFragment.onBackPressed()) {
+            if (getFragmentManager().getBackStackEntryCount() == 0) {
+                super.onBackPressed();
+            } else {
+                getFragmentManager().popBackStack();
+            }
         }
     }
 }
