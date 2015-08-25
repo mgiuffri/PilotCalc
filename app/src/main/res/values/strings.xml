@@ -45,5 +45,8 @@
     <string name="inputs">Input Parameters</string>
     <string name="results">Result</string>
     <string name="wind_speed">Wind Speed</string>
+    <string name="runway">Runway</string>
+    <string name="headwind">Headwind</string>
+    <string name="crosswind">Crosswind</string>
 
 </resources>

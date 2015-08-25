@@ -93,9 +93,13 @@ public class InFlightWindFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length() > 0){
+                if (s.length() > 0) {
                     inputTas = new BigDecimal(s.toString());
                     calculate();
+                } else {
+                    inputTas = null;
+                    windDirectionText.setText(null);
+                    windSpeedText.setText(null);
                 }
             }
 
@@ -113,9 +117,13 @@ public class InFlightWindFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length() > 0){
+                if (s.length() > 0) {
                     inputGS = new BigDecimal(s.toString());
                     calculate();
+                } else {
+                    inputGS = null;
+                    windDirectionText.setText(null);
+                    windSpeedText.setText(null);
                 }
             }
 
@@ -196,7 +204,7 @@ public class InFlightWindFragment extends Fragment {
             AbstractWheel heading1 = getWheel(R.id.heading1);
             if (wheel.getCurrentItem() == 3)
                 heading1.setViewAdapter(new NumericWheelAdapter(getActivity().getApplicationContext(), 0, 5));
-            else{
+            else {
                 heading1.setViewAdapter(new NumericWheelAdapter(getActivity().getApplicationContext(), 0, 9));
             }
         }
@@ -207,7 +215,7 @@ public class InFlightWindFragment extends Fragment {
             AbstractWheel track1 = getWheel(R.id.track1);
             if (wheel.getCurrentItem() == 3)
                 track1.setViewAdapter(new NumericWheelAdapter(getActivity().getApplicationContext(), 0, 5));
-            else{
+            else {
                 track1.setViewAdapter(new NumericWheelAdapter(getActivity().getApplicationContext(), 0, 9));
             }
         }

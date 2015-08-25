@@ -76,8 +76,8 @@ public class WindTriangleCalculatorTest extends AndroidTestCase {
     }
 
     public void testCalculateWindComponents(){
-        WindTriangleVector windVector = new WindTriangleVector(new CompassDirection(060), new Measurement(20, Units.Speed.Knot));
-        WindComponents result = calculator.calculateWindComponents(new CompassDirection(20), windVector);
+        WindTriangleVector windVector = new WindTriangleVector(new CompassDirection(60), new Measurement(20, Units.Speed.Knot));
+        WindComponents result = calculator.calculateWindComponents(new CompassDirection(30), windVector);
 
         assertNotNull(result);
         assertEquals(result.getHeadWind().getMagnitude().doubleValue(), 17.32 , 1);

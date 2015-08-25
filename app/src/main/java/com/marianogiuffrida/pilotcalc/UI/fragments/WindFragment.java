@@ -54,6 +54,13 @@ public class WindFragment extends Fragment implements OnSelectionListener {
                         .addToBackStack("ciao")
                         .commit();
                 break;
+            case WindComponentsFragment.ID:
+                getChildFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.wind_frame_container, new WindComponentsFragment())
+                        .addToBackStack("ciao")
+                        .commit();
+                break;
             default:
                 break;
         }

@@ -96,6 +96,10 @@ public class GroundVectorFragment extends Fragment {
                 if(s.length() > 0){
                     inputTas = new BigDecimal(s.toString());
                     calculate();
+                }else {
+                    inputTas = null;
+                    trackText.setText(null);
+                    groundSpeedText.setText(null);
                 }
             }
 
@@ -116,6 +120,10 @@ public class GroundVectorFragment extends Fragment {
                 if (s.length() > 0) {
                     inputWS = new BigDecimal(s.toString());
                     calculate();
+                } else {
+                    inputWS = null;
+                    trackText.setText(null);
+                    groundSpeedText.setText(null);
                 }
             }
 

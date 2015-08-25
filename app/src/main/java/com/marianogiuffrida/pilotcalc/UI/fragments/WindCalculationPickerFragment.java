@@ -61,6 +61,15 @@ public class WindCalculationPickerFragment extends Fragment {
                 }
         );
 
+        componentsButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mListener.onNewSelection(WindComponentsFragment.ID);
+                    }
+                }
+        );
+
         mListener = FragmentUtils.getParent(this, OnSelectionListener.class);
         return rootView;
     }
