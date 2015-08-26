@@ -33,7 +33,7 @@ import antistatic.spinnerwheel.AbstractWheel;
 import antistatic.spinnerwheel.OnWheelChangedListener;
 import antistatic.spinnerwheel.adapters.NumericWheelAdapter;
 
-public class AirVectorFragment extends Fragment {
+public class AirVectorFragment extends StatedFragment {
     public static final int ID = 2;
     private static final String TRACK0 = "track0";
     private static final String TRACK1 = "track1";
@@ -95,8 +95,6 @@ public class AirVectorFragment extends Fragment {
         selectedGroundSpeedUnit = fillSpinner(groundSpeedSpinner);
         selectedWindSpeedUnit = fillSpinner(windSpeedSpinner);
         selectedTrueAirspeedUnit = fillSpinner(trueAirspeedSpinner);
-
-        tryRehydrateSavedState(savedInstanceState);
 
         groundSpeedEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -189,22 +187,22 @@ public class AirVectorFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putInt(TRACK0, getCurrentItem(R.id.track0));
-        savedInstanceState.putInt(TRACK1, getCurrentItem(R.id.track1));
-        savedInstanceState.putInt(TRACK2, getCurrentItem(R.id.track2));
-        savedInstanceState.putInt(WIND0, getCurrentItem(R.id.wind0));
-        savedInstanceState.putInt(WIND1, getCurrentItem(R.id.wind1));
-        savedInstanceState.putInt(WIND2, getCurrentItem(R.id.wind2));
-        savedInstanceState.putString(GS_UNIT, selectedGroundSpeedUnit);
-        savedInstanceState.putString(GS, groundSpeedEditText.getText().toString());
-        savedInstanceState.putString(TAS_UNIT, selectedTrueAirspeedUnit);
-        savedInstanceState.putString(WIND_SPEED, windSpeedEditText.getText().toString());
-        savedInstanceState.putString(WIND_UNIT, selectedWindSpeedUnit);
+    protected void onSaveState(Bundle outState) {
+        outState.putInt(TRACK0, getCurrentItem(R.id.track0));
+        outState.putInt(TRACK1, getCurrentItem(R.id.track1));
+        outState.putInt(TRACK2, getCurrentItem(R.id.track2));
+        outState.putInt(WIND0, getCurrentItem(R.id.wind0));
+        outState.putInt(WIND1, getCurrentItem(R.id.wind1));
+        outState.putInt(WIND2, getCurrentItem(R.id.wind2));
+        outState.putString(GS_UNIT, selectedGroundSpeedUnit);
+        outState.putString(GS, groundSpeedEditText.getText().toString());
+        outState.putString(TAS_UNIT, selectedTrueAirspeedUnit);
+        outState.putString(WIND_SPEED, windSpeedEditText.getText().toString());
+        outState.putString(WIND_UNIT, selectedWindSpeedUnit);
     }
 
-    private void tryRehydrateSavedState(Bundle savedInstanceState) {
+    @Override
+    protected void onRestoreState(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             getWheel(R.id.track0).setCurrentItem(savedInstanceState.getInt(TRACK0));
             getWheel(R.id.track1).setCurrentItem(savedInstanceState.getInt(TRACK1));

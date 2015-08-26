@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Created by Mariano on 12/01/2015.
  */
-public class ConversionsFragment extends Fragment implements IProvideResult {
+public class ConversionsFragment extends StatedFragment implements IProvideResult {
 
     private static final String ACTIVE_CONVERSION_TYPE = "conversionsType";
     private static final String SELECTED_SOURCE_UNIT = "selectedSourceUnit";
@@ -76,14 +76,7 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
         unitConversionsRepository = new UnitConversionRepository(dataStore);
         conversionCalculator = new ConversionCalculator(unitConversionsRepository);
 
-        if (!tryRehydrateSavedState(savedInstanceState)) {
-            Fragment calculatorFragment = new CalculatorFragment();
-            getChildFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.conversions_child_fragment, calculatorFragment, CALCULATOR_TAG)
-                    .commit();
-            initializeViewBasedOnConversionType(defaultConversionType);
-        }
+
 
         swapUnitsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,9 +123,19 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
         return rootView;
     }
 
-    private boolean tryRehydrateSavedState(Bundle savedInstanceState) {
-        if (savedInstanceState == null) return false;
+    @Override
+    protected void onFirstTimeLaunched() {
+        super.onFirstTimeLaunched();
+        Fragment calculatorFragment = new CalculatorFragment();
+        getChildFragmentManager()
+                .beginTransaction()
+                .add(R.id.conversions_child_fragment, calculatorFragment, CALCULATOR_TAG)
+                .commit();
+        initializeViewBasedOnConversionType(defaultConversionType);
+    }
 
+    @Override
+    protected void onRestoreState(Bundle savedInstanceState) {
         int activeConversionType = savedInstanceState.getInt(ACTIVE_CONVERSION_TYPE);
         initializeViewBasedOnConversionType(activeConversionType);
         selectedSourceUnit = savedInstanceState.getString(SELECTED_SOURCE_UNIT);
@@ -142,7 +145,6 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
         sourceUnitSpinner.setSelection(((UnitAdapter) sourceUnitSpinner.getAdapter()).getPositionByName(selectedSourceUnit));
         inputTextView.setText(savedInstanceState.getString(INPUT_NUMBER));
         outputTextView.setText(savedInstanceState.getString(OUTPUT_NUMBER));
-        return true;
     }
 
     private void initializeViewBasedOnConversionType(int activeConversionType) {
@@ -151,13 +153,12 @@ public class ConversionsFragment extends Fragment implements IProvideResult {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putInt(ACTIVE_CONVERSION_TYPE, radioConvType.getCheckedRadioButtonId());
-        savedInstanceState.putString(SELECTED_SOURCE_UNIT, selectedSourceUnit);
-        savedInstanceState.putString(SELECTED_DESTINATION_UNIT, selectedDestinationUnit);
-        savedInstanceState.putString(INPUT_NUMBER, inputTextView.getText().toString());
-        savedInstanceState.putString(OUTPUT_NUMBER, outputTextView.getText().toString());
+    public void onSaveState(Bundle outState) {
+        outState.putInt(ACTIVE_CONVERSION_TYPE, radioConvType.getCheckedRadioButtonId());
+        outState.putString(SELECTED_SOURCE_UNIT, selectedSourceUnit);
+        outState.putString(SELECTED_DESTINATION_UNIT, selectedDestinationUnit);
+        outState.putString(INPUT_NUMBER, inputTextView.getText().toString());
+        outState.putString(OUTPUT_NUMBER, outputTextView.getText().toString());
     }
 
     private void onSelectedConversionType(int checkedId) {

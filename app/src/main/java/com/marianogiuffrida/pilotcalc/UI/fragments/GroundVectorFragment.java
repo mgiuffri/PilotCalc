@@ -33,7 +33,7 @@ import antistatic.spinnerwheel.AbstractWheel;
 import antistatic.spinnerwheel.OnWheelChangedListener;
 import antistatic.spinnerwheel.adapters.NumericWheelAdapter;
 
-public class GroundVectorFragment extends Fragment {
+public class GroundVectorFragment extends StatedFragment {
     public static final int ID = 1;
     private static final String HEADING0 = "heading0";
     private static final String HEADING1 = "heading1";
@@ -95,8 +95,6 @@ public class GroundVectorFragment extends Fragment {
         selectedGroundSpeedUnit = fillSpinner(groundSpeedSpinner);
         selectedWindSpeedUnit = fillSpinner(windSpeedSpinner);
         selectedTrueAirspeedUnit = fillSpinner(trueAirspeedSpinner);
-
-        tryRehydrateSavedState(savedInstanceState);
 
         tasEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -189,38 +187,38 @@ public class GroundVectorFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putInt(WIND0, getCurrentItem(R.id.wind0));
-        savedInstanceState.putInt(WIND1, getCurrentItem(R.id.wind1));
-        savedInstanceState.putInt(WIND2, getCurrentItem(R.id.wind2));
-        savedInstanceState.putInt(HEADING0, getCurrentItem(R.id.heading0));
-        savedInstanceState.putInt(HEADING1, getCurrentItem(R.id.heading1));
-        savedInstanceState.putInt(HEADING2, getCurrentItem(R.id.heading2));
-        savedInstanceState.putString(WIND_SPEED, windSpeedEditText.getText().toString());
-        savedInstanceState.putString(WIND_UNIT, selectedWindSpeedUnit);
-        savedInstanceState.putString(TAS, tasEditText.getText().toString());
-        savedInstanceState.putString(TAS_UNIT, selectedTrueAirspeedUnit);
-        savedInstanceState.putString(GS_UNIT, selectedGroundSpeedUnit);
+    protected void onSaveState(Bundle outState) {
+        outState.putInt(WIND0, getCurrentItem(R.id.wind0));
+        outState.putInt(WIND1, getCurrentItem(R.id.wind1));
+        outState.putInt(WIND2, getCurrentItem(R.id.wind2));
+        outState.putInt(HEADING0, getCurrentItem(R.id.heading0));
+        outState.putInt(HEADING1, getCurrentItem(R.id.heading1));
+        outState.putInt(HEADING2, getCurrentItem(R.id.heading2));
+        outState.putString(WIND_SPEED, windSpeedEditText.getText().toString());
+        outState.putString(WIND_UNIT, selectedWindSpeedUnit);
+        outState.putString(TAS, tasEditText.getText().toString());
+        outState.putString(TAS_UNIT, selectedTrueAirspeedUnit);
+        outState.putString(GS_UNIT, selectedGroundSpeedUnit);
     }
 
-    private void tryRehydrateSavedState(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            getWheel(R.id.wind0).setCurrentItem(savedInstanceState.getInt(WIND0));
-            getWheel(R.id.wind1).setCurrentItem(savedInstanceState.getInt(WIND1));
-            getWheel(R.id.wind2).setCurrentItem(savedInstanceState.getInt(WIND2));
-            getWheel(R.id.heading0).setCurrentItem(savedInstanceState.getInt(HEADING0));
-            getWheel(R.id.heading1).setCurrentItem(savedInstanceState.getInt(HEADING1));
-            getWheel(R.id.heading2).setCurrentItem(savedInstanceState.getInt(HEADING2));
-            tasEditText.setText(savedInstanceState.getCharSequence(TAS));
-            selectedTrueAirspeedUnit = savedInstanceState.getString(TAS_UNIT);
+    @Override
+    protected void onRestoreState(Bundle inState) {
+        if (inState != null) {
+            getWheel(R.id.wind0).setCurrentItem(inState.getInt(WIND0));
+            getWheel(R.id.wind1).setCurrentItem(inState.getInt(WIND1));
+            getWheel(R.id.wind2).setCurrentItem(inState.getInt(WIND2));
+            getWheel(R.id.heading0).setCurrentItem(inState.getInt(HEADING0));
+            getWheel(R.id.heading1).setCurrentItem(inState.getInt(HEADING1));
+            getWheel(R.id.heading2).setCurrentItem(inState.getInt(HEADING2));
+            tasEditText.setText(inState.getCharSequence(TAS));
+            selectedTrueAirspeedUnit = inState.getString(TAS_UNIT);
             trueAirspeedSpinner.setSelection(((UnitAdapter) trueAirspeedSpinner.getAdapter()).getPositionByName(selectedTrueAirspeedUnit));
 
-            selectedGroundSpeedUnit = savedInstanceState.getString(GS_UNIT);
+            selectedGroundSpeedUnit = inState.getString(GS_UNIT);
             groundSpeedSpinner.setSelection(((UnitAdapter) groundSpeedSpinner.getAdapter()).getPositionByName(selectedGroundSpeedUnit));
 
-            windSpeedEditText.setText(savedInstanceState.getCharSequence(WIND_SPEED));
-            selectedWindSpeedUnit = savedInstanceState.getString(WIND_UNIT);
+            windSpeedEditText.setText(inState.getCharSequence(WIND_SPEED));
+            selectedWindSpeedUnit = inState.getString(WIND_UNIT);
             windSpeedSpinner.setSelection(((UnitAdapter) windSpeedSpinner.getAdapter()).getPositionByName(selectedWindSpeedUnit));
         }
     }

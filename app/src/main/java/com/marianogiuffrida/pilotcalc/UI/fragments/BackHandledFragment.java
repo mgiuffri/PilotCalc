@@ -1,13 +1,12 @@
 package com.marianogiuffrida.pilotcalc.UI.fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
 
 /**
  * Created by Mariano on 25/08/2015.
  */
 
-public abstract class BackHandledFragment extends Fragment {
+public abstract class BackHandledFragment extends StatedFragment {
     protected BackHandlerInterface backHandlerInterface;
 
     public abstract String getTagText();
@@ -33,6 +32,6 @@ public abstract class BackHandledFragment extends Fragment {
     }
 
     public interface BackHandlerInterface {
-        public void setSelectedFragment(BackHandledFragment backHandledFragment);
+        void setSelectedFragment(BackHandledFragment backHandledFragment);
     }
 }

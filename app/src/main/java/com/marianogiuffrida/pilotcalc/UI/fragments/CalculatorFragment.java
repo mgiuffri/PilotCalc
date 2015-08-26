@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.text.NumberFormat;
 
 
-public class CalculatorFragment extends Fragment {
+public class CalculatorFragment extends StatedFragment {
 
     public static final String INPUT_TEXT = "inputText";
     public static final String RESULT_TEXT = "resultText";
@@ -52,19 +52,26 @@ public class CalculatorFragment extends Fragment {
         defaultFontColor = inputText.getTextColors();
 
         setupUiListeners();
-        tryRehydrateSavedState(savedInstanceState);
+       // tryRehydrateSavedState(savedInstanceState);
         callBack = FragmentUtils.getParent(this, IProvideResult.class);
 
         return rootView;
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putCharSequence(INPUT_TEXT, inputText.getText());
-        savedInstanceState.putCharSequence(RESULT_TEXT, resultText.getText());
-        savedInstanceState.putInt(CONSECUTIVE_OPS, consecutiveOperatorCount);
-        savedInstanceState.putSerializable(LAST_PRESSED, lastPressed);
+    protected void onSaveState(Bundle outState) {
+        outState.putCharSequence(INPUT_TEXT, inputText.getText());
+        outState.putCharSequence(RESULT_TEXT, resultText.getText());
+        outState.putInt(CONSECUTIVE_OPS, consecutiveOperatorCount);
+        outState.putSerializable(LAST_PRESSED, lastPressed);
+    }
+
+    @Override
+    protected void onRestoreState(Bundle savedInstanceState) {
+            inputText.setText(savedInstanceState.getCharSequence(INPUT_TEXT));
+            resultText.setText(savedInstanceState.getCharSequence(RESULT_TEXT));
+            lastPressed = (ButtonType) savedInstanceState.getSerializable(LAST_PRESSED);
+            consecutiveOperatorCount = savedInstanceState.getInt(CONSECUTIVE_OPS);
     }
 
     private void setupUiListeners() {
@@ -211,15 +218,6 @@ public class CalculatorFragment extends Fragment {
                 handleEqualButton();
             }
         });
-    }
-
-    private void tryRehydrateSavedState(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            inputText.setText(savedInstanceState.getCharSequence(INPUT_TEXT));
-            resultText.setText(savedInstanceState.getCharSequence(RESULT_TEXT));
-            lastPressed = (ButtonType) savedInstanceState.getSerializable(LAST_PRESSED);
-            consecutiveOperatorCount = savedInstanceState.getInt(CONSECUTIVE_OPS);
-        }
     }
 
     private void handleNumberClick(Button button) {
