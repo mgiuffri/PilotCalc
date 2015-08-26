@@ -106,8 +106,6 @@ public class MainActivityDrawer extends ActionBarActivity implements BackHandled
         }
 
         mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
-
-
     }
 
     @Override

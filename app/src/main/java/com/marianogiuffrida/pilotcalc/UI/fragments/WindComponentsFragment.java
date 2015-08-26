@@ -36,6 +36,13 @@ import antistatic.spinnerwheel.adapters.NumericWheelAdapter;
 
 public class WindComponentsFragment extends Fragment {
     public static final int ID = 3;
+    private static final String RWY0 = "rwy0";
+    private static final String RWY1 = "rwy1";
+    private static final String WIND0 = "wind0";
+    private static final String WIND1 = "wind1";
+    private static final String WIND2 = "wind2";
+    private static final String WIND_SPEED = "windspeed";
+    private static final String WIND_UNIT = "wind_unit";
 
     private View rootView;
     private TextView headwindUnitText;
@@ -77,7 +84,7 @@ public class WindComponentsFragment extends Fragment {
         initWheel(R.id.wind2, 9);
 
         selectedWindSpeedUnit = fillSpinner(windSpeedSpinner);
-
+        tryRehydrateSavedState(savedInstanceState);
         windSpeedEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -89,7 +96,7 @@ public class WindComponentsFragment extends Fragment {
                 if (s.length() > 0) {
                     inputWS = new BigDecimal(s.toString());
                     calculate();
-                }else{
+                } else {
                     inputWS = null;
                     crosswindText.setText(null);
                     headwindText.setText(null);
@@ -101,7 +108,6 @@ public class WindComponentsFragment extends Fragment {
 
             }
         });
-
 
         windSpeedSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -120,6 +126,33 @@ public class WindComponentsFragment extends Fragment {
         });
         return rootView;
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putInt(RWY0, getCurrentItem(R.id.rwy0));
+        savedInstanceState.putInt(RWY1, getCurrentItem(R.id.rwy1));
+        savedInstanceState.putInt(WIND0,getCurrentItem(R.id.wind0));
+        savedInstanceState.putInt(WIND1, getCurrentItem(R.id.wind1));
+        savedInstanceState.putInt(WIND2, getCurrentItem(R.id.wind2));
+        savedInstanceState.putString(WIND_SPEED, windSpeedEditText.getText().toString());
+        savedInstanceState.putString(WIND_UNIT, selectedWindSpeedUnit);
+    }
+
+    private void tryRehydrateSavedState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            getWheel(R.id.rwy0).setCurrentItem(savedInstanceState.getInt(RWY0));
+            getWheel(R.id.rwy1).setCurrentItem(savedInstanceState.getInt(RWY1));
+            getWheel(R.id.wind0).setCurrentItem(savedInstanceState.getInt(WIND0));
+            getWheel(R.id.wind1).setCurrentItem(savedInstanceState.getInt(WIND1));
+            getWheel(R.id.wind2).setCurrentItem(savedInstanceState.getInt(WIND2));
+            windSpeedEditText.setText(savedInstanceState.getCharSequence(WIND_SPEED));
+            selectedWindSpeedUnit = savedInstanceState.getString(WIND_UNIT);
+            windSpeedSpinner.setSelection(((UnitAdapter) windSpeedSpinner.getAdapter()).getPositionByName(selectedWindSpeedUnit));
+        }
+    }
+
+
 
     private String fillSpinner(Spinner spinner) {
         List<Unit> units = unitConversionsRepository.getSupportedUnitsByConversionType(Units.Speed.Name);

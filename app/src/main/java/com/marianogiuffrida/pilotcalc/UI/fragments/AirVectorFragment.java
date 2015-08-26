@@ -35,6 +35,17 @@ import antistatic.spinnerwheel.adapters.NumericWheelAdapter;
 
 public class AirVectorFragment extends Fragment {
     public static final int ID = 2;
+    private static final String TRACK0 = "track0";
+    private static final String TRACK1 = "track1";
+    private static final String TRACK2 = "track2";
+    private static final String WIND0 = "wind0";
+    private static final String WIND1 = "wind1";
+    private static final String WIND2 = "wind2";
+    private static final String GS = "gs";
+    private static final String TAS_UNIT = "tas_UNIT";
+    private static final String GS_UNIT = "gs_unit";
+    private static final String WIND_SPEED = "windspeed";
+    private static final String WIND_UNIT = "wind_unit";
 
     private View rootView;
     private Spinner trueAirspeedSpinner;
@@ -84,6 +95,8 @@ public class AirVectorFragment extends Fragment {
         selectedGroundSpeedUnit = fillSpinner(groundSpeedSpinner);
         selectedWindSpeedUnit = fillSpinner(windSpeedSpinner);
         selectedTrueAirspeedUnit = fillSpinner(trueAirspeedSpinner);
+
+        tryRehydrateSavedState(savedInstanceState);
 
         groundSpeedEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -173,6 +186,44 @@ public class AirVectorFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putInt(TRACK0, getCurrentItem(R.id.track0));
+        savedInstanceState.putInt(TRACK1, getCurrentItem(R.id.track1));
+        savedInstanceState.putInt(TRACK2, getCurrentItem(R.id.track2));
+        savedInstanceState.putInt(WIND0, getCurrentItem(R.id.wind0));
+        savedInstanceState.putInt(WIND1, getCurrentItem(R.id.wind1));
+        savedInstanceState.putInt(WIND2, getCurrentItem(R.id.wind2));
+        savedInstanceState.putString(GS_UNIT, selectedGroundSpeedUnit);
+        savedInstanceState.putString(GS, groundSpeedEditText.getText().toString());
+        savedInstanceState.putString(TAS_UNIT, selectedTrueAirspeedUnit);
+        savedInstanceState.putString(WIND_SPEED, windSpeedEditText.getText().toString());
+        savedInstanceState.putString(WIND_UNIT, selectedWindSpeedUnit);
+    }
+
+    private void tryRehydrateSavedState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            getWheel(R.id.track0).setCurrentItem(savedInstanceState.getInt(TRACK0));
+            getWheel(R.id.track1).setCurrentItem(savedInstanceState.getInt(TRACK1));
+            getWheel(R.id.track2).setCurrentItem(savedInstanceState.getInt(TRACK2));
+            getWheel(R.id.wind0).setCurrentItem(savedInstanceState.getInt(WIND0));
+            getWheel(R.id.wind1).setCurrentItem(savedInstanceState.getInt(WIND1));
+            getWheel(R.id.wind2).setCurrentItem(savedInstanceState.getInt(WIND2));
+
+            selectedTrueAirspeedUnit = savedInstanceState.getString(TAS_UNIT);
+            trueAirspeedSpinner.setSelection(((UnitAdapter) trueAirspeedSpinner.getAdapter()).getPositionByName(selectedTrueAirspeedUnit));
+
+            groundSpeedEditText.setText(savedInstanceState.getCharSequence(GS));
+            selectedGroundSpeedUnit = savedInstanceState.getString(GS_UNIT);
+            groundSpeedSpinner.setSelection(((UnitAdapter) groundSpeedSpinner.getAdapter()).getPositionByName(selectedGroundSpeedUnit));
+
+            windSpeedEditText.setText(savedInstanceState.getCharSequence(WIND_SPEED));
+            selectedWindSpeedUnit = savedInstanceState.getString(WIND_UNIT);
+            windSpeedSpinner.setSelection(((UnitAdapter) windSpeedSpinner.getAdapter()).getPositionByName(selectedWindSpeedUnit));
+        }
     }
 
     private String fillSpinner(Spinner spinner) {

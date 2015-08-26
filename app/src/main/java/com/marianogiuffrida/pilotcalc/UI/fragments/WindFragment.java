@@ -23,10 +23,13 @@ public class WindFragment extends BackHandledFragment implements OnSelectionList
         super.onCreateView(inflater, container, savedInstanceState);
         rootView = inflater.inflate(R.layout.fragment_wind, container, false);
 
-        getChildFragmentManager()
-                .beginTransaction()
-                .add(R.id.wind_frame_container, new WindCalculationPickerFragment())
-                .commit();
+        if(savedInstanceState == null){
+            getChildFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.wind_frame_container, new WindCalculationPickerFragment())
+                    .commit();
+        }
+
         return rootView;
     }
 

@@ -39,7 +39,7 @@ public class CalculatorFragment extends Fragment {
     private TextView resultText;
 
     private ButtonType lastPressed = ButtonType.NUMBER;
-    private int consequetiveOperatorCount;
+    private int consecutiveOperatorCount;
     private ColorStateList defaultFontColor;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,7 +63,7 @@ public class CalculatorFragment extends Fragment {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putCharSequence(INPUT_TEXT, inputText.getText());
         savedInstanceState.putCharSequence(RESULT_TEXT, resultText.getText());
-        savedInstanceState.putInt(CONSECUTIVE_OPS, consequetiveOperatorCount);
+        savedInstanceState.putInt(CONSECUTIVE_OPS, consecutiveOperatorCount);
         savedInstanceState.putSerializable(LAST_PRESSED, lastPressed);
     }
 
@@ -218,19 +218,19 @@ public class CalculatorFragment extends Fragment {
             inputText.setText(savedInstanceState.getCharSequence(INPUT_TEXT));
             resultText.setText(savedInstanceState.getCharSequence(RESULT_TEXT));
             lastPressed = (ButtonType) savedInstanceState.getSerializable(LAST_PRESSED);
-            consequetiveOperatorCount = savedInstanceState.getInt(CONSECUTIVE_OPS);
+            consecutiveOperatorCount = savedInstanceState.getInt(CONSECUTIVE_OPS);
         }
     }
 
     private void handleNumberClick(Button button) {
         lastPressed = ButtonType.NUMBER;
-        consequetiveOperatorCount = 0;
+        consecutiveOperatorCount = 0;
         inputText.setText(TextUtils.concat(inputText.getText(), button.getText()));
         updateResult();
     }
 
     private void handleOperationClick(Button button) {
-        if (consequetiveOperatorCount == 2) return;
+        if (consecutiveOperatorCount == 2) return;
         String buttonText = button.getText().toString();
         if (buttonText.equals("-")) {
             switch (lastPressed) {
@@ -254,7 +254,7 @@ public class CalculatorFragment extends Fragment {
             }
         }
         setLastPressed(buttonText);
-        consequetiveOperatorCount++;
+        consecutiveOperatorCount++;
     }
 
     private void handleEqualButton() {
@@ -299,7 +299,7 @@ public class CalculatorFragment extends Fragment {
         if (input.length() > 0) {
             inputText.setText(TextUtils.substring(input, 0, input.length() - 1));
             if (lastPressed != ButtonType.NUMBER) /*IS AN OPERATION*/ {
-                consequetiveOperatorCount--;
+                consecutiveOperatorCount--;
             }
             updateResult();
         }
@@ -310,7 +310,7 @@ public class CalculatorFragment extends Fragment {
         inputText.setText("");
         resultText.startAnimation(AnimationUtils.loadAnimation(rootView.getContext(), R.anim.abc_fade_out));
         inputText.startAnimation(AnimationUtils.loadAnimation(rootView.getContext(), R.anim.abc_fade_out));
-        consequetiveOperatorCount = 0;
+        consecutiveOperatorCount = 0;
     }
 
     private void appendToInputText(String buttonText) {
@@ -322,7 +322,7 @@ public class CalculatorFragment extends Fragment {
                 TextUtils.concat(
                         TextUtils.substring(tv.getText(), 0, tv.length() - 1),
                         s));
-        consequetiveOperatorCount--;
+        consecutiveOperatorCount--;
     }
 
     private void setLastPressed(String buttonText) {
