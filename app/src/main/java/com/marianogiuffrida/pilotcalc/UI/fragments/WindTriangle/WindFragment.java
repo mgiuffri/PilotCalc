@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 
 import com.marianogiuffrida.helpers.FragmentUtils;
 import com.marianogiuffrida.pilotcalc.R;
-import com.marianogiuffrida.pilotcalc.UI.fragments.BackHandledFragment;
+import com.marianogiuffrida.pilotcalc.UI.BackButtonHandledFragment;
 import com.marianogiuffrida.pilotcalc.UI.notification.OnSelectionListener;
 import com.marianogiuffrida.pilotcalc.UI.notification.OnTitleChangeListener;
 
 /**
  * Created by Mariano on 17/08/2015.
  */
-public class WindFragment extends BackHandledFragment implements OnSelectionListener {
+public class WindFragment extends BackButtonHandledFragment implements OnSelectionListener {
 
     private View rootView;
     private OnTitleChangeListener onTitleChangeListener;

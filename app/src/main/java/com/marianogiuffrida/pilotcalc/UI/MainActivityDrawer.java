@@ -16,7 +16,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.marianogiuffrida.pilotcalc.R;
-import com.marianogiuffrida.pilotcalc.UI.fragments.BackHandledFragment;
 import com.marianogiuffrida.pilotcalc.UI.fragments.CalculatorFragment;
 import com.marianogiuffrida.pilotcalc.UI.fragments.ConversionsFragment;
 import com.marianogiuffrida.pilotcalc.UI.adapters.NavigationDrawerListAdapter;
@@ -27,9 +26,8 @@ import com.marianogiuffrida.pilotcalc.UI.notification.OnTitleChangeListener;
 
 import java.util.ArrayList;
 
-public class MainActivityDrawer
-        extends ActionBarActivity
-        implements BackHandledFragment.BackHandlerInterface, OnTitleChangeListener{
+public class MainActivityDrawer extends ActionBarActivity
+        implements BackButtonHandledFragment.OnSelectedFragmentListener, OnTitleChangeListener{
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -46,21 +44,16 @@ public class MainActivityDrawer
 
     private ArrayList<NavigationDrawerItem> navDrawerItems;
     private NavigationDrawerListAdapter navDrawerAdapter;
-    private BackHandledFragment selectedFragment;
+    private BackButtonHandledFragment selectedFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity_drawer);
 
-        mTitle = mDrawerTitle = getTitle();
-
-        // load slide menu items
+        // load menu items and icons
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
-
-        // nav drawer icons from resources
-        navMenuIcons = getResources()
-                .obtainTypedArray(R.array.nav_drawer_icons);
+        navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
@@ -73,7 +66,6 @@ public class MainActivityDrawer
 
         // Recycle the typed array
         navMenuIcons.recycle();
-
         // setting the nav drawer list navDrawerAdapter
         navDrawerAdapter = new NavigationDrawerListAdapter(getApplicationContext(), navDrawerItems);
         mDrawerList.setAdapter(navDrawerAdapter);
@@ -104,8 +96,6 @@ public class MainActivityDrawer
         }
         if (savedInstanceState == null) {
             displayView(-1);
-            // on first time display view for first nav item
-            //displayView(0);
         }
 
         mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
@@ -165,7 +155,7 @@ public class MainActivityDrawer
     }
 
     @Override
-    public void setSelectedFragment(BackHandledFragment backHandledFragment) {
+    public void setSelectedFragment(BackButtonHandledFragment backHandledFragment) {
         selectedFragment = backHandledFragment;
     }
 
@@ -181,11 +171,9 @@ public class MainActivityDrawer
 
     private class SlideMenuClickListener implements android.widget.AdapterView.OnItemClickListener {
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             // display view for selected nav drawer item
             if (displayView(position)) updateDrawerSelection(position);
-
         }
     }
 
