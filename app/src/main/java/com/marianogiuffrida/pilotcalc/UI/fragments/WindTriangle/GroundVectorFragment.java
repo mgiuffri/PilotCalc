@@ -68,7 +68,7 @@ public class GroundVectorFragment extends StatefulFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        rootView = inflater.inflate(R.layout.fragment_ground_vector, container, false);
+        rootView = inflater.inflate(R.layout.fragment_wind_ground_vector, container, false);
         trueAirspeedSpinner = (Spinner) rootView.findViewById(R.id.tasSpinner);
         groundSpeedSpinner = (Spinner) rootView.findViewById(R.id.groundSpeedSpinner);
         windSpeedSpinner = (Spinner) rootView.findViewById(R.id.windSpeedSpinner);
