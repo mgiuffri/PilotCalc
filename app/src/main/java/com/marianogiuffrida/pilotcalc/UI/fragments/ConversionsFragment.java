@@ -11,10 +11,12 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.marianogiuffrida.helpers.FragmentUtils;
 import com.marianogiuffrida.helpers.StringUtils;
 import com.marianogiuffrida.pilotcalc.R;
-import com.marianogiuffrida.pilotcalc.UI.notification.IProvideResult;
+import com.marianogiuffrida.pilotcalc.UI.notification.OnResultListener;
 import com.marianogiuffrida.pilotcalc.UI.adapters.UnitAdapter;
+import com.marianogiuffrida.pilotcalc.UI.notification.OnTitleChangeListener;
 import com.marianogiuffrida.pilotcalc.data.SqlLiteDataStore;
 import com.marianogiuffrida.pilotcalc.data.UnitConversionRepository;
 import com.marianogiuffrida.pilotcalc.model.Conversions.ConversionCalculator;
@@ -29,7 +31,7 @@ import java.util.List;
 /**
  * Created by Mariano on 12/01/2015.
  */
-public class ConversionsFragment extends StatefulFragment implements IProvideResult {
+public class ConversionsFragment extends StatefulFragment implements OnResultListener {
 
     private static final String ACTIVE_CONVERSION_TYPE = "conversionsType";
     private static final String SELECTED_SOURCE_UNIT = "selectedSourceUnit";
@@ -57,11 +59,11 @@ public class ConversionsFragment extends StatefulFragment implements IProvideRes
     private final int defaultConversionType = R.id.radio_length;
     private String selectedSourceUnit, selectedDestinationUnit;
     private ImageButton swapUnitsButton;
+    private OnTitleChangeListener onTitleChangeListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_conversions, container, false);
         destinationUnitSpinner = (Spinner) rootView.findViewById(R.id.conversions_to_spinner);
         sourceUnitSpinner = (Spinner) rootView.findViewById(R.id.conversions_from_spinner);
@@ -73,8 +75,6 @@ public class ConversionsFragment extends StatefulFragment implements IProvideRes
         SqlLiteDataStore dataStore = new SqlLiteDataStore(getActivity().getApplicationContext());
         unitConversionsRepository = new UnitConversionRepository(dataStore);
         conversionCalculator = new ConversionCalculator(unitConversionsRepository);
-
-
 
         swapUnitsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,6 +117,9 @@ public class ConversionsFragment extends StatefulFragment implements IProvideRes
                 onSelectedConversionType(checkedId);
             }
         });
+
+        onTitleChangeListener = FragmentUtils.getParent(this, OnTitleChangeListener.class);
+        if(onTitleChangeListener != null) onTitleChangeListener.newTitle(R.string.Converter);
 
         return rootView;
     }

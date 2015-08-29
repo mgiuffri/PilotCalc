@@ -9,10 +9,9 @@
     <string name="open_drawer">Apri il menu</string>
     <string name="close_drawer">Chiudi il menu</string>
 
-    <string-array name="nav_drawer_items">
-        <item>Conversioni</item>
-        <item>Calcolatrice</item>
-    </string-array>
+    <string name="WindCalculator">Conversioni</string>
+    <string name="Converter">Calcolatrice</string>
+    <string name="Calculator">Vento</string>
 
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->

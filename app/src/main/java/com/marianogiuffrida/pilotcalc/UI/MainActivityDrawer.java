@@ -23,10 +23,13 @@ import com.marianogiuffrida.pilotcalc.UI.adapters.NavigationDrawerListAdapter;
 import com.marianogiuffrida.pilotcalc.UI.fragments.SplashFragment;
 import com.marianogiuffrida.pilotcalc.UI.fragments.WindTriangle.WindFragment;
 import com.marianogiuffrida.pilotcalc.UI.navigation.NavigationDrawerItem;
+import com.marianogiuffrida.pilotcalc.UI.notification.OnTitleChangeListener;
 
 import java.util.ArrayList;
 
-public class MainActivityDrawer extends ActionBarActivity implements BackHandledFragment.BackHandlerInterface{
+public class MainActivityDrawer
+        extends ActionBarActivity
+        implements BackHandledFragment.BackHandlerInterface, OnTitleChangeListener{
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -91,7 +94,7 @@ public class MainActivityDrawer extends ActionBarActivity implements BackHandled
                 }
 
                 public void onDrawerOpened(View drawerView) {
-                    getSupportActionBar().setTitle(mDrawerTitle);
+                    getSupportActionBar().setTitle(R.string.choose_operation);
                     // calling onPrepareOptionsMenu() to hide action bar icons
                     invalidateOptionsMenu();
                 }
@@ -166,6 +169,16 @@ public class MainActivityDrawer extends ActionBarActivity implements BackHandled
         selectedFragment = backHandledFragment;
     }
 
+    @Override
+    public void newTitle(String title) {
+        setTitle(title);
+    }
+
+    @Override
+    public void newTitle(int resourceId) {
+        setTitle(getResources().getString(resourceId));
+    }
+
     private class SlideMenuClickListener implements android.widget.AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -212,7 +225,6 @@ public class MainActivityDrawer extends ActionBarActivity implements BackHandled
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
         mDrawerList.setSelection(position);
-        setTitle(navMenuTitles[position]);
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mDrawerList);
         }

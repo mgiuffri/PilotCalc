@@ -6,9 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.marianogiuffrida.helpers.FragmentUtils;
 import com.marianogiuffrida.pilotcalc.R;
 import com.marianogiuffrida.pilotcalc.UI.fragments.BackHandledFragment;
 import com.marianogiuffrida.pilotcalc.UI.notification.OnSelectionListener;
+import com.marianogiuffrida.pilotcalc.UI.notification.OnTitleChangeListener;
 
 /**
  * Created by Mariano on 17/08/2015.
@@ -16,6 +18,7 @@ import com.marianogiuffrida.pilotcalc.UI.notification.OnSelectionListener;
 public class WindFragment extends BackHandledFragment implements OnSelectionListener {
 
     private View rootView;
+    private OnTitleChangeListener onTitleChangeListener;
 
     @Nullable
     @Override
@@ -29,6 +32,8 @@ public class WindFragment extends BackHandledFragment implements OnSelectionList
                     .add(R.id.wind_frame_container, new WindCalculationPickerFragment())
                     .commit();
         }
+        onTitleChangeListener = FragmentUtils.getParent(this, OnTitleChangeListener.class);
+        if(onTitleChangeListener != null) onTitleChangeListener.newTitle(R.string.WindCalculator);
 
         return rootView;
     }

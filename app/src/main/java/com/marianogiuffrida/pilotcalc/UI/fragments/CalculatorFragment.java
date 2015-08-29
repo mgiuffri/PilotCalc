@@ -14,7 +14,8 @@ import android.widget.TextView;
 import com.marianogiuffrida.helpers.FragmentUtils;
 import com.marianogiuffrida.helpers.StringUtils;
 import com.marianogiuffrida.pilotcalc.R;
-import com.marianogiuffrida.pilotcalc.UI.notification.IProvideResult;
+import com.marianogiuffrida.pilotcalc.UI.notification.OnResultListener;
+import com.marianogiuffrida.pilotcalc.UI.notification.OnTitleChangeListener;
 import com.marianogiuffrida.pilotcalc.model.Calculator.ShuntingYardEvaluator;
 
 import java.io.IOException;
@@ -27,7 +28,8 @@ public class CalculatorFragment extends StatefulFragment {
     public static final String RESULT_TEXT = "resultText";
     public static final String CONSECUTIVE_OPS = "consecutiveOps";
     public static final String LAST_PRESSED = "lastPressed";
-    private IProvideResult callBack;
+    private OnResultListener onResultListener;
+    private OnTitleChangeListener onTitleChangeListener;
 
     private enum ButtonType {
         NUMBER, ADD, SUB, MULTI, DIV
@@ -43,7 +45,6 @@ public class CalculatorFragment extends StatefulFragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         rootView = inflater.inflate(R.layout.fragment_calculator, container, false);
         inputText = (TextView) rootView.findViewById(R.id.CalculatorInputDisplay);
         inputText.setMovementMethod(ScrollingMovementMethod.getInstance());
@@ -52,7 +53,10 @@ public class CalculatorFragment extends StatefulFragment {
 
         setupUiListeners();
        // tryRehydrateSavedState(savedInstanceState);
-        callBack = FragmentUtils.getParent(this, IProvideResult.class);
+        onResultListener = FragmentUtils.getParent(this, OnResultListener.class);
+
+        onTitleChangeListener = FragmentUtils.getParent(this, OnTitleChangeListener.class);
+        if(onTitleChangeListener != null && getParentFragment() == null) onTitleChangeListener.newTitle(R.string.Calculator);
 
         return rootView;
     }
@@ -260,7 +264,7 @@ public class CalculatorFragment extends StatefulFragment {
             inputText.setText(result);
             resultText.setText("");
             inputText.startAnimation(AnimationUtils.loadAnimation(rootView.getContext(), R.anim.calculator_input_text_translatein));
-            if (callBack != null) callBack.onNewResult(result);
+            if (onResultListener != null) onResultListener.onNewResult(result);
         }
     }
 

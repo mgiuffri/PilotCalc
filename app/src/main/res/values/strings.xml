@@ -9,10 +9,14 @@
     <string name="open_drawer">Open Navigation Drawer</string>
     <string name="close_drawer">Close Navigation Drawer</string>
 
+    <string name="WindCalculator">Wind</string>
+    <string name="Converter">Unit Conversions</string>
+    <string name="Calculator">Calculator</string>
+
     <string-array name="nav_drawer_items">
-        <item>Unit Conversions</item>
-        <item>Calculator</item>
-        <item>Wind</item>
+        <item>@string/Converter</item>
+        <item>@string/Calculator</item>
+        <item>@string/WindCalculator</item>
     </string-array>
 
     <!-- Nav Drawer List Item Icons -->
@@ -48,5 +52,6 @@
     <string name="runway">Runway</string>
     <string name="headwind">Headwind</string>
     <string name="crosswind">Crosswind</string>
+    <string name="choose_operation">Select your action...</string>
 
 </resources>
