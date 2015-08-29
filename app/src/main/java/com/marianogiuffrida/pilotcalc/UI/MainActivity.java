@@ -26,14 +26,11 @@ import com.marianogiuffrida.pilotcalc.UI.notification.OnTitleChangeListener;
 
 import java.util.ArrayList;
 
-public class MainActivityDrawer extends ActionBarActivity
+public class MainActivity extends ActionBarActivity
         implements BackButtonHandledFragment.OnSelectedFragmentListener, OnTitleChangeListener{
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-
-    // nav drawer title
-    private CharSequence mDrawerTitle;
 
     // used to store app title
     private CharSequence mTitle;
@@ -49,7 +46,7 @@ public class MainActivityDrawer extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_activity_drawer);
+        setContentView(R.layout.activity_main);
 
         // load menu items and icons
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
@@ -98,7 +95,13 @@ public class MainActivityDrawer extends ActionBarActivity
             displayView(-1);
         }
 
-        mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // display view for selected nav drawer item
+                    if (displayView(position)) updateDrawerSelection(position);
+            }
+        });
     }
 
     @Override
@@ -167,14 +170,6 @@ public class MainActivityDrawer extends ActionBarActivity
     @Override
     public void newTitle(int resourceId) {
         setTitle(getResources().getString(resourceId));
-    }
-
-    private class SlideMenuClickListener implements android.widget.AdapterView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            // display view for selected nav drawer item
-            if (displayView(position)) updateDrawerSelection(position);
-        }
     }
 
     private boolean displayView(int position) {
