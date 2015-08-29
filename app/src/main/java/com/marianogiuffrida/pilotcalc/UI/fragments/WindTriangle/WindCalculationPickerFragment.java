@@ -1,6 +1,5 @@
-package com.marianogiuffrida.pilotcalc.UI.fragments;
+package com.marianogiuffrida.pilotcalc.UI.fragments.WindTriangle;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.widget.Button;
 
 import com.marianogiuffrida.helpers.FragmentUtils;
 import com.marianogiuffrida.pilotcalc.R;
-import com.marianogiuffrida.pilotcalc.UI.notification.IProvideResult;
 import com.marianogiuffrida.pilotcalc.UI.notification.OnSelectionListener;
 
 /**

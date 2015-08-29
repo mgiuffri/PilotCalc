@@ -1,13 +1,11 @@
 package com.marianogiuffrida.pilotcalc.UI.fragments;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -31,7 +29,7 @@ import java.util.List;
 /**
  * Created by Mariano on 12/01/2015.
  */
-public class ConversionsFragment extends StatedFragment implements IProvideResult {
+public class ConversionsFragment extends StatefulFragment implements IProvideResult {
 
     private static final String ACTIVE_CONVERSION_TYPE = "conversionsType";
     private static final String SELECTED_SOURCE_UNIT = "selectedSourceUnit";

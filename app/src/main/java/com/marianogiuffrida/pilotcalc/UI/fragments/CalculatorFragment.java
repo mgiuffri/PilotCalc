@@ -2,7 +2,6 @@ package com.marianogiuffrida.pilotcalc.UI.fragments;
 
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
@@ -22,7 +21,7 @@ import java.io.IOException;
 import java.text.NumberFormat;
 
 
-public class CalculatorFragment extends StatedFragment {
+public class CalculatorFragment extends StatefulFragment {
 
     public static final String INPUT_TEXT = "inputText";
     public static final String RESULT_TEXT = "resultText";

@@ -5,12 +5,16 @@ import android.os.Bundle;
 
 /**
  * Created by Mariano on 26/08/2015.
- */public class StatedFragment extends Fragment {
+ * Largely based on this article:
+ * http://inthecheesefactory.com/blog/best-approach-to-keep-android-fragment-state/en
+ */
+
+public class StatefulFragment extends Fragment {
 
     public static final String INTERNAL_STATE = "internalState";
     Bundle savedState;
 
-    public StatedFragment() {
+    public StatefulFragment() {
         if(getArguments() == null) {
             setArguments(new Bundle());
         }

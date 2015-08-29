@@ -1,6 +1,5 @@
-package com.marianogiuffrida.pilotcalc.UI.fragments;
+package com.marianogiuffrida.pilotcalc.UI.fragments.WindTriangle;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 
 import com.marianogiuffrida.pilotcalc.R;
 import com.marianogiuffrida.pilotcalc.UI.adapters.UnitAdapter;
+import com.marianogiuffrida.pilotcalc.UI.fragments.StatefulFragment;
 import com.marianogiuffrida.pilotcalc.data.SqlLiteDataStore;
 import com.marianogiuffrida.pilotcalc.data.UnitConversionRepository;
 import com.marianogiuffrida.pilotcalc.model.Common.Measurement;
@@ -33,18 +33,18 @@ import antistatic.spinnerwheel.AbstractWheel;
 import antistatic.spinnerwheel.OnWheelChangedListener;
 import antistatic.spinnerwheel.adapters.NumericWheelAdapter;
 
-public class GroundVectorFragment extends StatedFragment {
-    public static final int ID = 1;
+public class InFlightWindFragment extends StatefulFragment {
+    public static final int ID = 0;
     private static final String HEADING0 = "heading0";
     private static final String HEADING1 = "heading1";
     private static final String HEADING2 = "heading2";
-    private static final String WIND0 = "wind0";
-    private static final String WIND1 = "wind1";
-    private static final String WIND2 = "wind2";
+    private static final String TRACK0 = "track0";
+    private static final String TRACK1 = "track1";
+    private static final String TRACK2 = "track2";
     private static final String TAS = "tas";
     private static final String TAS_UNIT = "tas_UNIT";
+    private static final String GS = "GS";
     private static final String GS_UNIT = "gs_unit";
-    private static final String WIND_SPEED = "windspeed";
     private static final String WIND_UNIT = "wind_unit";
 
     private View rootView;
@@ -58,25 +58,25 @@ public class GroundVectorFragment extends StatedFragment {
     private String selectedWindSpeedUnit;
     private WindTriangleCalculator calculator;
     private EditText tasEditText;
-    private EditText windSpeedEditText;
+    private EditText groundSpeedEditText;
     private BigDecimal inputTas;
-    private BigDecimal inputWS;
-    private TextView trackText;
-    private TextView groundSpeedText;
+    private BigDecimal inputGS;
+    private TextView windDirectionText;
+    private TextView windSpeedText;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        rootView = inflater.inflate(R.layout.fragment_ground_vector, container, false);
+        rootView = inflater.inflate(R.layout.fragment_in_flight_wind, container, false);
         trueAirspeedSpinner = (Spinner) rootView.findViewById(R.id.tasSpinner);
         groundSpeedSpinner = (Spinner) rootView.findViewById(R.id.groundSpeedSpinner);
         windSpeedSpinner = (Spinner) rootView.findViewById(R.id.windSpeedSpinner);
 
         tasEditText = (EditText) rootView.findViewById(R.id.tas);
-        windSpeedEditText = (EditText) rootView.findViewById(R.id.windSpeed);
-        trackText = (TextView) rootView.findViewById(R.id.track);
-        groundSpeedText = (TextView) rootView.findViewById(R.id.groundSpeed);
+        groundSpeedEditText = (EditText) rootView.findViewById(R.id.groundSpeed);
+        windDirectionText = (TextView) rootView.findViewById(R.id.windDirection);
+        windSpeedText = (TextView) rootView.findViewById(R.id.windSpeed);
 
         SqlLiteDataStore dataStore = new SqlLiteDataStore(getActivity().getApplicationContext());
         unitConversionsRepository = new UnitConversionRepository(dataStore);
@@ -87,10 +87,10 @@ public class GroundVectorFragment extends StatedFragment {
         initWheel(R.id.heading1, 9);
         initWheel(R.id.heading2, 9);
 
-        initWheel(R.id.wind0, 3);
-        getWheel(R.id.wind0).addChangingListener(limitWindTrigger);
-        initWheel(R.id.wind1, 9);
-        initWheel(R.id.wind2, 9);
+        initWheel(R.id.track0, 3);
+        getWheel(R.id.track0).addChangingListener(limitTrackTrigger);
+        initWheel(R.id.track1, 9);
+        initWheel(R.id.track2, 9);
 
         selectedGroundSpeedUnit = fillSpinner(groundSpeedSpinner);
         selectedWindSpeedUnit = fillSpinner(windSpeedSpinner);
@@ -104,13 +104,13 @@ public class GroundVectorFragment extends StatedFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length() > 0){
+                if (s.length() > 0) {
                     inputTas = new BigDecimal(s.toString());
                     calculate();
-                }else {
+                } else {
                     inputTas = null;
-                    trackText.setText(null);
-                    groundSpeedText.setText(null);
+                    windDirectionText.setText(null);
+                    windSpeedText.setText(null);
                 }
             }
 
@@ -120,7 +120,7 @@ public class GroundVectorFragment extends StatedFragment {
             }
         });
 
-        windSpeedEditText.addTextChangedListener(new TextWatcher() {
+        groundSpeedEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -129,12 +129,12 @@ public class GroundVectorFragment extends StatedFragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 0) {
-                    inputWS = new BigDecimal(s.toString());
+                    inputGS = new BigDecimal(s.toString());
                     calculate();
                 } else {
-                    inputWS = null;
-                    trackText.setText(null);
-                    groundSpeedText.setText(null);
+                    inputGS = null;
+                    windDirectionText.setText(null);
+                    windSpeedText.setText(null);
                 }
             }
 
@@ -187,26 +187,25 @@ public class GroundVectorFragment extends StatedFragment {
     }
 
     @Override
-    protected void onSaveState(Bundle outState) {
-        outState.putInt(WIND0, getCurrentItem(R.id.wind0));
-        outState.putInt(WIND1, getCurrentItem(R.id.wind1));
-        outState.putInt(WIND2, getCurrentItem(R.id.wind2));
+    public void onSaveState(Bundle outState) {
+        outState.putInt(TRACK0, getCurrentItem(R.id.track0));
+        outState.putInt(TRACK1, getCurrentItem(R.id.track1));
+        outState.putInt(TRACK2, getCurrentItem(R.id.track2));
         outState.putInt(HEADING0, getCurrentItem(R.id.heading0));
         outState.putInt(HEADING1, getCurrentItem(R.id.heading1));
         outState.putInt(HEADING2, getCurrentItem(R.id.heading2));
-        outState.putString(WIND_SPEED, windSpeedEditText.getText().toString());
-        outState.putString(WIND_UNIT, selectedWindSpeedUnit);
+        outState.putString(GS, groundSpeedEditText.getText().toString());
+        outState.putString(GS_UNIT, selectedGroundSpeedUnit);
         outState.putString(TAS, tasEditText.getText().toString());
         outState.putString(TAS_UNIT, selectedTrueAirspeedUnit);
-        outState.putString(GS_UNIT, selectedGroundSpeedUnit);
+        outState.putString(WIND_UNIT, selectedWindSpeedUnit);
     }
-
     @Override
     protected void onRestoreState(Bundle inState) {
         if (inState != null) {
-            getWheel(R.id.wind0).setCurrentItem(inState.getInt(WIND0));
-            getWheel(R.id.wind1).setCurrentItem(inState.getInt(WIND1));
-            getWheel(R.id.wind2).setCurrentItem(inState.getInt(WIND2));
+            getWheel(R.id.track0).setCurrentItem(inState.getInt(TRACK0));
+            getWheel(R.id.track1).setCurrentItem(inState.getInt(TRACK1));
+            getWheel(R.id.track2).setCurrentItem(inState.getInt(TRACK2));
             getWheel(R.id.heading0).setCurrentItem(inState.getInt(HEADING0));
             getWheel(R.id.heading1).setCurrentItem(inState.getInt(HEADING1));
             getWheel(R.id.heading2).setCurrentItem(inState.getInt(HEADING2));
@@ -214,10 +213,10 @@ public class GroundVectorFragment extends StatedFragment {
             selectedTrueAirspeedUnit = inState.getString(TAS_UNIT);
             trueAirspeedSpinner.setSelection(((UnitAdapter) trueAirspeedSpinner.getAdapter()).getPositionByName(selectedTrueAirspeedUnit));
 
+            groundSpeedEditText.setText(inState.getCharSequence(GS));
             selectedGroundSpeedUnit = inState.getString(GS_UNIT);
             groundSpeedSpinner.setSelection(((UnitAdapter) groundSpeedSpinner.getAdapter()).getPositionByName(selectedGroundSpeedUnit));
 
-            windSpeedEditText.setText(inState.getCharSequence(WIND_SPEED));
             selectedWindSpeedUnit = inState.getString(WIND_UNIT);
             windSpeedSpinner.setSelection(((UnitAdapter) windSpeedSpinner.getAdapter()).getPositionByName(selectedWindSpeedUnit));
         }
@@ -252,19 +251,19 @@ public class GroundVectorFragment extends StatedFragment {
             AbstractWheel heading1 = getWheel(R.id.heading1);
             if (wheel.getCurrentItem() == 3)
                 heading1.setViewAdapter(new NumericWheelAdapter(getActivity().getApplicationContext(), 0, 5));
-            else{
+            else {
                 heading1.setViewAdapter(new NumericWheelAdapter(getActivity().getApplicationContext(), 0, 9));
             }
         }
     };
 
-    private OnWheelChangedListener limitWindTrigger = new OnWheelChangedListener() {
+    private OnWheelChangedListener limitTrackTrigger = new OnWheelChangedListener() {
         public void onChanged(AbstractWheel wheel, int oldValue, int newValue) {
-            AbstractWheel wind1 = getWheel(R.id.wind1);
+            AbstractWheel track1 = getWheel(R.id.track1);
             if (wheel.getCurrentItem() == 3)
-                wind1.setViewAdapter(new NumericWheelAdapter(getActivity().getApplicationContext(), 0, 5));
-            else{
-                wind1.setViewAdapter(new NumericWheelAdapter(getActivity().getApplicationContext(), 0, 9));
+                track1.setViewAdapter(new NumericWheelAdapter(getActivity().getApplicationContext(), 0, 5));
+            else {
+                track1.setViewAdapter(new NumericWheelAdapter(getActivity().getApplicationContext(), 0, 9));
             }
         }
     };
@@ -278,9 +277,9 @@ public class GroundVectorFragment extends StatedFragment {
         return getWheel(id).getCurrentItem();
     }
 
-    private CompassDirection getWind() {
-        return new CompassDirection(getCurrentItem(R.id.wind0) * 100
-                + getCurrentItem(R.id.wind1) * 10 + getCurrentItem(R.id.wind2), 0, 0);
+    private CompassDirection getTrack() {
+        return new CompassDirection(getCurrentItem(R.id.track0) * 100
+                + getCurrentItem(R.id.track1) * 10 + getCurrentItem(R.id.track2), 0, 0);
     }
 
     private CompassDirection getHeading() {
@@ -289,18 +288,18 @@ public class GroundVectorFragment extends StatedFragment {
     }
 
     private void calculate() {
-        CompassDirection wind = getWind();
+        CompassDirection track = getTrack();
         CompassDirection heading = getHeading();
-        if (inputWS != null && inputTas != null) {
-            WindTriangleVector groundVector = calculator.calculateGroundVector(
-                    new WindTriangleVector(wind, new Measurement(inputWS, selectedWindSpeedUnit)),
+        if (inputGS != null && inputTas != null) {
+            WindTriangleVector wind = calculator.calculateWindVector(
+                    new WindTriangleVector(track, new Measurement(inputGS, selectedGroundSpeedUnit)),
                     new WindTriangleVector(heading, new Measurement(inputTas, selectedTrueAirspeedUnit)),
-                    selectedGroundSpeedUnit);
+                    selectedWindSpeedUnit);
 
             NumberFormat format = NumberFormat.getInstance();
             format.setMaximumFractionDigits(0);
-            trackText.setText(format.format(groundVector.getDirection().getDegrees()));
-            groundSpeedText.setText(format.format(groundVector.getSpeed().getMagnitude()));
+            windDirectionText.setText(format.format(wind.getDirection().getDegrees()));
+            windSpeedText.setText(format.format(wind.getSpeed().getMagnitude()));
         }
     }
 }

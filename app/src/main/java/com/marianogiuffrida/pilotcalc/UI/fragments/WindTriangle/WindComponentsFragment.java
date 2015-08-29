@@ -1,6 +1,5 @@
-package com.marianogiuffrida.pilotcalc.UI.fragments;
+package com.marianogiuffrida.pilotcalc.UI.fragments.WindTriangle;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 
 import com.marianogiuffrida.pilotcalc.R;
 import com.marianogiuffrida.pilotcalc.UI.adapters.UnitAdapter;
+import com.marianogiuffrida.pilotcalc.UI.fragments.StatefulFragment;
 import com.marianogiuffrida.pilotcalc.data.SqlLiteDataStore;
 import com.marianogiuffrida.pilotcalc.data.UnitConversionRepository;
 import com.marianogiuffrida.pilotcalc.model.Common.Measurement;
@@ -34,7 +34,7 @@ import antistatic.spinnerwheel.AbstractWheel;
 import antistatic.spinnerwheel.OnWheelChangedListener;
 import antistatic.spinnerwheel.adapters.NumericWheelAdapter;
 
-public class WindComponentsFragment extends StatedFragment {
+public class WindComponentsFragment extends StatefulFragment {
     public static final int ID = 3;
     private static final String RWY0 = "rwy0";
     private static final String RWY1 = "rwy1";

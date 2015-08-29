@@ -21,7 +21,7 @@ import com.marianogiuffrida.pilotcalc.UI.fragments.CalculatorFragment;
 import com.marianogiuffrida.pilotcalc.UI.fragments.ConversionsFragment;
 import com.marianogiuffrida.pilotcalc.UI.adapters.NavigationDrawerListAdapter;
 import com.marianogiuffrida.pilotcalc.UI.fragments.SplashFragment;
-import com.marianogiuffrida.pilotcalc.UI.fragments.WindFragment;
+import com.marianogiuffrida.pilotcalc.UI.fragments.WindTriangle.WindFragment;
 import com.marianogiuffrida.pilotcalc.UI.navigation.NavigationDrawerItem;
 
 import java.util.ArrayList;

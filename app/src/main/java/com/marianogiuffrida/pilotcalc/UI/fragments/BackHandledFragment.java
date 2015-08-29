@@ -6,10 +6,8 @@ import android.os.Bundle;
  * Created by Mariano on 25/08/2015.
  */
 
-public abstract class BackHandledFragment extends StatedFragment {
+public abstract class BackHandledFragment extends StatefulFragment {
     protected BackHandlerInterface backHandlerInterface;
-
-    public abstract String getTagText();
 
     public abstract boolean onBackPressed();
 
