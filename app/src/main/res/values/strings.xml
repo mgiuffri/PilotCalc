@@ -59,5 +59,7 @@
     <string name="outside_temperature_pressure_altitude">Outside Air Temperature from pressure altitude.</string>
     <string name="pressure_calculation">Pressure at altitude</string>
     <string name="AtmosphereCalculator">Standard Atmosphere</string>
+    <string name="altitude">Altitude</string>
+    <string name="standard_temperature_short">Std. Temp.</string>
 
 </resources>

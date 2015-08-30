@@ -28,7 +28,7 @@ import com.marianogiuffrida.pilotcalc.UI.notification.OnTitleChangeListener;
 import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity
-        implements BackButtonHandledFragment.OnSelectedFragmentListener, OnTitleChangeListener{
+        implements BackButtonHandledFragment.OnSelectedFragmentListener, OnTitleChangeListener {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -99,8 +99,8 @@ public class MainActivity extends ActionBarActivity
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    // display view for selected nav drawer item
-                    if (displayView(position)) updateDrawerSelection(position);
+                // display view for selected nav drawer item
+                if (displayView(position)) updateDrawerSelection(position);
             }
         });
     }
@@ -198,7 +198,7 @@ public class MainActivity extends ActionBarActivity
             fragmentManager
                     .beginTransaction()
                     .replace(R.id.frame_container, fragment)
-                    .addToBackStack("Fragment")
+                    .addToBackStack(fragment.getTag())
                     .commit();
             return true;
         }
@@ -219,7 +219,12 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onBackPressed() {
-        if(selectedFragment == null || !selectedFragment.onBackPressed()) {
+        if (selectedFragment != null && !selectedFragment.isVisible()) {
+            getFragmentManager().popBackStack();
+            return;
+        }
+
+        if (selectedFragment == null || !selectedFragment.onBackPressed()) {
             if (getFragmentManager().getBackStackEntryCount() == 0) {
                 super.onBackPressed();
             } else {

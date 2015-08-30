@@ -9,10 +9,6 @@ import android.view.ViewGroup;
 import com.marianogiuffrida.helpers.FragmentUtils;
 import com.marianogiuffrida.pilotcalc.R;
 import com.marianogiuffrida.pilotcalc.UI.BackButtonHandledFragment;
-import com.marianogiuffrida.pilotcalc.UI.fragments.WindTriangle.AirVectorFragment;
-import com.marianogiuffrida.pilotcalc.UI.fragments.WindTriangle.GroundVectorFragment;
-import com.marianogiuffrida.pilotcalc.UI.fragments.WindTriangle.InFlightWindFragment;
-import com.marianogiuffrida.pilotcalc.UI.fragments.WindTriangle.WindComponentsFragment;
 import com.marianogiuffrida.pilotcalc.UI.notification.OnSelectionListener;
 import com.marianogiuffrida.pilotcalc.UI.notification.OnTitleChangeListener;
 
@@ -32,6 +28,7 @@ public class StandardAtmosphereFragment extends BackButtonHandledFragment implem
                     .add(R.id.atmosphere_frame_container, new AtmosphereCalculationPickerFragment())
                     .commit();
         }
+
         onTitleChangeListener = FragmentUtils.getParent(this, OnTitleChangeListener.class);
         if(onTitleChangeListener != null) onTitleChangeListener.newTitle(R.string.AtmosphereCalculator);
 
@@ -45,28 +42,28 @@ public class StandardAtmosphereFragment extends BackButtonHandledFragment implem
                 getChildFragmentManager()
                         .beginTransaction()
                         .replace(R.id.atmosphere_frame_container, new StandardTemperatureFragment())
-                        .addToBackStack("ciao")
+                        .addToBackStack("atmosphere")
                         .commit();
                 break;
             case TemperatureFromMachFragment.ID:
                 getChildFragmentManager()
                         .beginTransaction()
                         .replace(R.id.atmosphere_frame_container, new TemperatureFromMachFragment())
-                        .addToBackStack("ciao")
+                        .addToBackStack("atmosphere")
                         .commit();
                 break;
             case TemperatureFromAltitudeFragment.ID:
                 getChildFragmentManager()
                         .beginTransaction()
                         .replace(R.id.atmosphere_frame_container, new TemperatureFromAltitudeFragment())
-                        .addToBackStack("ciao")
+                        .addToBackStack("atmosphere")
                         .commit();
                 break;
             case PressureFragment.ID:
                 getChildFragmentManager()
                         .beginTransaction()
                         .replace(R.id.atmosphere_frame_container, new PressureFragment())
-                        .addToBackStack("ciao")
+                        .addToBackStack("atmosphere")
                         .commit();
                 break;
             default:
@@ -82,5 +79,4 @@ public class StandardAtmosphereFragment extends BackButtonHandledFragment implem
         }
         return false;
     }
-
 }

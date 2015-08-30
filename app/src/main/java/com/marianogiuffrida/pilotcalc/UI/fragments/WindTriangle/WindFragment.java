@@ -45,28 +45,28 @@ public class WindFragment extends BackButtonHandledFragment implements OnSelecti
                 getChildFragmentManager()
                         .beginTransaction()
                         .replace(R.id.wind_frame_container, new InFlightWindFragment())
-                        .addToBackStack("ciao")
+                        .addToBackStack("wind")
                         .commit();
                 break;
             case GroundVectorFragment.ID:
                 getChildFragmentManager()
                         .beginTransaction()
                         .replace(R.id.wind_frame_container, new GroundVectorFragment())
-                        .addToBackStack("ciao")
+                        .addToBackStack("wind")
                         .commit();
                 break;
             case AirVectorFragment.ID:
                 getChildFragmentManager()
                         .beginTransaction()
                         .replace(R.id.wind_frame_container, new AirVectorFragment())
-                        .addToBackStack("ciao")
+                        .addToBackStack("wind")
                         .commit();
                 break;
             case WindComponentsFragment.ID:
                 getChildFragmentManager()
                         .beginTransaction()
                         .replace(R.id.wind_frame_container, new WindComponentsFragment())
-                        .addToBackStack("ciao")
+                        .addToBackStack("wind")
                         .commit();
                 break;
             default:
