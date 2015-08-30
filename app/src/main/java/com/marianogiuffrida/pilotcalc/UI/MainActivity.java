@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.marianogiuffrida.pilotcalc.R;
+import com.marianogiuffrida.pilotcalc.UI.fragments.Atmosphere.StandardAtmosphereFragment;
 import com.marianogiuffrida.pilotcalc.UI.fragments.CalculatorFragment;
 import com.marianogiuffrida.pilotcalc.UI.fragments.ConversionsFragment;
 import com.marianogiuffrida.pilotcalc.UI.adapters.NavigationDrawerListAdapter;
@@ -183,6 +184,9 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 2:
                 fragment = new WindFragment();
+                break;
+            case 3:
+                fragment = new StandardAtmosphereFragment();
                 break;
             default:
                 fragment = new SplashFragment();

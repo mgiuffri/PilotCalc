@@ -13,35 +13,34 @@
         android:textSize="30sp" />
 
     <Button
-        android:id="@+id/inflightwind"
+        android:id="@+id/standardTemperature"
         style="@style/NumberButton"
         android:layout_width="match_parent"
         android:layout_height="0px"
         android:layout_weight="1"
-        android:text="@string/inflightWind" />
+        android:text="@string/standard_temperature" />
 
     <Button
-        android:id="@+id/groundvector"
+        android:id="@+id/outsideTemperatureMach"
         style="@style/NumberButton"
         android:layout_width="match_parent"
         android:layout_height="0px"
         android:layout_weight="1"
-        android:text="@string/groundvector" />
-
-
-    <Button
-        android:id="@+id/airvector"
-        style="@style/NumberButton"
-        android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="1"
-        android:text="@string/airvector" />
+        android:text="@string/outside_temperature_mach" />
 
     <Button
-        android:id="@+id/windcomponents"
+        android:id="@+id/outsideTemperaturePressureAltitude"
         style="@style/NumberButton"
         android:layout_width="match_parent"
         android:layout_height="0px"
         android:layout_weight="1"
-        android:text="@string/windcomponents" />
+        android:text="@string/outside_temperature_pressure_altitude" />
+
+    <Button
+        android:id="@+id/pressure"
+        style="@style/NumberButton"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:text="@string/pressure_calculation" />
 </LinearLayout>
