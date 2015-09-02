@@ -13,12 +13,16 @@
     <string name="Converter">Unit Conversions</string>
     <string name="Calculator">Calculator</string>
     <string name="Atmosphere">Atmosphere</string>
+    <string name="Altimetry">Altimetry</string>
+    <string name="Speed">Speed</string>
 
     <string-array name="nav_drawer_items">
         <item>@string/Converter</item>
         <item>@string/Calculator</item>
         <item>@string/WindCalculator</item>
         <item>@string/Atmosphere</item>
+        <item>@string/Altimetry</item>
+        <item>@string/Speed</item>
     </string-array>
 
     <!-- Nav Drawer List Item Icons -->
@@ -28,6 +32,8 @@
         <item>@drawable/ic_calculator</item>
         <item>@drawable/ic_wind</item>
         <item>@drawable/ic_temp_unselected</item>
+        <item>@drawable/ic_length_unselected</item>
+        <item>@drawable/ic_speed_unselected</item>
     </array>
 
     <string name="weight">Weight</string>
@@ -59,6 +65,8 @@
     <string name="outside_temperature_pressure_altitude">Outside Air Temperature from pressure altitude.</string>
     <string name="pressure_calculation">Pressure at altitude</string>
     <string name="AtmosphereCalculator">Standard Atmosphere</string>
+    <string name="AltimetryCalculator">Altimetry</string>
+    <string name="SpeedCalculator">Speed</string>
     <string name="altitude">Altitude</string>
     <string name="standard_temperature_short">Std. Temp.</string>
     <string name="indicatedTemperature">Indicated Temp.</string>
@@ -66,6 +74,12 @@
     <string name="coefficientLabel">Recovery coeff.</string>
     <string name="outside_temperature_short">OAT</string>
     <string name="airspeed">Airspeed</string>
-    <string name="pressure_altitude">Pressure Alt.</string>
-
+    <string name="pressure_altitude_short">Pressure Alt.</string>
+    <string name="pressure_altitude">Pressure Altitude</string>
+    <string name="density_Altitude">Density Altitude</string>
+    <string name="true_altitude">True Altitude</string>
+    <string name="true_airspeed_button">True Airspeed</string>
+    <string name="mach_temperature">Mach from air temp.</string>
+    <string name="mach_altitude">Mach from pressure altitude</string>
+    <string name="sound_speed">Speed of Sound</string>
 </resources>

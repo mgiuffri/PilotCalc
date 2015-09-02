@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/what_calculation"
+        android:textColor="#fffdfdfe"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/trueAirspeed"
+        style="@style/NumberButton"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:text="@string/true_airspeed_button" />
+
+    <Button
+        android:id="@+id/machFromTemperature"
+        style="@style/NumberButton"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:text="@string/mach_temperature" />
+
+    <Button
+        android:id="@+id/machFromAltitude"
+        style="@style/NumberButton"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:text="@string/mach_altitude" />
+
+    <Button
+        android:id="@+id/soundSpeed"
+        style="@style/NumberButton"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:text="@string/sound_speed" />
+
+</LinearLayout>

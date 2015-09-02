@@ -16,10 +16,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.marianogiuffrida.pilotcalc.R;
+import com.marianogiuffrida.pilotcalc.UI.fragments.Altimetry.AltimetryFragment;
 import com.marianogiuffrida.pilotcalc.UI.fragments.Atmosphere.StandardAtmosphereFragment;
 import com.marianogiuffrida.pilotcalc.UI.fragments.CalculatorFragment;
 import com.marianogiuffrida.pilotcalc.UI.fragments.ConversionsFragment;
 import com.marianogiuffrida.pilotcalc.UI.adapters.NavigationDrawerListAdapter;
+import com.marianogiuffrida.pilotcalc.UI.fragments.Speed.SpeedFragment;
 import com.marianogiuffrida.pilotcalc.UI.fragments.SplashFragment;
 import com.marianogiuffrida.pilotcalc.UI.fragments.WindTriangle.WindFragment;
 import com.marianogiuffrida.pilotcalc.UI.navigation.NavigationDrawerItem;
@@ -187,6 +189,12 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 3:
                 fragment = new StandardAtmosphereFragment();
+                break;
+            case 4:
+                fragment = new AltimetryFragment();
+                break;
+            case 5:
+                fragment = new SpeedFragment();
                 break;
             default:
                 fragment = new SplashFragment();
