@@ -76,6 +76,12 @@ public final class StandardAtmosphere {
         return new Measurement(OAT, Units.Temperature.Celsius);
     }
 
+    public Measurement calculatePressure(Measurement pressureAltitude, String resultUnit) {
+        Units.Validator.check(resultUnit, Units.Pressure.class);
+        Measurement result = calculatePressure(pressureAltitude);
+        return conversionCalculator.convert(result, resultUnit);
+    }
+
     public Measurement calculatePressure(Measurement pressureAltitude) {
         ArgumentCheck.IsNotNull(pressureAltitude, "pressureAltitude");
         Units.Validator.check(pressureAltitude, Units.Length.class);
