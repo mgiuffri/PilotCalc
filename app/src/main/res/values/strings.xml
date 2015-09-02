@@ -61,5 +61,11 @@
     <string name="AtmosphereCalculator">Standard Atmosphere</string>
     <string name="altitude">Altitude</string>
     <string name="standard_temperature_short">Std. Temp.</string>
+    <string name="indicatedTemperature">Indicated Temp.</string>
+    <string name="mach">Mach</string>
+    <string name="coefficientLabel">Recovery coeff.</string>
+    <string name="outside_temperature_short">OAT</string>
+    <string name="airspeed">Airspeed</string>
+    <string name="pressure_altitude">Pressure Alt.</string>
 
 </resources>

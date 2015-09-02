@@ -28,23 +28,38 @@ public class SpeedCalculator {
         return new Measurement(result, Units.Speed.Knot);
     }
 
-    public Measurement calculateMachNumber(Measurement trueAirspeed, Measurement outsideTemperature) {
+    public double calculateMachNumber(Measurement trueAirspeed, Measurement outsideTemperature) {
         ArgumentCheck.IsNotNull(trueAirspeed, "trueAirspeed");
         Units.Validator.check(trueAirspeed, Units.Speed.class);
 
         double TAS = conversionCalculator.convert(trueAirspeed, Units.Speed.Knot).getMagnitude().doubleValue();
         double speedSound = calculateSpeedSound(outsideTemperature).getMagnitude().doubleValue();
         double result = TAS / speedSound;
-        return new Measurement(result, "MACH");
+        return result;
     }
 
-    public Measurement calculateMachNumberWithPressureAltitude(Measurement calibratedAirspeed, Measurement pressureAltitude) {
+    public double calculateMachNumberWithPressureAltitude(Measurement calibratedAirspeed, Measurement pressureAltitude) {
 
         double DP = standardAtmosphere.calculateDifferentialPressure(calibratedAirspeed).getMagnitude().doubleValue();
         double P = standardAtmosphere.calculatePressure(pressureAltitude).getMagnitude().doubleValue();
 
         double machNumber = Math.pow((5.0D * (Math.pow(DP / P + 1, 2.0D / 7.0D) - 1)), 0.5D);
-        return new Measurement(machNumber, "MACH");
+        return machNumber;
+    }
+
+    public Measurement calculateTrueAirspeed(Measurement calibratedAirspeed,
+                                             Measurement pressureAltitude,
+                                             Measurement indicatedAirTemperature,
+                                             double recoveryCoefficient,
+                                             String resultUnit) {
+
+        Units.Validator.check(resultUnit, Units.Speed.class);
+        Measurement result = calculateTrueAirspeed(
+                calibratedAirspeed,
+                pressureAltitude,
+                indicatedAirTemperature,
+                recoveryCoefficient);
+        return conversionCalculator.convert(result, resultUnit);
     }
 
     public Measurement calculateTrueAirspeed(Measurement calibratedAirspeed,
@@ -52,11 +67,26 @@ public class SpeedCalculator {
                                              Measurement indicatedAirTemperature,
                                              double recoveryCoefficient) {
 
-        Measurement M = calculateMachNumberWithPressureAltitude(calibratedAirspeed, pressureAltitude);
+        double M = calculateMachNumberWithPressureAltitude(calibratedAirspeed, pressureAltitude);
         Measurement OAT = standardAtmosphere.calculateOutsideAirTemperature(indicatedAirTemperature, M, recoveryCoefficient);
         double speedSound = calculateSpeedSound(OAT).getMagnitude().doubleValue();
-        double result = speedSound * M.getMagnitude().doubleValue();
+        double result = speedSound * M;
         return new Measurement(result, Units.Speed.Knot);
+    }
+
+    public Measurement calculateTrueAirTemperature(Measurement calibratedAirspeed,
+                                                   Measurement pressureAltitude,
+                                                   Measurement indicatedAirTemperature,
+                                                   double recoveryCoefficient,
+                                                   String resultUnit) {
+
+        Units.Validator.check(resultUnit, Units.Temperature.class);
+        Measurement result = calculateTrueAirTemperature(
+                calibratedAirspeed,
+                pressureAltitude,
+                indicatedAirTemperature,
+                recoveryCoefficient);
+        return conversionCalculator.convert(result, resultUnit);
     }
 
     public Measurement calculateTrueAirTemperature(Measurement calibratedAirspeed,
@@ -64,7 +94,7 @@ public class SpeedCalculator {
                                              Measurement indicatedAirTemperature,
                                              double recoveryCoefficient) {
 
-        Measurement M = calculateMachNumberWithPressureAltitude(calibratedAirspeed, pressureAltitude);
+        double M = calculateMachNumberWithPressureAltitude(calibratedAirspeed, pressureAltitude);
         return standardAtmosphere.calculateOutsideAirTemperature(indicatedAirTemperature, M, recoveryCoefficient);
     }
 

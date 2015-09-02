@@ -5,27 +5,33 @@ package com.marianogiuffrida.helpers;
  */
 public class StringUtils {
 
-    public static boolean isNull(String s){
+    public static boolean isNull(String s) {
         return s == null;
     }
 
     public static boolean isEmpty(String s) {
-        return s.length()==0;
+        return s.length() == 0;
     }
 
-    public static boolean isNullOrEmpty(String s){
-        return isNull(s)|| isEmpty(s);
+    public static boolean isNullOrEmpty(String s) {
+        return isNull(s) || isEmpty(s);
     }
 
-    public static boolean isNullOrWhiteSpace(String value)
-    {
+    public static boolean isNullOrWhiteSpace(String value) {
         if (value == null)
             return true;
-        for (int index = 0; index < value.length(); ++index)
-        {
+        for (int index = 0; index < value.length(); ++index) {
             if (!Character.isWhitespace(value.charAt(index)))
                 return false;
         }
         return true;
+    }
+
+    public static boolean isNumeric(CharSequence s) {
+        return isNumeric(s.toString());
+    }
+
+    public static boolean isNumeric(String s) {
+        return s.matches("[-+]?\\d*\\.?\\d+");
     }
 }

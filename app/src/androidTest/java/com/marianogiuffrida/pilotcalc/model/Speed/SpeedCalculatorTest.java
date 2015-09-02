@@ -31,28 +31,28 @@ public class SpeedCalculatorTest extends AndroidTestCase {
     }
 
     public void testCalculateMachNumberWithPressureAltitude(){
-        Measurement result = speedCalculator.calculateMachNumberWithPressureAltitude(
+        double result = speedCalculator.calculateMachNumberWithPressureAltitude(
                 new Measurement(280, Units.Speed.Knot),
                 new Measurement(14500, Units.Length.Foot));
 
-        assertEquals(result.getMagnitude().doubleValue(), 0.55, 0.01);
+        assertEquals(result, 0.55, 0.01);
     }
 
 
     public void testCalculateMachNumberWithPressureAltitude2(){
-        Measurement result = speedCalculator.calculateMachNumberWithPressureAltitude(
+        double result = speedCalculator.calculateMachNumberWithPressureAltitude(
                 new Measurement(250, Units.Speed.Knot),
                 new Measurement(10000, Units.Length.Foot));
 
-        assertEquals(result.getMagnitude().doubleValue(), 0.4523, 0.01);
+        assertEquals(result, 0.4523, 0.01);
     }
 
     public void testCalculateMachNumber() {
-        Measurement result = speedCalculator.calculateMachNumber(
+        double result = speedCalculator.calculateMachNumber(
                 new Measurement(343, Units.Speed.Knot),
                 new Measurement(-15.0, Units.Temperature.Celsius));
 
-        assertEquals(result.getMagnitude().doubleValue(), 0.55, 0.01);
+        assertEquals(result, 0.55, 0.01);
     }
 
     public void testCalculateTrueAirspeed() {

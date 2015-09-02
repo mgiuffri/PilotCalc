@@ -52,18 +52,26 @@ public final class StandardAtmosphere {
         return new Measurement(result.stripTrailingZeros(), Units.Temperature.Celsius);
     }
 
+    public Measurement calculateOutsideAirTemperature(Measurement indicatedAirTemperature,
+                                                      double machNumber,
+                                                      double recoveryCoefficient,
+                                                      String resultUnit) {
+        Units.Validator.check(resultUnit, Units.Temperature.class);
+        Measurement result = calculateOutsideAirTemperature(indicatedAirTemperature, machNumber, recoveryCoefficient);
+        return conversionCalculator.convert(result, resultUnit);
+    }
+
     public Measurement calculateOutsideAirTemperature(
             Measurement indicatedAirTemperature,
-            Measurement machNumber,
+            double machNumber,
             double recoveryCoefficient) {
 
         ArgumentCheck.IsNotNull(indicatedAirTemperature, "indicatedAirTemperature");
         Units.Validator.check(indicatedAirTemperature, Units.Temperature.class);
 
         double IAT = conversionCalculator.convert(indicatedAirTemperature, Units.Temperature.Kelvin).getMagnitude().doubleValue();
-        double M = machNumber.getMagnitude().doubleValue();
 
-        double OAT = IAT / (1.0 + 0.2 * recoveryCoefficient * Math.pow(M, 2.0D)) - 273.15D;
+        double OAT = IAT / (1.0 + 0.2 * recoveryCoefficient * Math.pow(machNumber, 2.0D)) - 273.15D;
 
         return new Measurement(OAT, Units.Temperature.Celsius);
     }
