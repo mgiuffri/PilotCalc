@@ -167,14 +167,14 @@ public class PressureAltitudeFragment extends StatefulFragment {
                 && selectedElevationUnit != null
                 && selectedAltitudeUnit != null) {
 
-            Measurement temperature = calculator.calculatePressureAltitude(
+            Measurement pressureAltitude = calculator.calculatePressureAltitude(
                     new Measurement(inputPressure, selectedPressureUnit),
                     new Measurement(inputElevation, selectedElevationUnit),
-                    selectedElevationUnit);
+                    selectedAltitudeUnit);
 
             NumberFormat format = NumberFormat.getInstance();
-            format.setMaximumFractionDigits(0);
-            altitudeText.setText(format.format(temperature.getMagnitude()));
+            format.setMaximumFractionDigits(2);
+            altitudeText.setText(format.format(pressureAltitude.getMagnitude()));
         }
     }
 

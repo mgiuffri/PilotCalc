@@ -62,7 +62,7 @@
                 android:id="@+id/elevationLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/airspeedLayout"
+                android:layout_below="@id/pressureLayout"
                 android:orientation="horizontal">
 
                 <TextView

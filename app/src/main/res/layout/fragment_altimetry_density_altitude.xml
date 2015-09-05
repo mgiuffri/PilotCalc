@@ -62,7 +62,7 @@
                 android:id="@+id/outsideTemperatureLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/airspeedLayout"
+                android:layout_below="@id/pressureAltitudeLayout"
                 android:orientation="horizontal">
 
                 <TextView
@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:imeOptions="actionDone"
-                    android:inputType="numberDecimal" />
+                    android:inputType="numberDecimal|numberSigned"/>
 
                 <Spinner
                     android:id="@+id/temperatureSpinner"

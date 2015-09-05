@@ -67,13 +67,13 @@ public class DensityAltitudeFragment extends StatefulFragment {
         pressureAltitudeSpinner = (Spinner) rootView.findViewById(R.id.altitudeSpinner);
 
         temperatureText = (EditText) rootView.findViewById(R.id.temperature);
-        temperatureSpinner = (Spinner) rootView.findViewById(R.id.temperatureUnit);
+        temperatureSpinner = (Spinner) rootView.findViewById(R.id.temperatureSpinner);
 
         densityAltitudeText = (TextView) rootView.findViewById(R.id.density_altitude);
         densityAltitudeSpinner = (Spinner) rootView.findViewById(R.id.density_altitudeSpinner);
 
-        fillSpinner(pressureAltitudeSpinner, Units.Pressure.Name);
-        fillSpinner(temperatureSpinner, Units.Length.Name);
+        fillSpinner(pressureAltitudeSpinner, Units.Length.Name);
+        fillSpinner(temperatureSpinner, Units.Temperature.Name);
         fillSpinner(densityAltitudeSpinner, Units.Length.Name);
 
         pressureAltitude.addTextChangedListener(new TextWatcher() {
@@ -170,10 +170,10 @@ public class DensityAltitudeFragment extends StatefulFragment {
             Measurement temperature = calculator.calculateDensityAltitude(
                     new Measurement(inputPressureAltitude, selectedPressureAltitudeUnit),
                     new Measurement(inputTemperature, selectedTemperatureUnit),
-                    selectedTemperatureUnit);
+                    selectedDensityAltitudeUnit);
 
             NumberFormat format = NumberFormat.getInstance();
-            format.setMaximumFractionDigits(0);
+            format.setMaximumFractionDigits(2);
             densityAltitudeText.setText(format.format(temperature.getMagnitude()));
         }
     }

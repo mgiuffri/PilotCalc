@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/appBackground"
-    tools:context="com.marianogiuffrida.pilotcalc.UI.fragments.Atmosphere.StandardTemperatureFragment">
+    tools:context="com.marianogiuffrida.pilotcalc.UI.fragments.Atmosphere.TemperatureFromAltitudeFragment">
     >
 
     <RelativeLayout
@@ -20,37 +20,140 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black" />
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/inputs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/inputLabel"
             android:background="@drawable/round_corners_rectangle"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/altitudeLabel"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/pressureAltitudeLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/pressure_altitude_short"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/black" />
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/altitude"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:imeOptions="actionDone"
-                android:inputType="numberDecimal" />
+                <TextView
+                    android:id="@+id/pressureAltitudeLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/pressure_altitude_short"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/black" />
 
-            <Spinner
-                android:id="@+id/altitudeSpinner"
-                android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/pressureAltitude"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberDecimal" />
+
+                <Spinner
+                    android:id="@+id/pressureAltitudeSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/calibratedAltitudeLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
-        </LinearLayout>
+                android:layout_below="@id/pressureAltitudeLayout"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/calibratedAltitudeLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/calibrated_altitude_short"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/black" />
+
+                <EditText
+                    android:id="@+id/calibratedAltitude"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberDecimal" />
+
+                <Spinner
+                    android:id="@+id/calibratedAltitudeSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/outsideTemperatureLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/calibratedAltitudeLayout"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/outsideTemperatureLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/outside_temperature_short"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/black" />
+
+                <EditText
+                    android:id="@+id/temperature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberDecimal|numberSigned" />
+
+                <Spinner
+                    android:id="@+id/temperatureSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/elevationLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/outsideTemperatureLayout"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/elevationLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/elevation"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/black" />
+
+                <EditText
+                    android:id="@+id/elevation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberDecimal" />
+
+                <Spinner
+                    android:id="@+id/elevationSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/outputLabel"
@@ -62,7 +165,7 @@
             android:textColor="@color/black" />
 
         <LinearLayout
-            android:id="@+id/pressureLayout"
+            android:id="@+id/altitudeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/outputLabel"
@@ -70,16 +173,16 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/pressureLabel"
+                android:id="@+id/trueAltitudeLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/standard_temperature_short"
+                android:text="@string/true_altitude_short"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/pressure"
+                android:id="@+id/trueAltitude"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -87,7 +190,7 @@
                 android:textColor="@color/black" />
 
             <Spinner
-                android:id="@+id/pressureUnit"
+                android:id="@+id/trueAltitudeSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
