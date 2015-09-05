@@ -82,4 +82,5 @@
     <string name="mach_temperature">Mach from air temp.</string>
     <string name="mach_altitude">Mach from pressure altitude</string>
     <string name="sound_speed">Speed of Sound</string>
+    <string name="elevation">Elevation</string>
 </resources>
