@@ -86,4 +86,6 @@
     <string name="density_Altitude_short">Density Alt.</string>
     <string name="calibrated_altitude_short">Cal. Alt.</string>
     <string name="true_altitude_short">True Alt.</string>
+    <string name="calibrated_airspeed_short">Cal. Airspeed</string>
+    <string name="true_airspeed">True Airspeed</string>
 </resources>

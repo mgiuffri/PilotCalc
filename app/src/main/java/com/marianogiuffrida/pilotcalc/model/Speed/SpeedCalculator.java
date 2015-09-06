@@ -19,6 +19,12 @@ public class SpeedCalculator {
         standardAtmosphere = new StandardAtmosphere(uc);
     }
 
+    public Measurement calculateSpeedSound(Measurement outsideTemperature, String resultUnit) {
+        Units.Validator.check(resultUnit, Units.Speed.class);
+        Measurement result = calculateSpeedSound(outsideTemperature);
+        return conversionCalculator.convert(result, resultUnit);
+    }
+
     public Measurement calculateSpeedSound(Measurement outsideTemperature) {
         ArgumentCheck.IsNotNull(outsideTemperature, "outsideTemperature");
         Units.Validator.check(outsideTemperature, Units.Temperature.class);

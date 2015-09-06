@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/appBackground"
-    tools:context="com.marianogiuffrida.pilotcalc.UI.fragments.Atmosphere.TemperatureFromAltitudeFragment">
+    tools:context="com.marianogiuffrida.pilotcalc.UI.fragments.Atmosphere.StandardTemperatureFragment">
     >
 
     <RelativeLayout
@@ -20,136 +20,37 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black" />
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/inputs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/inputLabel"
             android:background="@drawable/round_corners_rectangle"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/airspeedLayout"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/temperatureLabel"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:text="@string/outside_temperature_short"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/black" />
 
-                <TextView
-                    android:id="@+id/airspeedLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/airspeed"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/black" />
-
-                <EditText
-                    android:id="@+id/airspeed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:imeOptions="actionDone"
-                    android:inputType="numberDecimal" />
-
-                <Spinner
-                    android:id="@+id/airspeedSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/altitudeLayout"
-                android:layout_width="match_parent"
+            <EditText
+                android:id="@+id/temperature"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/airspeedLayout"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:imeOptions="actionDone"
+                android:inputType="numberDecimal|numberSigned" />
 
-                <TextView
-                    android:id="@+id/altitudeLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/pressure_altitude_short"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/black" />
-
-                <EditText
-                    android:id="@+id/altitude"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:imeOptions="actionDone"
-                    android:inputType="numberDecimal" />
-
-                <Spinner
-                    android:id="@+id/altitudeSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/temperaturLayout"
-                android:layout_width="match_parent"
+            <Spinner
+                android:id="@+id/temperatureSpinner"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/altitudeLayout"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/indictedTemperatureLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/indicatedTemperature"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/black" />
-
-                <EditText
-                    android:id="@+id/indicatedTemperature"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:imeOptions="actionDone"
-                    android:inputType="numberDecimal|numberSigned" />
-
-                <Spinner
-                    android:id="@+id/indicatedTemperatureSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/otherInputs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/temperaturLayout"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/coeffLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/coefficientLabel"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/black" />
-
-                <EditText
-                    android:id="@+id/coeff"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:imeOptions="actionDone"
-                    android:inputType="numberDecimal" />
-
-            </LinearLayout>
-
-
-        </RelativeLayout>
+                android:layout_weight="1" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/outputLabel"
@@ -161,7 +62,7 @@
             android:textColor="@color/black" />
 
         <LinearLayout
-            android:id="@+id/outputTemperatureLayout"
+            android:id="@+id/speedLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/outputLabel"
@@ -169,16 +70,16 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/outsideTemperatureLabel"
+                android:id="@+id/speedLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/outside_temperature_short"
+                android:text="@string/sound_speed"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/outsideTemperature"
+                android:id="@+id/speed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -186,7 +87,7 @@
                 android:textColor="@color/black" />
 
             <Spinner
-                android:id="@+id/outsideTemperatureUnit"
+                android:id="@+id/speedSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
