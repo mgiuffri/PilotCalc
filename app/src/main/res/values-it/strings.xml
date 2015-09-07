@@ -3,6 +3,8 @@
 
     <string name="app_name">PilotCalc</string>
     <string name="action_settings">Impostazioni</string>
+    <string name="title_activity_main_activity_drawer">main_activity_drawer</string>
+    <string name="description_icon_drawer_item">icon</string>
     <string name="open_drawer">Apri il menu</string>
     <string name="close_drawer">Chiudi il menu</string>
 
