@@ -2,23 +2,16 @@
 <resources>
 
     <string name="app_name">PilotCalc</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Impostazioni</string>
-    <string name="title_activity_main_activity_drawer">main_activity_drawer</string>
-    <string name="description_icon_drawer_item">icon</string>
     <string name="open_drawer">Apri il menu</string>
     <string name="close_drawer">Chiudi il menu</string>
 
-    <string name="WindCalculator">Conversioni</string>
-    <string name="Converter">Calcolatrice</string>
-    <string name="Calculator">Vento</string>
-
-    <!-- Nav Drawer List Item Icons -->
-    <!-- Keep them in order as the titles are in -->
-    <array name="nav_drawer_icons">
-        <item>@drawable/ic_conversions</item>
-        <item>@drawable/ic_calculator</item>
-    </array>
+    <string name="WindCalculator">Vento</string>
+    <string name="Converter">Conversioni</string>
+    <string name="Calculator">Calcolatrice</string>
+    <string name="Atmosphere">Atmosfera</string>
+    <string name="Altimetry">Altimetria</string>
+    <string name="Speed">Velocità</string>
 
     <string name="weight">Peso</string>
     <string name="length">Lunghezza</string>
@@ -27,4 +20,54 @@
     <string name="volume">Volume</string>
     <string name="speed">Velocità</string>
 
+    <string name="inflightWind">Vento in volo</string>
+    <string name="groundvector">Rotta e Velocità al suolo</string>
+    <string name="airvector">Prua e Velocità vera</string>
+    <string name="what_calculation">Calcola...</string>
+    <string name="windcomponents">Vento in pista</string>
+    <string name="true_air_speed">Vel. in aria</string>
+    <string name="track">Rotta</string>
+    <string name="ground_speed">Vel. al suolo</string>
+    <string name="wind">Vento</string>
+    <string name="heading">Prua</string>
+    <string name="inputs">Parametri</string>
+    <string name="results">Risultato</string>
+    <string name="wind_speed">Vel. Vento</string>
+    <string name="runway">Pista</string>
+    <string name="headwind">Headwind</string>
+    <string name="crosswind">Crosswind</string>
+    <string name="choose_operation">Cosa vuoi calcolare?</string>
+    <string name="standard_temperature">Temperatura Standard</string>
+    <string name="outside_temperature_mach">Temperatura dal nr. di mach</string>
+    <string name="outside_temperature_pressure_altitude">Temperatura dalla pressure altitude</string>
+    <string name="pressure_calculation">Pressione in quota</string>
+    <string name="AtmosphereCalculator">Atmosfera Standard</string>
+    <string name="AltimetryCalculator">Altimetria</string>
+    <string name="SpeedCalculator">Velocità</string>
+    <string name="altitude">Quota</string>
+    <string name="standard_temperature_short">Temp. Std.</string>
+    <string name="indicatedTemperature">Temp. Ind.</string>
+    <string name="mach">Mach</string>
+    <string name="coefficientLabel">Coeff.</string>
+    <string name="outside_temperature_short">Temp.</string>
+    <string name="airspeed">Vel.</string>
+    <string name="pressure_altitude_short">Pressure Alt.</string>
+    <string name="pressure_altitude">Pressure Altitude</string>
+    <string name="density_Altitude">Density Altitude</string>
+    <string name="true_altitude">Quota</string>
+    <string name="true_airspeed_button">Velocità Reale</string>
+    <string name="mach_temperature">Mach dalla temperatura</string>
+    <string name="mach_altitude">Mach da pressure altitude</string>
+    <string name="sound_speed">Vel. suono</string>
+    <string name="elevation">Elevazione</string>
+    <string name="density_Altitude_short">Density Alt.</string>
+    <string name="calibrated_altitude_short">Quota Ind.</string>
+    <string name="true_altitude_short">Quota</string>
+    <string name="calibrated_airspeed_short">Vel. Ind.</string>
+    <string name="true_airspeed">Vel. Reale</string>
+    <string name="app_description">Risolvi i più comuni calcoli aeronautici. Questo calcolatore è liberamente ispirato al Cr-3 della Jeppensen</string>
+
+
 </resources>
+
+

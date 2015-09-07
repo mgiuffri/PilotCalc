@@ -88,4 +88,5 @@
     <string name="true_altitude_short">True Alt.</string>
     <string name="calibrated_airspeed_short">Cal. Airspeed</string>
     <string name="true_airspeed">True Airspeed</string>
+    <string name="app_description">Solve the most common flight calculations.This calculator is a digital port loosely based on Jeppensen\'s CR-3</string>
 </resources>
