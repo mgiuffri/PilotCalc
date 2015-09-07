@@ -30,9 +30,9 @@
         <item>@drawable/ic_conversions</item>
         <item>@drawable/ic_calculator</item>
         <item>@drawable/ic_wind</item>
-        <item>@drawable/ic_temp_unselected</item>
-        <item>@drawable/ic_length_unselected</item>
-        <item>@drawable/ic_speed_unselected</item>
+        <item>@drawable/ic_temp</item>
+        <item>@drawable/ic_length</item>
+        <item>@drawable/ic_speed</item>
     </array>
 
     <string name="weight">Weight</string>
