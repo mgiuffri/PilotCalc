@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">PilotCalc</string>
     <string name="action_settings">Подешавања</string>
+    <string name="title_activity_main_activity_drawer">main_activity_drawer</string>
+    <string name="description_icon_drawer_item">icon</string>
     <string name="open_drawer">Отворите мени</string>
     <string name="close_drawer">Затворите мени</string>
 
     <string name="WindCalculator">Конверзије</string>
     <string name="Converter">Pачунар</string>
     <string name="Calculator">Ветар</string>
+    <string name="Atmosphere">Atmosphere</string>
+    <string name="Altimetry">Altimetry</string>
+    <string name="Speed">Speed</string>
 
     <string name="weight">тежина</string>
     <string name="length">дужина</string>
@@ -17,4 +21,50 @@
     <string name="volume">запремина</string>
     <string name="speed">брзина</string>
 
+    <string name="inflightWind">In-flight wind</string>
+    <string name="groundvector">Track &amp; Ground Speed</string>
+    <string name="airvector">Heading &amp; True Airspeed</string>
+    <string name="what_calculation">Calculate...</string>
+    <string name="windcomponents">Wind Components</string>
+    <string name="true_air_speed">Air Speed</string>
+    <string name="track">Track</string>
+    <string name="ground_speed">Ground Speed</string>
+    <string name="wind">Wind</string>
+    <string name="heading">Heading</string>
+    <string name="inputs">Input Parameters</string>
+    <string name="results">Result</string>
+    <string name="wind_speed">Wind Speed</string>
+    <string name="runway">Runway</string>
+    <string name="headwind">Headwind</string>
+    <string name="crosswind">Crosswind</string>
+    <string name="choose_operation">Select your action...</string>
+    <string name="standard_temperature">Standard Temperature</string>
+    <string name="outside_temperature_mach">Outside Air Temperature from mach nr.</string>
+    <string name="outside_temperature_pressure_altitude">Outside Air Temperature from pressure altitude.</string>
+    <string name="pressure_calculation">Pressure at altitude</string>
+    <string name="AtmosphereCalculator">Standard Atmosphere</string>
+    <string name="AltimetryCalculator">Altimetry</string>
+    <string name="SpeedCalculator">Speed</string>
+    <string name="altitude">Altitude</string>
+    <string name="standard_temperature_short">Std. Temp.</string>
+    <string name="indicatedTemperature">Indicated Temp.</string>
+    <string name="mach">Mach</string>
+    <string name="coefficientLabel">Recovery coeff.</string>
+    <string name="outside_temperature_short">OAT</string>
+    <string name="airspeed">Airspeed</string>
+    <string name="pressure_altitude_short">Pressure Alt.</string>
+    <string name="pressure_altitude">Pressure Altitude</string>
+    <string name="density_Altitude">Density Altitude</string>
+    <string name="true_altitude">True Altitude</string>
+    <string name="true_airspeed_button">True Airspeed</string>
+    <string name="mach_temperature">Mach from air temp.</string>
+    <string name="mach_altitude">Mach from pressure altitude</string>
+    <string name="sound_speed">Speed of Sound</string>
+    <string name="elevation">Elevation</string>
+    <string name="density_Altitude_short">Density Alt.</string>
+    <string name="calibrated_altitude_short">Cal. Alt.</string>
+    <string name="true_altitude_short">True Alt.</string>
+    <string name="calibrated_airspeed_short">Cal. Airspeed</string>
+    <string name="true_airspeed">True Airspeed</string>
+    <string name="app_description">Solve the most common flight calculations.This calculator is a digital port loosely based on Jeppensen\'s CR-3</string>
 </resources>
